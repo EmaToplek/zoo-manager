@@ -1,0 +1,17 @@
+#ifndef MAMMAL_HPP
+#define MAMMAL_HPP
+
+#include "animal.hpp"
+
+class Mammal : public Animal{
+    
+public:
+    Mammal(uint64_t id, const std::string& name, const std::string& species, 
+           uint64_t age, double weight, const std::string& enclosure, 
+           HealthStatus health_status) 
+        : Animal(id, name, species, age, weight, enclosure, health_status){}
+    
+    AnimalCategory get_category() const override;
+};
+
+#endif
