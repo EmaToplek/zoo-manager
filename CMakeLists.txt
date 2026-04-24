@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.18)
+project(ZooManager VERSION 1.0)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find wxWidgets
+find_package(wxWidgets REQUIRED COMPONENTS net core base)
+if(wxWidgets_USE_FILE)
+  include(${wxWidgets_USE_FILE})
+endif()
+
+# Source files
+set(SOURCES
+    src/app/zoo_app.cpp
+    src/gui/main_frame.cpp
+    src/gui/detail_panel.cpp
+    src/animals/animal.cpp
+)
+
+add_executable(ZooManager ${SOURCES})
+
+target_include_directories(ZooManager PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/animals
+    ${CMAKE_SOURCE_DIR}/src/gui
+    ${CMAKE_SOURCE_DIR}/src/app
+)
+
+target_link_libraries(ZooManager PRIVATE ${wxWidgets_LIBRARIES})
