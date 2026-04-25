@@ -28,6 +28,7 @@ class Animal{
       double weight_;
       std::string enclosure_;
       HealthStatus health_status_;
+      uint64_t ticks_;
 
     public:
         Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status);
@@ -52,11 +53,13 @@ class Animal{
         
         HealthStatus get_health_status()const {return health_status_;}
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
+        std::string get_health_status_to_string() const;
         
         virtual AnimalCategory  get_category() const=0;  // Abstract class
+        // healthy to sick its happening on the GUI
+        static constexpr uint64_t sickt_to_treatment_tick = 3;
+        static constexpr uint64_t treatment_to_healthy_tick = 2;
+        void tickhealth();  // wxTimer calls this.
 };
-
-
-
 
 #endif //ANIMAL_HPP
