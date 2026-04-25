@@ -22,7 +22,7 @@ private:
     std::string habitat_;
     float min_enclosure_size_;
     bool  can_fly_;
-    double wing_span_; 
+    double wingspan_; 
 };
 
 
