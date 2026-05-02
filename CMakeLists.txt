@@ -16,6 +16,12 @@ set(SOURCES
     src/gui/main_frame.cpp
     src/gui/detail_panel.cpp
     src/animals/animal.cpp
+    src/app/animal_manager.cpp
+    src/animals/bird.cpp
+    src/animals/fish.cpp
+    src/animals/mammal.cpp
+    src/animals/reptile.cpp
+    src/animals/amphibian.cpp
 )
 
 add_executable(ZooManager ${SOURCES})
