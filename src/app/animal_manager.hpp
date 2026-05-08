@@ -2,16 +2,27 @@
 #define ANIMAL_MANAGER_HPP
 
 #include "animal.hpp"
+#include "mammal.hpp"
+#include "bird.hpp"
+#include "fish.hpp"
+#include "reptile.hpp"
+#include "amphibian.hpp"
 #include <vector>
+#include <fstream>
+#include <string>
+#include<iostream>
+#include <nlohmann/json.hpp>
+
+
 
 class Animal_Manager{
 
     private:
-    std::vector<Animal> animals_list_;
+    std::vector<Animal*> animals_list_;
 
     
     public:
-    Animal_Manager();
+    Animal_Manager(){};
     void save() const;
     void load();
     void add_animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status);

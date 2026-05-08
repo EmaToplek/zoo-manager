@@ -4,13 +4,13 @@ project(ZooManager VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find wxWidgets
 find_package(wxWidgets REQUIRED COMPONENTS net core base)
 if(wxWidgets_USE_FILE)
   include(${wxWidgets_USE_FILE})
 endif()
+# sudo apt install nlohmann-json3-dev
+find_package(nlohmann_json REQUIRED)
 
-# Source files
 set(SOURCES
     src/app/zoo_app.cpp
     src/gui/main_frame.cpp
@@ -33,4 +33,7 @@ target_include_directories(ZooManager PRIVATE
     ${CMAKE_SOURCE_DIR}/src/app
 )
 
-target_link_libraries(ZooManager PRIVATE ${wxWidgets_LIBRARIES})
+target_link_libraries(ZooManager PRIVATE 
+    ${wxWidgets_LIBRARIES}
+    nlohmann_json::nlohmann_json
+)
