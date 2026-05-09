@@ -44,3 +44,22 @@ std::string Animal::get_health_status_to_string() const{
         return "None";
     }
 }
+
+std::string Animal::get_category_to_string(){
+    if(get_category() == AnimalCategory::Mammal){
+        return "Mammal";
+    }
+    else if(get_category() == AnimalCategory::Amphibian){
+        return "Amphibian";
+    }
+    else if(get_category() == AnimalCategory::Bird){
+        return "Bird";
+    }
+    else if(get_category() == AnimalCategory::Fish){
+        return "Fish";
+    }
+    else if(get_category() == AnimalCategory::Reptile){
+        return "Reptile";
+    }
+    return "Unknown";
+};

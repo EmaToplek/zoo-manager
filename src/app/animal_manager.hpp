@@ -25,11 +25,11 @@ class Animal_Manager{
     Animal_Manager(){};
     void save() const;
     void load();
-    void add_animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status);
+    void add_animal(uint64_t id,const std::string& name, const std::string& species, std::string category, uint64_t age, double weight, const std::string& enclosure, std::string health_status);
     bool remove_animal(uint64_t id);
-    std::vector<Animal>& get_all_animals() const;
-    std::vector<Animal> filter_by_category(AnimalCategory category) const;
-    std::vector<Animal> filter_by_status(HealthStatus status) const;
+    const std::vector<Animal*>& get_all_animals() const;
+    std::vector<Animal*> filter_by_category(AnimalCategory category) const;
+    std::vector<Animal*> filter_by_status(HealthStatus status) const;
 
     
 

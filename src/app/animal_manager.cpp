@@ -17,18 +17,38 @@ void Animal_Manager::load()
         double weight = animal["weight"];
         std::string enclosure = animal["enclosure"];
         std::string health = animal["health"];
-        
-        HealthStatus own_health;
-        if(health == "Healthy"){own_health = HealthStatus::Healthy;}
-        else if(health == "Sick"){own_health = HealthStatus::Sick;}
-        else if(health == "In Treatment"){own_health = HealthStatus::In_Treatment;}
-
-        // uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status
-        if(category == "Mammal"){
-            Mammal* m = new Mammal(id, name, species, age, weight, enclosure, own_health);
-        }
+        add_animal(id, name, species, category, age, weight, enclosure, health);
     }
 }
+
+
+void Animal_Manager::add_animal(uint64_t id,const std::string& name, const std::string& species, std::string category, uint64_t age, double weight, const std::string& enclosure, std::string health_status){
+     HealthStatus own_health;
+        if(health_status == "Healthy"){own_health = HealthStatus::Healthy;}
+        else if(health_status == "Sick"){own_health = HealthStatus::Sick;}
+        else if(health_status == "In Treatment"){own_health = HealthStatus::In_Treatment;}
+
+    Animal* a;
+    if(category == "Bird" || category == "Reptile"){
+        return;
+    }
+    if(category == "Mammal"){
+            a = new Mammal(id, name, species, age, weight, enclosure, own_health);
+    }
+    if(category == "Fish"){
+            a = new Fish(id, name, species, age, weight, enclosure, own_health);
+    }
+    if(category == "Amphibian"){
+            a = new Amphibian (id, name, species, age, weight, enclosure, own_health);
+    }
+    animals_list_.push_back(a);
+}
+
+const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
+    return animals_list_;
+}
+
+
 
 
 

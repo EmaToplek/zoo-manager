@@ -2,6 +2,8 @@
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title){
 
+    animal_manager_ = new Animal_Manager();
+    animal_manager_->load();
 
     panel_ = new wxPanel(this);
     left_panel_ = new wxPanel(panel_);
@@ -56,6 +58,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title){
     table_->AppendColumn("Enclosure", wxLIST_FORMAT_LEFT, 100);
     table_->AppendColumn("Health", wxLIST_FORMAT_LEFT, 100);
     
+    const std::vector<Animal*> animals = animal_manager_->get_all_animals();
+    fill_table(animals);
+    
     wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
         left_panel_sizer->Add(search_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         left_panel_sizer->Add(category_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
@@ -69,3 +74,20 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title){
     SetStatusText("Hello");
         
 }
+void MainFrame::fill_table(const std::vector<Animal*> animals){
+
+    table_->DeleteAllItems();
+
+    for(Animal* animal : animals){
+        long index = table_->InsertItem(table_->GetItemCount(), animal->get_name());
+        table_->SetItem(index, 1, animal->get_species());
+        table_->SetItem(index, 2, animal->get_category_to_string());
+        table_->SetItem(index, 3, std::to_string(animal->get_age()));
+        table_->SetItem(index, 4, std::to_string(animal->get_weight()));
+        table_->SetItem(index, 5, animal->get_enclosure());
+        table_->SetItem(index, 6, animal->get_health_status_to_string());
+    }
+    table_->Refresh();
+     
+}
+
