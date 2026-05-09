@@ -56,6 +56,7 @@ class Animal{
         std::string get_health_status_to_string() const;
         
         virtual AnimalCategory  get_category() const=0;  // Abstract class
+        std::string get_category_to_string();
         // healthy to sick its happening on the GUI
         static constexpr uint64_t sickt_to_treatment_tick = 3;
         static constexpr uint64_t treatment_to_healthy_tick = 2;
