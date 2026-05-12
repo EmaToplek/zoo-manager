@@ -13,17 +13,11 @@ public:
         double min_enclosure_size);
     
     AnimalCategory get_category() const override; 
-    std::string get_feeding_type() const override;
-    std::string get_habitat() const override; 
-    double get_min_enclosure_size() const override; 
     bool can_fly() const; 
     double get_wingspan() const;
 
 
 private: 
-    std::string feeding_type_;
-    std::string habitat_;
-    double min_enclosure_size_;
     bool  can_fly_;
     double wingspan_; 
 };

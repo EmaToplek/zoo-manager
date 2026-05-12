@@ -28,9 +28,15 @@ class Animal{
       double weight_;
       std::string enclosure_;
       HealthStatus health_status_;
+      std::string feeding_type_;     
+      std::string habitat_;           
+      double min_enclosure_size_;
 
     public:
-        Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status);
+        Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, 
+            double weight, const std::string& enclosure, HealthStatus health_status,
+            const std::string& feeding_type, const std::string& habitat, double min_enclosure_size);
+
         virtual ~Animal()=default;
         
         uint64_t get_id()const{return id_;}
@@ -52,11 +58,14 @@ class Animal{
         
         HealthStatus get_health_status()const {return health_status_;}
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
-        
+
+        std::string get_feeding_type() const {return feeding_type_;}
+
+        std::string get_habitat() const {return habitat_;}
+
+        double get_min_enclosure_size() const {return min_enclosure_size_;}
+
         virtual AnimalCategory  get_category() const=0;  // Abstract class
-        virtual std::string get_feeding_type() const = 0;
-        virtual std::string get_habitat() const = 0;
-        virtual double get_min_enclosure_size() const = 0;
 };
 
 
