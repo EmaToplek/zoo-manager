@@ -29,6 +29,9 @@ class Animal{
       std::string enclosure_;
       HealthStatus health_status_;
       uint64_t ticks_;
+      std::string feeding_type_;     
+      std::string habitat_;           
+      double min_enclosure_size_;
 
     public:
         Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, double weight, const std::string& enclosure, HealthStatus health_status);
@@ -52,6 +55,12 @@ class Animal{
         void set_enclosure(const std::string& enclosure) {enclosure_ = enclosure;}
         
         HealthStatus get_health_status()const {return health_status_;}
+
+        std::string get_feeding_type() const {return feeding_type_;}
+
+        std::string get_habitat() const {return habitat_;}
+
+        double get_min_enclosure_size() const {return min_enclosure_size_;}
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
         std::string get_health_status_to_string() const;
         
