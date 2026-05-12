@@ -11,16 +11,17 @@ public:
         HealthStatus health_status, bool can_fly, double wingspan);
     
     AnimalCategory get_category() const override; 
-    std::string get_feeding_type() const;
-    std::string get_habitat() const; 
-    float get_min_enclosure_size() const; 
+    std::string get_feeding_type() const override;
+    std::string get_habitat() const override; 
+    double get_min_enclosure_size() const override; 
     bool can_fly() const; 
-    double get_wingspan() const; 
+    double get_wingspan() const;
+
 
 private: 
     std::string feeding_type_;
     std::string habitat_;
-    float min_enclosure_size_;
+    double min_enclosure_size_;
     bool  can_fly_;
     double wingspan_; 
 };

@@ -27,7 +27,7 @@ std::string Bird::get_habitat() const
     return habitat_; 
 }
 
-float Bird::get_min_enclosure_size() const 
+double Bird::get_min_enclosure_size() const 
 {
     return min_enclosure_size_; 
 }
