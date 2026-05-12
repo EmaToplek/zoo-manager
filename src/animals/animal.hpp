@@ -54,6 +54,9 @@ class Animal{
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
         
         virtual AnimalCategory  get_category() const=0;  // Abstract class
+        virtual std::string get_feeding_type() const = 0;
+        virtual std::string get_habitat() const = 0;
+        virtual double get_min_enclosure_size() const = 0;
 };
 
 
