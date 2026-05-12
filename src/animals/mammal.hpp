@@ -12,6 +12,9 @@ public:
         : Animal(id, name, species, age, weight, enclosure, health_status){}
     
     AnimalCategory get_category() const override;
+    std::string get_feeding_type() const override;
+    std::string get_habitat() const override;
+    double  get_min_enclosure_size() const override;
 };
 
 #endif
