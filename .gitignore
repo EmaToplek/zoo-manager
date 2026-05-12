@@ -1,6 +1,9 @@
 .vscode/
 .DS_Store
 build/
+<<<<<<< HEAD
 .kdev4/
 *.kdev4
 ZooManager
+=======
+>>>>>>> dev

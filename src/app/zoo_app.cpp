@@ -7,5 +7,3 @@ bool ZooApp::OnInit(){
     main_frame->SetSize(1280,720);
     return true;
 }
-
-

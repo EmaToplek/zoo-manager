@@ -1,5 +1,6 @@
 #include "main_frame.hpp"
 
+
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title){
 
     animal_manager_ = new Animal_Manager();
@@ -91,3 +92,4 @@ void MainFrame::fill_table(const std::vector<Animal*> animals){
      
 }
 
+ 
