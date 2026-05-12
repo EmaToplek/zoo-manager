@@ -9,7 +9,7 @@ public:
     Mammal(uint64_t id, const std::string& name, const std::string& species, 
            uint64_t age, double weight, const std::string& enclosure, 
            HealthStatus health_status) 
-        : Animal(id, name, species, age, weight, enclosure, health_status){}
+        : Animal(id, name, species, age, weight, enclosure, health_status, feeding_type_, habitat_, min_enclosure_size_){}
     
     AnimalCategory get_category() const override;
 };
