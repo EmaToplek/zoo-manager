@@ -8,7 +8,9 @@ class Bird : public Animal
 public: 
     Bird(uint64_t id, const std::string& name, const std::string& species,
         uint64_t age, double weight, const std::string& enclosure, 
-        HealthStatus health_status, bool can_fly, double wingspan);
+        HealthStatus health_status, bool can_fly, double wingspan,
+        const std::string& feeding_type, const std::string& habitat,
+        double min_enclosure_size);
     
     AnimalCategory get_category() const override; 
     std::string get_feeding_type() const override;
