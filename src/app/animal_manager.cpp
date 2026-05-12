@@ -4,7 +4,7 @@
 
 void Animal_Manager::load()
 {
-    std::ifstream file("data.json");
+    std::ifstream file("../data.json");
     nlohmann::json j;
     file >> j;
     
