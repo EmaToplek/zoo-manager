@@ -26,10 +26,16 @@ class Animal_Manager{
     void save() const;
     void load();
     void add_animal(uint64_t id, const std::string& name, const std::string& species, 
+<<<<<<< HEAD
                 std::string category, uint64_t age, double weight, 
                 const std::string& enclosure, std::string health_status,
                 const std::string& feeding_type, const std::string& habitat, 
                 double min_enclosure_size);
+=======
+        std::string category, uint64_t age, double weight, const std::string& enclosure, 
+        std::string health_status, const std::string& feeding_type = "Omnivore",
+        const std::string& habitat = "Unknown", double min_enclosure_size = 20.0);
+>>>>>>> 78fe465 (FIXFIXFIX: update animal_manager and Fish constructor parameters)
     bool remove_animal(uint64_t id);
     const std::vector<Animal*>& get_all_animals() const;
     std::vector<Animal*> filter_by_category(AnimalCategory category) const;

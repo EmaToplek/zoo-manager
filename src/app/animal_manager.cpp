@@ -59,8 +59,3 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
 }
-
-
-
-
-
