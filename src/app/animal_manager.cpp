@@ -4,7 +4,7 @@
 
 void Animal_Manager::load()
 {
-    std::ifstream file("data.json");
+    std::ifstream file("../data.json");
     nlohmann::json j;
     file >> j;
     
@@ -17,29 +17,41 @@ void Animal_Manager::load()
         double weight = animal["weight"];
         std::string enclosure = animal["enclosure"];
         std::string health = animal["health"];
-        add_animal(id, name, species, category, age, weight, enclosure, health);
+        std::string feeding_type = animal["feeding_type"];
+        std::string habitat = animal["habitat"];
+        double min_enclosure = animal["min_enclosure_size"];
+        add_animal(id, name, species, category, age, weight, enclosure, health, feeding_type, habitat, min_enclosure);
     }
 }
 
 
-void Animal_Manager::add_animal(uint64_t id,const std::string& name, const std::string& species, std::string category, uint64_t age, double weight, const std::string& enclosure, std::string health_status){
-     HealthStatus own_health;
-        if(health_status == "Healthy"){own_health = HealthStatus::Healthy;}
-        else if(health_status == "Sick"){own_health = HealthStatus::Sick;}
-        else if(health_status == "In Treatment"){own_health = HealthStatus::In_Treatment;}
+
+void Animal_Manager::add_animal(uint64_t id, const std::string& name, 
+    const std::string& species, std::string category, uint64_t age, 
+    double weight, const std::string& enclosure, std::string health_status,
+    const std::string& feeding_type, const std::string& habitat, 
+    double min_enclosure_size) {
+    
+    HealthStatus own_health;
+    if(health_status == "Healthy") { own_health = HealthStatus::Healthy; }
+    else if(health_status == "Sick") { own_health = HealthStatus::Sick; }
+    else if(health_status == "In Treatment") { own_health = HealthStatus::In_Treatment; }
 
     Animal* a;
-    if(category == "Bird" || category == "Reptile"){
+    if(category == "Bird" || category == "Reptile") {
         return;
     }
-    if(category == "Mammal"){
-            a = new Mammal(id, name, species, age, weight, enclosure, own_health);
+    if(category == "Mammal") {
+        a = new Mammal(id, name, species, age, weight, enclosure, own_health, 
+                       feeding_type, habitat, min_enclosure_size);
     }
-    if(category == "Fish"){
-            a = new Fish(id, name, species, age, weight, enclosure, own_health);
+    if(category == "Fish") {
+        a = new Fish(id, name, species, age, weight, enclosure, own_health,
+                     feeding_type, habitat, min_enclosure_size);
     }
-    if(category == "Amphibian"){
-            a = new Amphibian (id, name, species, age, weight, enclosure, own_health);
+    if(category == "Amphibian") {
+        a = new Amphibian(id, name, species, age, weight, enclosure, own_health,
+                          feeding_type, habitat, min_enclosure_size);
     }
     animals_list_.push_back(a);
 }
@@ -47,8 +59,3 @@ void Animal_Manager::add_animal(uint64_t id,const std::string& name, const std::
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
 }
-
-
-
-
-
