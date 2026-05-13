@@ -1,12 +1,12 @@
-#ifndef FISH_HPP
-#define FISH_HPP
+#ifndef AMPHIBIAN_HPP
+#define AMPHIBIAN_HPP
 
 #include "animal.hpp"
 
-class Fish : public Animal{
+class Amphibian : public Animal{
     
 public:
-    Fish(uint64_t id, const std::string& name, const std::string& species, 
+    Amphibian(uint64_t id, const std::string& name, const std::string& species, 
            uint64_t age, double weight, const std::string& enclosure, 
            HealthStatus health_status) 
         : Animal(id, name, species, age, weight, enclosure, health_status){}
@@ -16,4 +16,4 @@ public:
 
 
 
-#endif //FISH_HPP
+#endif //AMPHIBIAN_HPP
