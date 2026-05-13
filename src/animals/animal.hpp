@@ -28,15 +28,11 @@ class Animal{
       double weight_;
       std::string enclosure_;
       HealthStatus health_status_;
-      std::string feeding_type_;     
-      std::string habitat_;           
-      double min_enclosure_size_;
       uint64_t ticks_;
 
     public:
         Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, 
-            double weight, const std::string& enclosure, HealthStatus health_status,
-            const std::string& feeding_type, const std::string& habitat, double min_enclosure_size);
+            double weight, const std::string& enclosure, HealthStatus health_status);
 
         virtual ~Animal()=default;
         
@@ -60,14 +56,14 @@ class Animal{
         HealthStatus get_health_status()const {return health_status_;}
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
 
-        std::string get_feeding_type() const {return feeding_type_;}
-
-        std::string get_habitat() const {return habitat_;}
-
-        double get_min_enclosure_size() const {return min_enclosure_size_;}
         std::string get_health_status_to_string() const;
 
         virtual AnimalCategory  get_category() const=0;  // Abstract class
+        virtual std::string get_feeding_type() const = 0; 
+        virtual std::string get_habitat() const = 0; 
+        virtual double get_min_enclosure_size() const = 0; 
+        virtual std::string get_special_info() const = 0;
+
         std::string get_category_to_string();
         // healthy to sick its happening on the GUI
         static constexpr uint64_t sickt_to_treatment_tick = 3;
