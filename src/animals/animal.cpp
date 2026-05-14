@@ -22,41 +22,36 @@ void Animal::tickhealth(){
     }
 }
 
-std::string Animal::get_health_status_to_string() const{
-    switch (health_status_)
-    {
-    case HealthStatus::Healthy:
-        return "Healthy";
-        break;
-    case HealthStatus::Sick:
-        return "Sick";
-        break;
-    
-    case HealthStatus::In_Treatment:
-        return "In Treatment";
-        break;
+// New solution for hard coded problem
+const std::vector<std::pair<AnimalCategory, std::string>> Animal::category_names_ = {
+    {AnimalCategory::Mammal, "Mammal"},
+    {AnimalCategory::Fish, "Fish"},
+    {AnimalCategory::Amphibian, "Amphibian"},
+    {AnimalCategory::Bird, "Bird"},
+    {AnimalCategory::Reptile, "Reptile"}
+};
 
-    default:
-        return "None";
-    }
-}
-
-// SINCE GET_CATEGORY IS PURE VIRTUAL, C++ AUTOMATICALLY CALLS NEEDED SUBCLASS -> switch case instead if else !!
-std::string Animal::get_category_to_string(){
-    if(get_category() == AnimalCategory::Mammal){
-        return "Mammal";
-    }
-    else if(get_category() == AnimalCategory::Amphibian){
-        return "Amphibian";
-    }
-    else if(get_category() == AnimalCategory::Bird){
-        return "Bird";
-    }
-    else if(get_category() == AnimalCategory::Fish){
-        return "Fish";
-    }
-    else if(get_category() == AnimalCategory::Reptile){
-        return "Reptile";
+// New solution for hard coded problem
+std::string Animal::get_category_to_string() const {
+    for(const auto& pair : category_names_){
+        if(pair.first == get_category()){
+            return pair.second;
+        }
     }
     return "Unknown";
+}
+
+const std::vector<std::pair<HealthStatus, std::string>> Animal::health_names_ = {
+    {HealthStatus::Healthy, "Healthy"},
+    {HealthStatus::In_Treatment, "In Treatment"},
+    {HealthStatus::Sick, "Sick"}
 };
+
+std::string Animal::get_health_status_to_string() const {
+    for(const auto& pair : health_names_){
+        if(pair.first == get_health_status()){
+            return pair.second;
+        }
+    }
+    return "None";
+}
