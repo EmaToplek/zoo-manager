@@ -5,10 +5,10 @@
 
 bool ZooApp::OnInit() 
 {
-  MainFrame* mainFrame = new MainFrame("Zoo Manager"); 
-  mainFrame->Center();
-  mainFrame->Show(); 
-  return true; 
+    MainFrame* mainFrame = new MainFrame("Zoo Manager"); 
+    mainFrame->Center();
+    mainFrame->Show(); 
+    return true; 
 
 }; 
 

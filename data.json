@@ -7,10 +7,7 @@
     "age": 5,
     "weight": 190,
     "enclosure": "Savanna",
-    "health": "Healthy",
-    "feeding_type": "Carnivore",
-    "habitat": "Savanna",
-    "min_enclosure_size": 100.0
+    "health": "Healthy"
   },
   {
     "id": 2,
@@ -20,10 +17,7 @@
     "age": 12,
     "weight": 4500,
     "enclosure": "Savanna",
-    "health": "In Treatment",
-    "feeding_type": "Herbivore",
-    "habitat": "Savanna",
-    "min_enclosure_size": 200.0
+    "health": "In Treatment"
   },
   {
     "id": 3,
@@ -33,10 +27,7 @@
     "age": 7,
     "weight": 220,
     "enclosure": "Jungle",
-    "health": "Sick",
-    "feeding_type": "Carnivore",
-    "habitat": "Jungle",
-    "min_enclosure_size": 80.0
+    "health": "Sick"
   },
   {
     "id": 4,
@@ -46,10 +37,7 @@
     "age": 4,
     "weight": 350,
     "enclosure": "Savanna",
-    "health": "Healthy",
-    "feeding_type": "Herbivore",
-    "habitat": "Savanna",
-    "min_enclosure_size": 60.0
+    "health": "Healthy"
   },
   {
     "id": 5,
@@ -59,10 +47,7 @@
     "age": 3,
     "weight": 6,
     "enclosure": "Aviary",
-    "health": "In Treatment",
-    "feeding_type": "Carnivore",
-    "habitat": "Mountains",
-    "min_enclosure_size": 40.0
+    "health": "In Treatment"
   },
   {
     "id": 6,
@@ -72,10 +57,7 @@
     "age": 8,
     "weight": 1,
     "enclosure": "Tropical",
-    "health": "Healthy",
-    "feeding_type": "Omnivore",
-    "habitat": "Rainforest",
-    "min_enclosure_size": 15.0
+    "health": "Healthy"
   },
   {
     "id": 7,
@@ -85,10 +67,7 @@
     "age": 2,
     "weight": 25,
     "enclosure": "Arctic",
-    "health": "Sick",
-    "feeding_type": "Carnivore",
-    "habitat": "Antarctic",
-    "min_enclosure_size": 50.0
+    "health": "Sick"
   },
   {
     "id": 8,
@@ -98,10 +77,7 @@
     "age": 6,
     "weight": 3,
     "enclosure": "Wetlands",
-    "health": "In Treatment",
-    "feeding_type": "Omnivore",
-    "habitat": "Wetlands",
-    "min_enclosure_size": 25.0
+    "health": "In Treatment"
   },
   {
     "id": 9,
@@ -111,10 +87,7 @@
     "age": 10,
     "weight": 45,
     "enclosure": "Terrarium",
-    "health": "Healthy",
-    "feeding_type": "Carnivore",
-    "habitat": "Jungle",
-    "min_enclosure_size": 30.0
+    "health": "Healthy"
   },
   {
     "id": 10,
@@ -124,10 +97,7 @@
     "age": 15,
     "weight": 400,
     "enclosure": "Swamp",
-    "health": "Healthy",
-    "feeding_type": "Carnivore",
-    "habitat": "Swamp",
-    "min_enclosure_size": 150.0
+    "health": "Healthy"
   },
   {
     "id": 11,
@@ -137,10 +107,7 @@
     "age": 30,
     "weight": 80,
     "enclosure": "Pond",
-    "health": "In Treatment",
-    "feeding_type": "Omnivore",
-    "habitat": "Water",
-    "min_enclosure_size": 20.0
+    "health": "In Treatment"
   },
   {
     "id": 12,
@@ -150,10 +117,7 @@
     "age": 5,
     "weight": 7,
     "enclosure": "Terrarium",
-    "health": "Sick",
-    "feeding_type": "Herbivore",
-    "habitat": "Tropical",
-    "min_enclosure_size": 25.0
+    "health": "Sick"
   },
   {
     "id": 13,
@@ -163,10 +127,7 @@
     "age": 1,
     "weight": 0.1,
     "enclosure": "Aquarium",
-    "health": "Healthy",
-    "feeding_type": "Omnivore",
-    "habitat": "Coral Reef",
-    "min_enclosure_size": 5.0
+    "health": "Healthy"
   },
   {
     "id": 14,
@@ -176,10 +137,7 @@
     "age": 2,
     "weight": 0.2,
     "enclosure": "Aquarium",
-    "health": "Healthy",
-    "feeding_type": "Herbivore",
-    "habitat": "Coral Reef",
-    "min_enclosure_size": 6.0
+    "health": "Healthy"
   },
   {
     "id": 15,
@@ -189,10 +147,7 @@
     "age": 8,
     "weight": 800,
     "enclosure": "Ocean Tank",
-    "health": "Healthy",
-    "feeding_type": "Carnivore",
-    "habitat": "Ocean",
-    "min_enclosure_size": 500.0
+    "health": "Healthy"
   },
   {
     "id": 16,
@@ -202,10 +157,7 @@
     "age": 1,
     "weight": 0.05,
     "enclosure": "Pond",
-    "health": "Sick",
-    "feeding_type": "Omnivore",
-    "habitat": "Freshwater",
-    "min_enclosure_size": 3.0
+    "health": "Sick"
   },
   {
     "id": 17,
@@ -215,10 +167,7 @@
     "age": 2,
     "weight": 0.3,
     "enclosure": "Rainforest",
-    "health": "Healthy",
-    "feeding_type": "Insectivore",
-    "habitat": "Rainforest",
-    "min_enclosure_size": 10.0
+    "health": "Healthy"
   },
   {
     "id": 18,
@@ -228,10 +177,7 @@
     "age": 3,
     "weight": 0.2,
     "enclosure": "Wetlands",
-    "health": "Healthy",
-    "feeding_type": "Insectivore",
-    "habitat": "Wetlands",
-    "min_enclosure_size": 8.0
+    "health": "Healthy"
   },
   {
     "id": 19,
@@ -241,10 +187,7 @@
     "age": 4,
     "weight": 0.4,
     "enclosure": "Pond",
-    "health": "Sick",
-    "feeding_type": "Insectivore",
-    "habitat": "Pond",
-    "min_enclosure_size": 7.0
+    "health": "Sick"
   },
   {
     "id": 20,
@@ -254,9 +197,6 @@
     "age": 1,
     "weight": 0.15,
     "enclosure": "Aquarium",
-    "health": "Healthy",
-    "feeding_type": "Carnivore",
-    "habitat": "Freshwater",
-    "min_enclosure_size": 12.0
+    "health": "Healthy"
   }
 ]
