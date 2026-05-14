@@ -13,13 +13,20 @@
 #include<iostream>
 #include <nlohmann/json.hpp>
 
+#include <map>
+#include <functional>
+
 class Animal_Manager 
 {
 private:
     std::vector<Animal*> animals_list_;
+   std::map<std::string, std::function<Animal*(uint64_t, const std::string&, const std::string&, uint64_t, double, const std::string&, HealthStatus)>> animal_factory_;
+    std::map<std::string, HealthStatus> health_map_;
+
+    void init_factories();
 
 public:
-    Animal_Manager(){};
+    Animal_Manager();
     void save() const;
     void load();
     void add_animal(uint64_t id, const std::string& name, const std::string& species, 
