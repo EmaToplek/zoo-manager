@@ -9,4 +9,3 @@ public:
     bool OnInit();
 
 };
-wxIMPLEMENT_APP(ZooApp);
