@@ -2,9 +2,12 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
+Animal_Manager::Animal_Manager(){
+    init_factories();
+}
 
 void Animal_Manager::load()
-{
+{   
     //opens data.json and parses its contents
     std::ifstream file("../data.json");
     nlohmann::json j;
@@ -25,35 +28,41 @@ void Animal_Manager::load()
     }
 }
 
-
 // checks category string, creates matching subclass instance, assign it to Animal* a and appends to internal animals_list 
 void Animal_Manager::add_animal(uint64_t id, const std::string& name, 
     const std::string& species, std::string category, uint64_t age, 
     double weight, const std::string& enclosure, std::string health_status)
 {
-
-    HealthStatus own_health;
-    if(health_status == "Healthy") { own_health = HealthStatus::Healthy; }
-    else if(health_status == "Sick") { own_health = HealthStatus::Sick; }
-    else if(health_status == "In Treatment") { own_health = HealthStatus::In_Treatment; }
-
-    Animal* a;
-    if(category == "Bird" || category == "Reptile") {
-        return;
+    if(animal_factory_.find(category) != animal_factory_.end() && 
+       health_map_.find(health_status) != health_map_.end()) {
+        Animal* a = animal_factory_[category](id, name, species, age, weight, enclosure, health_map_[health_status]);
+        animals_list_.push_back(a);
     }
-    if(category == "Mammal") {
-        a = new Mammal(id, name, species, age, weight, enclosure, own_health);
-    }
-    if(category == "Fish") {
-        a = new Fish(id, name, species, age, weight, enclosure, own_health);
-    }
-    if(category == "Amphibian") {
-        a = new Amphibian(id, name, species, age, weight, enclosure, own_health);
-    }
-    animals_list_.push_back(a);
 }
 
 // returns a reference to the internal list without copying
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
+}
+
+void Animal_Manager::init_factories() {
+    animal_factory_["Mammal"] = [](auto id, auto& name, auto& species, auto age, auto weight, auto& enclosure, auto health) {
+        return new Mammal(id, name, species, age, weight, enclosure, health);
+    };
+    animal_factory_["Fish"] = [](auto id, auto& name, auto& species, auto age, auto weight, auto& enclosure, auto health) {
+        return new Fish(id, name, species, age, weight, enclosure, health);
+    };
+    animal_factory_["Amphibian"] = [](auto id, auto& name, auto& species, auto age, auto weight, auto& enclosure, auto health) {
+        return new Amphibian(id, name, species, age, weight, enclosure, health);
+    };
+    animal_factory_["Bird"] = [](auto id, auto& name, auto& species, auto age, auto weight, auto& enclosure, auto health) {
+        return new Bird(id, name, species, age, weight, enclosure, health, false, 0.0);
+    };
+    animal_factory_["Reptile"] = [](auto id, auto& name, auto& species, auto age, auto weight, auto& enclosure, auto health) {
+        return new Reptile(id, name, species, age, weight, enclosure, health, false, 0.0);
+    };
+
+    health_map_["Healthy"] = HealthStatus::Healthy;
+    health_map_["Sick"] = HealthStatus::Sick;
+    health_map_["In Treatment"] = HealthStatus::In_Treatment;
 }
