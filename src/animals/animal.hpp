@@ -3,6 +3,7 @@
 #include<iostream>
 #include<string>
 #include <cstdint>
+#include<vector>
 // Animal base class + Mammal, Fish subclasses
 
 enum class HealthStatus{
@@ -30,6 +31,11 @@ class Animal{
       HealthStatus health_status_;
       uint64_t ticks_;
 
+      // for enum class AnimalCategory
+      static const std::vector<std::pair<AnimalCategory, std::string>> category_names_;
+      // for enum class HealthStatus
+      static const std::vector<std::pair<HealthStatus, std::string>> health_names_;
+
     public:
         Animal(uint64_t id,const std::string& name, const std::string& species, uint64_t age, 
             double weight, const std::string& enclosure, HealthStatus health_status);
@@ -55,18 +61,16 @@ class Animal{
         
         HealthStatus get_health_status()const {return health_status_;}
         void set_health_status(HealthStatus health_status) {health_status_ = health_status;}
-        std::string get_health_status_to_string() const;
         
-
-        std::string get_health_status_to_string() const;
-
+        virtual std::string get_health_status_to_string() const;
+        virtual std::string get_category_to_string() const;
         virtual AnimalCategory  get_category() const=0;  // Abstract class
         virtual std::string get_feeding_type() const = 0; 
         virtual std::string get_habitat() const = 0; 
         virtual double get_min_enclosure_size() const = 0; 
         virtual std::string get_special_info() const = 0;
-
-        std::string get_category_to_string();
+       
+        
         // healthy to sick its happening on the GUI
         static constexpr uint64_t sickt_to_treatment_tick = 3;
         static constexpr uint64_t treatment_to_healthy_tick = 2;
