@@ -1,7 +1,7 @@
 #include <wx/statline.h>
 #include "detail_panel.hpp"
 
-
+// Sets the font size and weight on a given wxStaticText widget
 void DetailPanel::set_font(wxStaticText* widget, int size, bool bold) 
 {
     wxFont font = widget->GetFont();
@@ -18,10 +18,10 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
     //basic info section
     wxStaticText* title = new wxStaticText(this, wxID_ANY, "Animal Info");
-    set_font(title, 16, true);
+    set_font(title, 18, true);
     title->SetForegroundColour(wxColour(60, 100, 50));
     sizer->Add(title, 0, wxALL, 12);
-    sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 8);
+    sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
     sizer->AddSpacer(6);
 
     std::vector<std::pair<std::string, wxStaticText**>> fields = 
@@ -38,26 +38,26 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
     for (auto& [label, val_ptr] : fields ) 
     {
         wxStaticText* field_label = new wxStaticText(this,  wxID_ANY, label);
-        set_font(field_label, 12, false); 
+        set_font(field_label, 13, true); 
         field_label->SetForegroundColour(wxColour(120, 85, 45)); 
-        sizer->Add(field_label, 0, wxLEFT | wxTOP, 8);
+        sizer->Add(field_label, 0, wxLEFT | wxTOP, 16);
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); //creates new wxStaticText on heap and saves addr directly into name_val
-        set_font(*val_ptr, 11, true);
-        sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 2);
+        set_font(*val_ptr, 13, false);
+        sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
     //species details 
     sizer->AddSpacer(12);
-    sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 8);
+    sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
     sizer->AddSpacer(6);
 
     wxStaticText* sub_title = new wxStaticText(this, wxID_ANY, "Species Details");
-    set_font(sub_title, 13, true);
+    set_font(sub_title, 15, true);
     sub_title->SetForegroundColour(wxColour(60, 100, 50));
     sizer->Add(sub_title, 0, wxALL, 12);
 
-    std::vector<std::pair<std::string, wxStaticText**>> subcalss_fields = 
+    std::vector<std::pair<std::string, wxStaticText**>> subclass_fields = 
     {
         {"Feeding type:", &feeding_val_},
         {"Habitat:", &habitat_val_},
@@ -65,19 +65,43 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
         {"Special info:", &special_info_val_},
     };
 
-    for (auto& [label, val_ptr] : subcalss_fields) 
+    for (auto& [label, val_ptr] : subclass_fields) 
     {
         wxStaticText* subclass_label = new wxStaticText(this,  wxID_ANY, label);
-        set_font(subclass_label, 12, false); 
+        set_font(subclass_label, 13, true); 
         subclass_label->SetForegroundColour(wxColour(120, 85, 45)); 
-        sizer->Add(subclass_label, 0, wxLEFT | wxTOP, 8);
+        sizer->Add(subclass_label, 0, wxLEFT | wxTOP, 16);
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); 
-        set_font(*val_ptr, 11, true);
-        sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 2);
+        set_font(*val_ptr, 13, false);
+        sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
 
     SetSizer(sizer);
-
 }
+
+// Populates the detail panel with data from the selected animal
+// Calls virtual methods so the correct subclass version is always used
+void DetailPanel::show_animal(Animal* animal) 
+{
+    //widget, value pair
+    std::vector<std::pair<wxStaticText*, wxString>> values = 
+    {
+        {name_val_, animal->get_name()},
+        {species_val_, animal->get_species()},
+        {category_val_, animal->get_category_to_string()},
+        {age_val_, std::to_string(animal->get_age()) + " years"},
+        {weight_val_, wxString::Format("%.2f kg", animal->get_weight())},
+        {enclosure_val_, animal->get_enclosure()},
+        {health_val_, animal->get_health_status_to_string()},
+        {feeding_val_, animal->get_feeding_type()},
+        {habitat_val_, animal->get_habitat()},
+        {enclosure_size_val_, wxString::Format("%.1f m²", animal->get_min_enclosure_size())},
+        {special_info_val_, animal->get_special_info()},
+    };
+
+    for (auto& [widget, value] : values)
+    widget->SetLabel(value);
+}
+

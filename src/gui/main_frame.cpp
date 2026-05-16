@@ -67,6 +67,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     //fetches all animals from the manager and populates the table
     const std::vector<Animal*> animals = animal_manager_->get_all_animals();
     fill_table(animals);
+
+    // bind list row click to detail panel update
+    table_->Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::on_animal_selected, this);
     
     //stacks all left animals from the manager and populates the table
     wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
@@ -100,5 +103,14 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
     }
     table_->Refresh();
      
+}
+
+// called when user clicks a row in the animal list
+// fetches the corresponding animal from the manager and updates the detail panel
+void MainFrame::on_animal_selected(wxListEvent& event)
+{
+    long index = event.GetIndex(); //getIndex() returns clicked row
+    Animal* selected = animal_manager_->get_all_animals()[index];
+    detail_panel_->show_animal(selected);
 }
 
