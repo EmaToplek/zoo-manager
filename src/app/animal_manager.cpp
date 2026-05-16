@@ -57,3 +57,21 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
 }
+// Counts each animal category
+void Animal_Manager::category_count(uint64_t& mammal_count, uint64_t& fish_count, uint64_t& bird_count, uint64_t& reptile_count, uint64_t& amphibian_count){
+    mammal_count =  fish_count = bird_count = reptile_count = amphibian_count = 0;
+    for(Animal* animal : animals_list_){
+        switch (animal->get_category())
+        {
+        case AnimalCategory::Amphibian: amphibian_count++; break;
+        case AnimalCategory::Mammal: mammal_count++; break;
+        case AnimalCategory::Bird: bird_count++; break;
+        case AnimalCategory::Reptile: reptile_count++; break;
+        case AnimalCategory::Fish: fish_count++; break;
+        }
+    }
+}
+
+uint64_t Animal_Manager::total_count(){
+    return animals_list_.size();
+}
