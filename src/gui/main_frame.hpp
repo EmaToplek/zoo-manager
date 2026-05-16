@@ -12,8 +12,9 @@ private:
     wxPanel* right_panel_;
     wxListCtrl* table_;
     Animal_Manager* animal_manager_; // manages animal list, load/save, filtering
-    void fill_table(const std::vector<Animal*> animals);   
-
+    void fill_table(const std::vector<Animal*> animals);
+    void update_status_text();    
 public:
-    MainFrame(const wxString& title);  
+    MainFrame(const wxString& title); 
+    
 };

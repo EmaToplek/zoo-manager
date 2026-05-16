@@ -6,6 +6,8 @@
 bool ZooApp::OnInit() 
 {
     MainFrame* mainFrame = new MainFrame("Zoo Manager"); 
+    mainFrame->SetMinSize(wxSize(1280, 720));
+    mainFrame->Fit(); 
     mainFrame->Center();
     mainFrame->Show(); 
     return true; 

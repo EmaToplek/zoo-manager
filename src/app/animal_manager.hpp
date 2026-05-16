@@ -31,6 +31,8 @@ public:
     const std::vector<Animal*>& get_all_animals() const;
     std::vector<Animal*> filter_by_category(AnimalCategory category) const;
     std::vector<Animal*> filter_by_status(HealthStatus status) const;
+    void category_count(uint64_t& mammal_count, uint64_t& fish_count, uint64_t& bird_count, uint64_t& reptile_count, uint64_t& amphibian_count);
+    uint64_t total_count();
 
 }; // class
 

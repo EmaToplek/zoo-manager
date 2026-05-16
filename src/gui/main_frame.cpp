@@ -79,9 +79,21 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     
     //status bar at the bottom of the window
     CreateStatusBar();
-    SetStatusText("Hello");
+    update_status_text();
+    
         
 }
+
+void MainFrame::update_status_text(){
+    uint64_t mammal_count, fish_count, bird_count, reptile_count, amphibian_count;
+    animal_manager_->category_count(mammal_count, fish_count, bird_count, reptile_count, amphibian_count);
+    uint64_t total = animal_manager_->total_count(); 
+    SetStatusText(std::to_string(total) + " animals total | Mammals: " + std::to_string(mammal_count) + 
+                                            "   Birds: " + std::to_string(bird_count) + 
+                                            "   Fish: " + std::to_string(fish_count) + 
+                                            "   Reptile: " + std::to_string(reptile_count) + 
+                                            "   Amphibian: " + std::to_string(amphibian_count));
+} 
 
 
 void MainFrame::fill_table(const std::vector<Animal*> animals)
