@@ -70,6 +70,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 
     // bind list row click to detail panel update
     table_->Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::on_animal_selected, this);
+
+    // bind deselect to clear detail panel
+    table_->Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::on_animal_deselected, this);
     
     //stacks all left animals from the manager and populates the table
     wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
@@ -112,5 +115,11 @@ void MainFrame::on_animal_selected(wxListEvent& event)
     long index = event.GetIndex(); //getIndex() returns clicked row
     Animal* selected = animal_manager_->get_all_animals()[index];
     detail_panel_->show_animal(selected);
+}
+
+// called when user clicks empty space in the list — clears the detail panel
+void MainFrame::on_animal_deselected(wxListEvent& event)
+{
+    detail_panel_->clear();
 }
 

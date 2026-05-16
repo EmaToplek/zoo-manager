@@ -26,6 +26,7 @@ private:
     wxStaticText* special_info_val_;
 
     void set_font(wxStaticText* widget, int size, bool bold); 
+    wxStaticText* placeholder_;
 
 };
 

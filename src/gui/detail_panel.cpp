@@ -24,6 +24,12 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
     sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
     sizer->AddSpacer(6);
 
+    //info message if no animal is selected
+    placeholder_ = new wxStaticText(this, wxID_ANY, "Select an animal to view details");
+    set_font(placeholder_, 13, false);
+    placeholder_->SetForegroundColour(wxColour(150, 120, 80));
+    sizer->Add(placeholder_, 0, wxALL, 12); 
+
     std::vector<std::pair<std::string, wxStaticText**>> fields = 
     {
       {"Name:", &name_val_},
@@ -79,12 +85,15 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
 
     SetSizer(sizer);
+    clear();
 }
 
 // Populates the detail panel with data from the selected animal
 // Calls virtual methods so the correct subclass version is always used
 void DetailPanel::show_animal(Animal* animal) 
 {
+    placeholder_->Hide();
+
     //widget, value pair
     std::vector<std::pair<wxStaticText*, wxString>> values = 
     {
@@ -105,3 +114,21 @@ void DetailPanel::show_animal(Animal* animal)
     widget->SetLabel(value);
 }
 
+//TO-DO  HEALTH STATUS WITH COLORS
+
+void DetailPanel::clear()
+{
+    placeholder_->Show();
+
+    std::vector<wxStaticText*> all_vals = 
+    {
+        name_val_, species_val_, category_val_, age_val_,
+        weight_val_, enclosure_val_, health_val_, feeding_val_,
+        habitat_val_, enclosure_size_val_, special_info_val_
+    };
+
+    for (auto* val : all_vals)
+        val->SetLabel("");
+
+    Layout();
+}
