@@ -9,12 +9,12 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     //main panel that fills the entire window
     panel_ = new wxPanel(this);
     left_panel_ = new wxPanel(panel_);
-    right_panel_ = new wxPanel(panel_);
+    detail_panel_ = new wxPanel(panel_);
 
     //aranges left and right panels side by side 
     wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
         panel_sizer->Add(left_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        panel_sizer->Add(right_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        panel_sizer->Add(detail_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         panel_->SetSizer(panel_sizer);
     
     //search field for filtering animals 

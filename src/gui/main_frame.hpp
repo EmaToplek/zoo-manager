@@ -9,7 +9,7 @@ class MainFrame : public wxFrame
 private:
     wxPanel* panel_;
     wxPanel* left_panel_;
-    wxPanel* right_panel_;
+    DetailPanel* detail_panel_;
     wxListCtrl* table_;
     Animal_Manager* animal_manager_; // manages animal list, load/save, filtering
     void fill_table(const std::vector<Animal*> animals);   
