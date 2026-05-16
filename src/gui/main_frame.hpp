@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "../app/animal_manager.hpp"
+#include "detail_panel.hpp"
 
 class MainFrame : public wxFrame
 {

@@ -25,6 +25,8 @@ private:
     wxStaticText* enclosure_size_val_;
     wxStaticText* special_info_val_;
 
+    void set_font(wxStaticText* widget, int size, bool bold); 
+
 };
 
 #endif
