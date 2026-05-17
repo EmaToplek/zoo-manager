@@ -41,7 +41,7 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
       {"Health:", &health_val_},
     };
 
-    for (auto& [label, val_ptr] : fields ) 
+    for (auto& [label, val_ptr] : fields) 
     {
         wxStaticText* field_label = new wxStaticText(this,  wxID_ANY, label);
         set_font(field_label, 13, true); 
@@ -110,11 +110,29 @@ void DetailPanel::show_animal(Animal* animal)
         {special_info_val_, animal->get_special_info()},
     };
 
-    for (auto& [widget, value] : values)
-    widget->SetLabel(value);
-}
+    for (auto& [widget, value] : values) 
+    {
+        widget->SetLabel(value);
+    }
+   
+    // health colour
+    if (animal->get_health_status() == HealthStatus::Healthy) 
+    {
+        health_val_->SetForegroundColour(wxColour(34, 139, 34));
+    }
+    else if (animal->get_health_status() == HealthStatus::Sick) 
+    {
+        health_val_->SetForegroundColour(wxColour(180, 0, 0));
+    }
+    else 
+    {
+        health_val_->SetForegroundColour(wxColour(200, 120, 0));
+    }
+    
 
-//TO-DO  HEALTH STATUS WITH COLORS
+    health_val_->Refresh();
+    Layout();
+}
 
 void DetailPanel::clear()
 {
