@@ -47,7 +47,10 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     wxPanel* button_panel_ = new wxPanel(left_panel_);
     wxButton* add_button_ = new wxButton(button_panel_, wxID_ANY, "+Add animal", wxDefaultPosition, wxDefaultSize);
     wxButton* edit_button_ = new wxButton(button_panel_, wxID_ANY, "Edit",  wxDefaultPosition, wxDefaultSize);
-    wxButton* remove_button_ = new wxButton(button_panel_, wxID_ANY, "Remove", wxDefaultPosition, wxDefaultSize);
+    
+    remove_button_ = new wxButton(button_panel_, wxID_ANY, "Remove", wxDefaultPosition, wxDefaultSize);
+    remove_button_->Disable();
+
     wxBoxSizer* button_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
     button_panel_sizer->Add(add_button_, 0,wxLEFT, 10);
     button_panel_sizer->Add(edit_button_, 0,wxLEFT, 10);
@@ -74,6 +77,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     // bind deselect to clear detail panel
     table_->Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::on_animal_deselected, this);
     
+    remove_button_->Bind(wxEVT_BUTTON, &MainFrame::on_remove_animal, this);
+    
     //stacks all left animals from the manager and populates the table
     wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
         left_panel_sizer->Add(search_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
@@ -90,6 +95,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 }
 
 
+//reads from animal_manager and draw table
 void MainFrame::fill_table(const std::vector<Animal*> animals)
 {
 
@@ -115,11 +121,37 @@ void MainFrame::on_animal_selected(wxListEvent& event)
     long index = event.GetIndex(); //getIndex() returns clicked row
     Animal* selected = animal_manager_->get_all_animals()[index];
     detail_panel_->show_animal(selected);
+
+    selected_index_ = event.GetIndex();
+    remove_button_->Enable();
 }
 
 // called when user clicks empty space in the list — clears the detail panel
 void MainFrame::on_animal_deselected(wxListEvent& event)
 {
+    selected_index_ = -1;
+    remove_button_->Disable();
+
     detail_panel_->clear();
+}
+
+void MainFrame::on_remove_animal(wxCommandEvent& event) 
+{
+    //get animal on remembered index
+    Animal* selected = animal_manager_->get_all_animals()[selected_index_];
+
+    // show confirmation dialog
+    wxString msg = wxString::Format("Are you sure you want to remove %s?", selected->get_name());
+    wxMessageDialog dialog(this, msg, "Confirm Remove", wxYES_NO | wxNO_DEFAULT | wxICON_WARNING);
+    
+    //if confirmed delete
+    if(dialog.ShowModal() == wxID_YES) 
+    {
+        animal_manager_->remove_animal(selected->get_id());
+        fill_table(animal_manager_->get_all_animals());
+        detail_panel_->clear();
+        remove_button_->Disable();
+        selected_index_ = -1;
+    }
 }
 

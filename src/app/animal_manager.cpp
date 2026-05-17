@@ -57,3 +57,19 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
 }
+
+//removes an animal from list by id
+//deletes obj from heap and erases the pointer from vector
+bool Animal_Manager::remove_animal(uint64_t id) 
+{
+    for(auto it = animals_list_.begin(); it != animals_list_.end(); it++) 
+    {
+        if((*it)->get_id() == id) //*it gives me Animal*, -> dereferences Animal* (so we can call get_id() on the object)
+        {
+            delete *it;
+            animals_list_.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
