@@ -2,7 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-
+// serializes all animals from memory to data.json
+//called on exit or after any modification to persist changes
 void Animal_Manager::load()
 {
     //opens data.json and parses its contents
@@ -23,6 +24,33 @@ void Animal_Manager::load()
     
         add_animal(id, name, species, category, age, weight, enclosure, health);
     }
+}
+
+// reads data.json and deserializes each entry into correct Animal subclass
+//called on startup to restore the previous session
+void Animal_Manager::save() 
+{
+    //create empty json array to hold all animals
+    nlohmann::json j = nlohmann::json::array();
+
+    for(Animal* animal : animals_list_) 
+    {
+        nlohmann::json entry; // creates json obj for each animal
+        entry["id"] = animal->get_id();
+        entry["name"] = animal->get_name();
+        entry["species"] = animal->get_species();
+        entry["category"] = animal->get_category_to_string();
+        entry["age"] = animal->get_age();
+        entry["weight"] = animal->get_weight();
+        entry["enclosure"] = animal->get_enclosure();
+        entry["health"] = animal->get_health_status_to_string();
+
+        j.push_back(entry);
+    }
+
+    //write JSON arrray to data.json with 4 space indentation
+    std::ofstream file("../data.json");
+    file << j.dump(4);
 }
 
 

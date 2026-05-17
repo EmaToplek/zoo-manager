@@ -148,6 +148,7 @@ void MainFrame::on_remove_animal(wxCommandEvent& event)
     if(dialog.ShowModal() == wxID_YES) 
     {
         animal_manager_->remove_animal(selected->get_id());
+        animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
         detail_panel_->clear();
         remove_button_->Disable();
