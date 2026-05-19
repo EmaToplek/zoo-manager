@@ -55,14 +55,21 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     button_panel_->SetSizer(button_panel_sizer);
 
     //table showing all animals with columns
-    table_ = new wxListCtrl(left_panel_,wxID_ANY, wxDefaultPosition, wxSize(700, 400), wxLC_REPORT);
-    table_->AppendColumn("Name", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Species", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Category", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Age", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Weight", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Enclosure", wxLIST_FORMAT_LEFT, 100);
-    table_->AppendColumn("Health", wxLIST_FORMAT_LEFT, 100);
+    table_ = new wxGrid(left_panel_,wxID_ANY, wxDefaultPosition, wxSize(700, 400));
+    table_->CreateGrid(0, 7);
+    table_->HideRowLabels();
+    table_->SetColLabelValue(0, "Name");
+    table_->SetColLabelValue(1, "Species");
+    table_->SetColLabelValue(2, "Category");
+    table_->SetColLabelValue(3, "Age");
+    table_->SetColLabelValue(4, "Weight");
+    table_->SetColLabelValue(5, "Enclosure");
+    table_->SetColLabelValue(6, "Health");
+    for(int i = 0; i < table_->GetNumberCols(); i++){
+        table_->SetColSize(i, 100);
+        
+    }
+    
     
     //fetches all animals from the manager and populates the table
     const std::vector<Animal*> animals = animal_manager_->get_all_animals();
@@ -98,17 +105,38 @@ void MainFrame::update_status_text(){
 
 void MainFrame::fill_table(const std::vector<Animal*> animals)
 {
+    if(table_->GetNumberRows() > 0){
+        table_->DeleteRows(0, table_->GetNumberRows());
+    }
 
-    table_->DeleteAllItems();
-
+    int row_id = 0;
     for(Animal* animal : animals){
-        long index = table_->InsertItem(table_->GetItemCount(), animal->get_name());
-        table_->SetItem(index, 1, animal->get_species());
-        table_->SetItem(index, 2, animal->get_category_to_string());
-        table_->SetItem(index, 3, std::to_string(animal->get_age()));
-        table_->SetItem(index, 4, std::to_string(animal->get_weight()));
-        table_->SetItem(index, 5, animal->get_enclosure());
-        table_->SetItem(index, 6, animal->get_health_status_to_string());
+        table_->AppendRows(1);
+        table_->SetCellValue(row_id, 0, animal->get_name());
+        table_->SetCellValue(row_id, 1, animal->get_species());
+        table_->SetCellValue(row_id, 2, animal->get_category_to_string());
+        table_->SetCellValue(row_id, 3, std::to_string(animal->get_age()));
+        table_->SetCellValue(row_id, 4, std::to_string(animal->get_weight()));
+        table_->SetCellValue(row_id, 5, animal->get_enclosure());
+        table_->SetCellValue(row_id, 6, animal->get_health_status_to_string());
+        switch (animal->get_health_status())
+        {
+        case HealthStatus::Healthy:
+            table_->SetCellBackgroundColour(row_id, 6, wxColour(173, 247, 180));
+            table_->SetCellTextColour(row_id, 6, wxColour(8, 45, 12));
+            break;
+        case HealthStatus::Sick:
+            table_->SetCellBackgroundColour(row_id, 6, wxColour(239, 93, 132));
+            table_->SetCellTextColour(row_id, 6, wxColour(63, 13, 26));
+            break;
+        
+        case HealthStatus::In_Treatment:
+            table_->SetCellBackgroundColour(row_id, 6, wxColour(237, 221, 45));
+            table_->SetCellTextColour(row_id, 6, wxColour(63, 59, 12));
+            break;
+        
+        }
+        row_id++;    
     }
     table_->Refresh();
      
