@@ -17,9 +17,13 @@ private:
     void on_animal_selected(wxListEvent& event);
     void on_animal_deselected(wxListEvent& event);  
 
-    wxButton* remove_button_; 
+    wxButton* remove_button_;
+    wxButton* add_button_;
+    wxButton* edit_button_;
     long selected_index_ = -1; // returns index of selected row in table
     void on_remove_animal(wxCommandEvent& event); 
+    void on_add_animal(wxCommandEvent& event); 
+    void on_edit_animal(wxCommandEvent& event); 
 
 public:
     MainFrame(const wxString& title);  
