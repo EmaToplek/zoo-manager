@@ -1,5 +1,5 @@
-#ifndef ADD_EDIT.HPP
-#define ADD_EDIT.HPP
+#ifndef ADD_EDIT_HPP
+#define ADD_EDIT_HPP
 
 #include <wx/wx.h>
 #include "../animals/animal.hpp"
@@ -28,7 +28,7 @@ private:
     wxChoice* health_input_;
 
     void on_ok(wxCommandEvent& event); 
-}
+};
 
 
 
