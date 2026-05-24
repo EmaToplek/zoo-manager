@@ -1,4 +1,5 @@
 #include "main_frame.hpp"
+#include "add_edit.hpp"
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 {
@@ -45,9 +46,11 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 
     //panel holding add, edit,remove btns in row
     wxPanel* button_panel_ = new wxPanel(left_panel_);
-    wxButton* add_button_ = new wxButton(button_panel_, wxID_ANY, "+Add animal", wxDefaultPosition, wxDefaultSize);
-    wxButton* edit_button_ = new wxButton(button_panel_, wxID_ANY, "Edit",  wxDefaultPosition, wxDefaultSize);
     
+    add_button_ = new wxButton(button_panel_, wxID_ANY, "+Add animal", wxDefaultPosition, wxDefaultSize);
+    edit_button_ = new wxButton(button_panel_, wxID_ANY, "Edit",  wxDefaultPosition, wxDefaultSize);
+    edit_button_->Disable();
+
     remove_button_ = new wxButton(button_panel_, wxID_ANY, "Remove", wxDefaultPosition, wxDefaultSize);
     remove_button_->Disable();
 
@@ -78,6 +81,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     table_->Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::on_animal_deselected, this);
     
     remove_button_->Bind(wxEVT_BUTTON, &MainFrame::on_remove_animal, this);
+    edit_button_->Bind(wxEVT_BUTTON, &MainFrame::on_edit_animal, this); 
+    add_button_->Bind(wxEVT_BUTTON, &MainFrame::on_add_animal, this); 
+
     
     //stacks all left animals from the manager and populates the table
     wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
@@ -123,6 +129,7 @@ void MainFrame::on_animal_selected(wxListEvent& event)
     detail_panel_->show_animal(selected);
 
     selected_index_ = event.GetIndex();
+    edit_button_->Enable();
     remove_button_->Enable();
 }
 
@@ -130,6 +137,7 @@ void MainFrame::on_animal_selected(wxListEvent& event)
 void MainFrame::on_animal_deselected(wxListEvent& event)
 {
     selected_index_ = -1;
+    edit_button_->Disable();
     remove_button_->Disable();
 
     detail_panel_->clear();
@@ -156,3 +164,54 @@ void MainFrame::on_remove_animal(wxCommandEvent& event)
     }
 }
 
+// called when user clicks Add animal 
+// opens emty dialog and creates new animal on save
+void MainFrame::on_add_animal(wxCommandEvent& event) 
+{ 
+    AddEditDialog dialog(this, nullptr); 
+
+    if(dialog.ShowModal() == wxID_OK) 
+    {
+        uint64_t new_id = animal_manager_->get_all_animals().size() + 1;
+        animal_manager_->add_animal(new_id, dialog.get_name().ToStdString(), dialog.get_species().ToStdString(), dialog.get_category().ToStdString(),
+                                    dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(), dialog.get_health().ToStdString()); 
+        
+        animal_manager_->save();
+        fill_table(animal_manager_->get_all_animals());
+    }
+}
+
+// called when user clicks edit
+// opens dialog pre-filled with selected animals data and updates it on save
+void MainFrame::on_edit_animal(wxCommandEvent& event) 
+{
+    Animal* selected = animal_manager_->get_all_animals()[selected_index_];
+    AddEditDialog dialog(this, selected);
+
+    if(dialog.ShowModal() == wxID_OK)
+    {
+        selected->set_name(dialog.get_name().ToStdString());
+        selected->set_species(dialog.get_species().ToStdString());
+        selected->set_age(dialog.get_age());
+        selected->set_weight(dialog.get_weight());
+        selected->set_enclosure(dialog.get_enclosure().ToStdString());
+
+        std::string h = dialog.get_health().ToStdString();
+        if (h == "Healthy") 
+        {
+            selected->set_health_status(HealthStatus::Healthy);
+        }
+        else if (h == "Sick") 
+        {
+            selected->set_health_status(HealthStatus::Sick);
+        } 
+        else 
+        {
+            selected->set_health_status(HealthStatus::In_Treatment);
+        }
+
+        animal_manager_->save();
+        fill_table(animal_manager_->get_all_animals());
+        detail_panel_->show_animal(selected);
+    }
+}

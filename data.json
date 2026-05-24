@@ -5,9 +5,9 @@
         "enclosure": "Savanna",
         "health": "In Treatment",
         "id": 2,
-        "name": "Bella",
+        "name": "Nora",
         "species": "Elephant",
-        "weight": 4500.0
+        "weight": 30.0
     },
     {
         "age": 7,
