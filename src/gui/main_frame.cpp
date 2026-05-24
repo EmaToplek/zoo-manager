@@ -183,6 +183,9 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
 
 // called when user clicks edit
 // opens dialog pre-filled with selected animals data and updates it on save
+// if the user changes the category, the old object (wrong subclass type) is destroyed
+// and a new object of the correct subclass is created — because an object's type
+// is fixed at construction in C++ and cannot be changed in-place
 void MainFrame::on_edit_animal(wxCommandEvent& event) 
 {
     Animal* selected = animal_manager_->get_all_animals()[selected_index_];
@@ -190,28 +193,25 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
 
     if(dialog.ShowModal() == wxID_OK)
     {
-        selected->set_name(dialog.get_name().ToStdString());
-        selected->set_species(dialog.get_species().ToStdString());
-        selected->set_age(dialog.get_age());
-        selected->set_weight(dialog.get_weight());
-        selected->set_enclosure(dialog.get_enclosure().ToStdString());
 
-        std::string h = dialog.get_health().ToStdString();
-        if (h == "Healthy") 
-        {
-            selected->set_health_status(HealthStatus::Healthy);
-        }
-        else if (h == "Sick") 
-        {
-            selected->set_health_status(HealthStatus::Sick);
-        } 
-        else 
-        {
-            selected->set_health_status(HealthStatus::In_Treatment);
-        }
+        uint64_t id = selected->get_id();
 
+        std::string name  = dialog.get_name().ToStdString();
+        std::string species = dialog.get_species().ToStdString();
+        std::string cat = dialog.get_category().ToStdString();
+        int age = dialog.get_age();
+        double weight = dialog.get_weight();
+        std::string encl = dialog.get_enclosure().ToStdString();
+        std::string health = dialog.get_health().ToStdString();
+
+        animal_manager_->remove_animal(id);
+        animal_manager_->add_animal(id, name, species, cat, age, weight, encl, health);
+      
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
-        detail_panel_->show_animal(selected);
+        detail_panel_->clear();
+        selected_index_ = -1;
+        edit_button_->Disable();
+        remove_button_->Disable();
     }
 }

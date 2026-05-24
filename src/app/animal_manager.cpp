@@ -2,8 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-// serializes all animals from memory to data.json
-//called on exit or after any modification to persist changes
+// reads data.json and deserializes each entry into correct Animal subclass
+// called on startup to restore the previous session
 void Animal_Manager::load()
 {
     //opens data.json and parses its contents
@@ -26,8 +26,8 @@ void Animal_Manager::load()
     }
 }
 
-// reads data.json and deserializes each entry into correct Animal subclass
-//called on startup to restore the previous session
+// serializes all animals from memory to data.json
+// called after every modification (add, edit, remove) to persist changes
 void Animal_Manager::save() 
 {
     //create empty json array to hold all animals
@@ -39,7 +39,7 @@ void Animal_Manager::save()
         entry["id"] = animal->get_id();
         entry["name"] = animal->get_name();
         entry["species"] = animal->get_species();
-        entry["category"] = animal->get_category_to_string();
+        entry["category"] = animal->get_category_to_string(); // calls pure virtual via base pointer 
         entry["age"] = animal->get_age();
         entry["weight"] = animal->get_weight();
         entry["enclosure"] = animal->get_enclosure();
@@ -54,31 +54,55 @@ void Animal_Manager::save()
 }
 
 
-// checks category string, creates matching subclass instance, assign it to Animal* a and appends to internal animals_list 
+// creates the correct Animal subclass based on category string
+// Animal is abstract — the vector holds Animal* pointers, but actual objects
+// on the heap are concrete subclasses (Mammal, Fish, Bird, Reptile, Amphibian)
 void Animal_Manager::add_animal(uint64_t id, const std::string& name, 
     const std::string& species, std::string category, uint64_t age, 
     double weight, const std::string& enclosure, std::string health_status)
 {
 
-    HealthStatus own_health;
-    if(health_status == "Healthy") { own_health = HealthStatus::Healthy; }
-    else if(health_status == "Sick") { own_health = HealthStatus::Sick; }
-    else if(health_status == "In Treatment") { own_health = HealthStatus::In_Treatment; }
-
-    Animal* a;
-    if(category == "Bird" || category == "Reptile") {
-        return;
+    HealthStatus own_health = HealthStatus::Healthy;
+    if(health_status == "Healthy") 
+    { 
+        own_health = HealthStatus::Healthy; 
     }
-    if(category == "Mammal") {
+    else if(health_status == "Sick") 
+    { 
+        own_health = HealthStatus::Sick; 
+    }
+    else if(health_status == "In Treatment") 
+    { 
+        own_health = HealthStatus::In_Treatment; 
+    }
+
+    Animal* a = nullptr;
+    
+    if(category == "Bird") 
+    {
+        a = new Bird(id, name, species, age, weight, enclosure, own_health, true, 1.0); // FIXME
+    }
+    else if(category == "Reptile") 
+    {
+        a = new Reptile (id, name, species, age, weight, enclosure, own_health, false, 1.0);  //FIXME
+    }
+    else if(category == "Mammal") 
+    {
         a = new Mammal(id, name, species, age, weight, enclosure, own_health);
     }
-    if(category == "Fish") {
+    else if(category == "Fish") 
+    {
         a = new Fish(id, name, species, age, weight, enclosure, own_health);
     }
-    if(category == "Amphibian") {
+    else if(category == "Amphibian") 
+    {
         a = new Amphibian(id, name, species, age, weight, enclosure, own_health);
     }
-    animals_list_.push_back(a);
+    
+    if (a != nullptr) 
+    {
+        animals_list_.push_back(a);
+    }
 }
 
 // returns a reference to the internal list without copying

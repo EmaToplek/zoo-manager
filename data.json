@@ -1,25 +1,5 @@
 [
     {
-        "age": 12,
-        "category": "Mammal",
-        "enclosure": "Aquarium",
-        "health": "In Treatment",
-        "id": 2,
-        "name": "Nora",
-        "species": "Clownfish",
-        "weight": 30.0
-    },
-    {
-        "age": 7,
-        "category": "Mammal",
-        "enclosure": "Jungle",
-        "health": "Sick",
-        "id": 3,
-        "name": "Max",
-        "species": "Tiger",
-        "weight": 220.0
-    },
-    {
         "age": 2,
         "category": "Fish",
         "enclosure": "Aquarium",
@@ -88,5 +68,25 @@
         "name": "Axel",
         "species": "Axolotl",
         "weight": 0.15
+    },
+    {
+        "age": 12,
+        "category": "Fish",
+        "enclosure": "Aquarium",
+        "health": "In Treatment",
+        "id": 2,
+        "name": "Nora",
+        "species": "Clownfish",
+        "weight": 30.0
+    },
+    {
+        "age": 7,
+        "category": "Bird",
+        "enclosure": "Jungle",
+        "health": "Sick",
+        "id": 3,
+        "name": "Max",
+        "species": "Parrot",
+        "weight": 220.0
     }
 ]
