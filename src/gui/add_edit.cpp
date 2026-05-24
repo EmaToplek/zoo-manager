@@ -16,6 +16,8 @@ static void add_row(wxWindow* parent, wxBoxSizer* sizer, const wxString& label, 
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
+// if animal is nullptr - Add mode (empty fields)
+//if animal provided - Edit mode (fields pre-filled with existing data)
 AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 460))
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
@@ -32,7 +34,7 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     enclosure_input_ = make_choice(this, {"Savanna", "Jungle", "Aquarium", "Ocean Tank", "Pond", "Rainforest", "Wetlands", "Aviary", "Terrarium"});
     health_input_  = make_choice(this, {"Healthy", "Sick", "In Treatment"});
 
-    // BUILDS LAYOUT
+    // BUILDS LAYOUT - add all fields to layout
     std::vector<std::pair<wxString, wxWindow*>> fields =
     {
         {"Name:", name_input_},
@@ -49,7 +51,7 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
         add_row(this, sizer, label, input);
     };
 
-
+    // Save/Cancel buttons
     wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxButton* ok_btn = new wxButton(this, wxID_ANY, "Save"); 
     wxButton* cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel"); 
@@ -60,6 +62,33 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     sizer->Add(btn_sizer, 0, wxALIGN_RIGHT | wxALL, 16); 
 
     ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
+
+    //edit mode - pre fill fields with existing animal data 
+    if (animal) 
+    {
+        std::vector<std::pair<wxTextCtrl*, wxString>> text_fields = 
+        {
+            {name_input_, animal->get_name()},
+            {species_input_, animal->get_species()},
+            {age_input_, std::to_string(animal->get_age())}, 
+            {weight_input_, wxString::Format("%.2f", animal->get_weight())}
+        };
+        for (auto& [input, value] : text_fields) 
+        {
+            input->SetValue(value); 
+        };
+
+        std::vector<std::pair<wxChoice*, wxString>> choice_fields = 
+        {
+            {category_input_, animal->get_category_to_string()},
+            {enclosure_input_, animal->get_enclosure()},
+            {health_input_, animal->get_health_status_to_string()}
+        };
+        for (auto& [input, value] : choice_fields) 
+        {
+            input->SetStringSelection(value);
+        };
+    }
     SetSizer(sizer);
         
 }
