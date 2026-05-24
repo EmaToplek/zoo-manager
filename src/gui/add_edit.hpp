@@ -28,6 +28,9 @@ private:
     wxChoice* health_input_;
 
     void on_ok(wxCommandEvent& event); 
+
+    wxButton* ok_btn_;
+    wxButton* cancel_btn_;
 };
 
 
