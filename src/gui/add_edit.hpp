@@ -4,7 +4,7 @@
 #include <wx/wx.h>
 #include "../animals/animal.hpp"
 
-class AddEditDialog : public wxDialog 
+class AddEditDialog : public wxDialog  
 {
 public: 
     wxString get_name() const;

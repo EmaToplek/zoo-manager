@@ -1,7 +1,7 @@
 #include "add_edit.hpp"
 #include <wx/wx.h>
 
-//creates wxChoice with options, and sets first option
+// creates a wxChoice dropdown and defaults to the first option
 static wxChoice* make_choice(wxWindow* parent, const wxArrayString& options) 
 {
     wxChoice* choice = new wxChoice(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, options);
@@ -9,6 +9,7 @@ static wxChoice* make_choice(wxWindow* parent, const wxArrayString& options)
     return choice;
 }
 
+// adds label and input pair to sizer
 static void add_row(wxWindow* parent, wxBoxSizer* sizer, const wxString& label, wxWindow* input)
 {
     sizer->Add(new wxStaticText(parent, wxID_ANY, label), 0, wxLEFT | wxTOP, 16);
@@ -19,6 +20,7 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
+    // CREATE ALL INPUT WIDGETS
     //text inputs
     name_input_ = new wxTextCtrl(this, wxID_ANY);
     species_input_ = new wxTextCtrl(this, wxID_ANY);
@@ -30,7 +32,7 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     enclosure_input_ = make_choice(this, {"Savanna", "Jungle", "Aquarium", "Ocean Tank", "Pond", "Rainforest", "Wetlands", "Aviary", "Terrarium"});
     health_input_  = make_choice(this, {"Healthy", "Sick", "In Treatment"});
 
-    //layout
+    // BUILDS LAYOUT
     std::vector<std::pair<wxString, wxWindow*>> fields =
     {
         {"Name:", name_input_},
@@ -47,14 +49,22 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
         add_row(this, sizer, label, input);
     };
 
+
+    wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxButton* ok_btn = new wxButton(this, wxID_ANY, "Save"); 
     wxButton* cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel"); 
+    
+    btn_sizer->Add(cancel_btn, 0, wxRIGHT, 8);
+    btn_sizer->Add(ok_btn, 0);
+    sizer->AddSpacer(12);
+    sizer->Add(btn_sizer, 0, wxALIGN_RIGHT | wxALL, 16); 
 
-    sizer->Add(ok_btn, 0);
-    sizer->Add(cancel_btn, 0, wxRIGHT, 0);
+    ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
+    SetSizer(sizer);
         
 }
 
+//getters 
 wxString AddEditDialog::get_name() const 
 {
     return name_input_->GetValue();
@@ -97,5 +107,22 @@ wxString AddEditDialog::get_health() const
 // called when user clicks Save - validates input and closes dialog with wxID_OK
 void AddEditDialog::on_ok(wxCommandEvent& event) 
 {
+    if(name_input_->GetValue().IsEmpty() || species_input_->GetValue().IsEmpty()) 
+    {
+        wxMessageBox("Name and Species cannot be empty.", "Validation Error", wxICON_WARNING);
+        return;
+    }
+    long age_val; 
+    if(!age_input_->GetValue().ToLong(&age_val) || age_val <= 0)  
+    {
+        wxMessageBox("Age must be positive number.", "Validation Error", wxICON_WARNING);
+        return;
+    }
+    double weight_val;
+    if(!weight_input_->GetValue().ToDouble(&weight_val) || weight_val <= 0) 
+    {
+        wxMessageBox("Weight must be positive number.", "Validation Error", wxICON_WARNING);
+        return;
+    }
     EndModal(wxID_OK);
 }

@@ -20,16 +20,6 @@
         "weight": 220.0
     },
     {
-        "age": 4,
-        "category": "Mammal",
-        "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 4,
-        "name": "Luna",
-        "species": "Zebra",
-        "weight": 350.0
-    },
-    {
         "age": 2,
         "category": "Fish",
         "enclosure": "Aquarium",
