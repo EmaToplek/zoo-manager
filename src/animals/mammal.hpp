@@ -16,6 +16,11 @@ public:
     double get_min_enclosure_size() const override;
     std::string get_special_info() const override;
 
+    static std::vector<std::string> get_available_species() 
+    {
+        return {"Lion", "Tiger", "Elephant", "Zebra", "Gorilla", "Giraffe", "Hippo", "Cheetah", "Wolf", "Bear"};
+    }
+
 };
 
 #endif

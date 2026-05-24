@@ -14,6 +14,11 @@ public:
     std::string get_habitat() const override;
     double get_min_enclosure_size() const override;
     std::string get_special_info() const override;
+
+    static std::vector<std::string> get_available_species() 
+    {
+        return {"Clownfish", "Shark", "Blue Tang", "Goldfish", "Piranha", "Tuna", "Salmon", "Seahorse"};
+    }
 };
 
 #endif

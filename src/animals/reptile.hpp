@@ -19,6 +19,11 @@ public:
     bool get_is_venomous() const;
     double get_body_length() const;
 
+    static std::vector<std::string> get_available_species() 
+    {
+        return {"Komodo Dragon", "Gecko", "Iguana", "Crocodile", "Boa Constrictor", "Chameleon", "Tortoise"};
+    }
+
 
 private:
     bool is_venomous_;

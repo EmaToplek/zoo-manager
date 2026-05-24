@@ -1,5 +1,10 @@
 #include "add_edit.hpp"
 #include <wx/wx.h>
+#include "mammal.hpp"
+#include "bird.hpp"
+#include "reptile.hpp"
+#include "fish.hpp"
+#include "amphibian.hpp"
 
 // creates a wxChoice dropdown and defaults to the first option
 static wxChoice* make_choice(wxWindow* parent, const wxArrayString& options) 
@@ -25,7 +30,6 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     // CREATE ALL INPUT WIDGETS
     //text inputs
     name_input_ = new wxTextCtrl(this, wxID_ANY);
-    species_input_ = new wxTextCtrl(this, wxID_ANY);
     age_input_ = new wxTextCtrl(this, wxID_ANY);
     weight_input_ = new wxTextCtrl(this, wxID_ANY);
 
@@ -34,12 +38,26 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     enclosure_input_ = make_choice(this, {"Savanna", "Jungle", "Aquarium", "Ocean Tank", "Pond", "Rainforest", "Wetlands", "Aviary", "Terrarium"});
     health_input_  = make_choice(this, {"Healthy", "Sick", "In Treatment"});
 
+    // species dropdown is populated from the Mammal subclass by default
+    // each subclass owns its own list of valid species 
+    // the GUI does not hardcode species anywhere; it always asks the class
+    wxArrayString initial_species;
+    for (const auto& s : Mammal::get_available_species())
+    {
+        initial_species.Add(s);
+    };
+    
+    species_input_ = make_choice(this, initial_species);
+
+    // when category changes, species dropdown is rebuilt from the matching subclass
+    category_input_->Bind(wxEVT_CHOICE, &AddEditDialog::on_category_changed, this);
+    
     // BUILDS LAYOUT - add all fields to layout
     std::vector<std::pair<wxString, wxWindow*>> fields =
     {
         {"Name:", name_input_},
-        {"Species:", species_input_},
         {"Category:", category_input_},
+        {"Species:", species_input_},
         {"Age:", age_input_},
         {"Weight:", weight_input_},
         {"Enclosure:", enclosure_input_},
@@ -66,10 +84,10 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     //edit mode - pre fill fields with existing animal data 
     if (animal) 
     {
+        //fill text fields
         std::vector<std::pair<wxTextCtrl*, wxString>> text_fields = 
         {
             {name_input_, animal->get_name()},
-            {species_input_, animal->get_species()},
             {age_input_, std::to_string(animal->get_age())}, 
             {weight_input_, wxString::Format("%.2f", animal->get_weight())}
         };
@@ -78,9 +96,16 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
             input->SetValue(value); 
         };
 
+        //set cat first, then trigger on_category_changed so species dropdown is populated with correct subclass species list
+        // before we try to select animals current species
+        category_input_->SetStringSelection(animal->get_category_to_string());
+        wxCommandEvent fake_event;
+        on_category_changed(fake_event);
+        species_input_->SetStringSelection(animal->get_species());
+
+        // fill remaining dropdowns
         std::vector<std::pair<wxChoice*, wxString>> choice_fields = 
         {
-            {category_input_, animal->get_category_to_string()},
             {enclosure_input_, animal->get_enclosure()},
             {health_input_, animal->get_health_status_to_string()}
         };
@@ -101,7 +126,7 @@ wxString AddEditDialog::get_name() const
 
 wxString AddEditDialog::get_species() const 
 {
-    return species_input_->GetValue();
+    return species_input_->GetStringSelection();
 }
 
 wxString AddEditDialog::get_category() const
@@ -136,7 +161,7 @@ wxString AddEditDialog::get_health() const
 // called when user clicks Save - validates input and closes dialog with wxID_OK
 void AddEditDialog::on_ok(wxCommandEvent& event) 
 {
-    if(name_input_->GetValue().IsEmpty() || species_input_->GetValue().IsEmpty()) 
+    if(name_input_->GetValue().IsEmpty()) 
     {
         wxMessageBox("Name and Species cannot be empty.", "Validation Error", wxICON_WARNING);
         return;
@@ -154,4 +179,41 @@ void AddEditDialog::on_ok(wxCommandEvent& event)
         return;
     }
     EndModal(wxID_OK);
+}
+
+// rebuilds the species dropdown by querying the appropriate subclass
+// each subclass owns its own static list of valid species — the GUI never hardcodes species directly
+void AddEditDialog::on_category_changed(wxCommandEvent& event)
+{
+    species_input_->Clear();
+    std::string cat = category_input_->GetStringSelection().ToStdString();
+
+    std::vector<std::string> species;
+    if (cat == "Mammal") 
+    {
+        species = Mammal::get_available_species();
+    }
+    else if (cat == "Bird")  
+    {
+        species = Bird::get_available_species();
+    }    
+    else if (cat == "Reptile") 
+    {
+        species = Reptile::get_available_species();
+    }  
+    else if (cat == "Fish")  
+    {
+        species = Fish::get_available_species();
+    }    
+    else if (cat == "Amphibian") 
+    {
+         species = Amphibian::get_available_species();
+    }
+   
+    for (const auto& s : species) 
+    {
+         species_input_->Append(s);
+    }
+    
+    species_input_->SetSelection(0);
 }

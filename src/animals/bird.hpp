@@ -21,6 +21,10 @@ public:
     bool can_fly() const; 
     double get_wingspan() const;
 
+    static std::vector<std::string> get_available_species() 
+    {
+        return {"Parrot", "Flamingo", "Eagle", "Penguin", "Toucan", "Peacock", "Owl", "Macaw"};
+    }
 
 private: 
     bool  can_fly_;

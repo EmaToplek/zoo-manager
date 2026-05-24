@@ -20,7 +20,7 @@ public:
 
 private: 
     wxTextCtrl* name_input_;
-    wxTextCtrl* species_input_;
+    wxChoice* species_input_;
     wxChoice* category_input_;
     wxTextCtrl* age_input_;
     wxTextCtrl* weight_input_;
@@ -28,6 +28,7 @@ private:
     wxChoice* health_input_;
 
     void on_ok(wxCommandEvent& event); 
+    void on_category_changed(wxCommandEvent& event);
 
     wxButton* ok_btn_;
     wxButton* cancel_btn_;

@@ -2,11 +2,11 @@
     {
         "age": 12,
         "category": "Mammal",
-        "enclosure": "Savanna",
+        "enclosure": "Aquarium",
         "health": "In Treatment",
         "id": 2,
         "name": "Nora",
-        "species": "Elephant",
+        "species": "Clownfish",
         "weight": 30.0
     },
     {
