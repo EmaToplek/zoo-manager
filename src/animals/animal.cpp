@@ -7,6 +7,9 @@ Animal::Animal(uint64_t id, const std::string& name, const std::string& species,
 {}
 
 
+
+
+
 void Animal::tickhealth(){
     if(health_status_ == HealthStatus::Healthy){
         return;

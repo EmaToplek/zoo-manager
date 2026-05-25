@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
+#include <wx/grid.h>
 #include "../app/animal_manager.hpp"
 #include "detail_panel.hpp"
 
@@ -24,7 +24,9 @@ private:
     void on_remove_animal(wxCommandEvent& event); 
     void on_add_animal(wxCommandEvent& event); 
     void on_edit_animal(wxCommandEvent& event); 
+    void update_status_text();
 
 public:
-    MainFrame(const wxString& title);  
+    MainFrame(const wxString& title); 
+    
 };

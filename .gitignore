@@ -1,7 +1,6 @@
 .vscode/
 .DS_Store
 build/
-build/
 .kdev4/
 *.kdev4
 ZooManager
