@@ -21,8 +21,18 @@ void Animal_Manager::load()
         double weight = animal["weight"];
         std::string enclosure = animal["enclosure"];
         std::string health = animal["health"];
-    
-        add_animal(id, name, species, category, age, weight, enclosure, health);
+
+        // read special_info block from JSON into map if it exists
+        std::map<std::string, std::string> special_info;
+        if (animal.contains("special_info")) 
+        {
+            for (auto& [key, val] : animal["special_info"].items()) 
+            {
+                special_info[key] = val.get<std::string>();
+            }
+        }
+
+        add_animal(id, name, species, category, age, weight, enclosure, health, -1, special_info);
     }
 }
 
@@ -45,6 +55,15 @@ void Animal_Manager::save()
         entry["enclosure"] = animal->get_enclosure();
         entry["health"] = animal->get_health_status_to_string();
 
+        auto info_map = animal->get_special_info_map();
+        if (!info_map.empty()) 
+        {
+            for (auto& [key, val] : info_map) 
+            {
+                entry["special_info"][key] = val;
+            }
+        }
+
         j.push_back(entry);
     }
 
@@ -59,7 +78,8 @@ void Animal_Manager::save()
 // on the heap are concrete subclasses (Mammal, Fish, Bird, Reptile, Amphibian)
 void Animal_Manager::add_animal(uint64_t id, const std::string& name, 
     const std::string& species, std::string category, uint64_t age, 
-    double weight, const std::string& enclosure, std::string health_status, int position)
+    double weight, const std::string& enclosure, std::string health_status, int position,
+    std::map<std::string, std::string> special_info)
 {
 
     HealthStatus own_health = HealthStatus::Healthy;
@@ -80,11 +100,11 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     
     if(category == "Bird") 
     {
-        a = new Bird(id, name, species, age, weight, enclosure, own_health, true, 1.0); // FIXME
+        a = Bird::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Reptile") 
     {
-        a = new Reptile (id, name, species, age, weight, enclosure, own_health, false, 1.0);  //FIXME
+        a = Reptile::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Mammal") 
     {

@@ -56,6 +56,10 @@
         "health": "Sick",
         "id": 3,
         "name": "Max",
+        "special_info": {
+            "can_fly": "true",
+            "wingspan": "1.200000"
+        },
         "species": "Parrot",
         "weight": 220.0
     },
@@ -68,5 +72,15 @@
         "name": "Luna",
         "species": "Goldfish",
         "weight": 0.05
+    },
+    {
+        "age": 2,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 8,
+        "name": "Birdy",
+        "species": "Lion",
+        "weight": 100.0
     }
 ]
