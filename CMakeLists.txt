@@ -62,6 +62,7 @@ target_include_directories(zoo_test PRIVATE
 
 target_link_libraries(zoo_test PRIVATE
     pthread
+    nlohmann_json::nlohmann_json
 )
 
 add_test(NAME ZooTests COMMAND zoo_test)

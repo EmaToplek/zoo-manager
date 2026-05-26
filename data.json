@@ -1,12 +1,12 @@
 [
     {
         "age": 2,
-        "category": "Fish",
+        "category": "Bird",
         "enclosure": "Rainforest",
         "health": "Healthy",
         "id": 17,
-        "name": "Speedy",
-        "species": "Clownfish",
+        "name": "Lucky",
+        "species": "Parrot",
         "weight": 0.3
     },
     {
