@@ -81,11 +81,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     const std::vector<Animal*> animals = animal_manager_->get_all_animals();
     fill_table(animals);
 
-    // bind list row click to detail panel update
-    table_->Bind(wxEVT_LIST_ITEM_SELECTED, &MainFrame::on_animal_selected, this);
-
-    // bind deselect to clear detail panel
-    table_->Bind(wxEVT_LIST_ITEM_DESELECTED, &MainFrame::on_animal_deselected, this);
+    // bind grid cell selection to detail panel update
+    table_->Bind(wxEVT_GRID_SELECT_CELL, &MainFrame::on_animal_selected, this);
     
     remove_button_->Bind(wxEVT_BUTTON, &MainFrame::on_remove_animal, this);
     edit_button_->Bind(wxEVT_BUTTON, &MainFrame::on_edit_animal, this); 
@@ -160,28 +157,21 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
      
 }
 
-// called when user clicks a row in the animal list
-// fetches the corresponding animal from the manager and updates the detail panel
-void MainFrame::on_animal_selected(wxListEvent& event)
+// called when user clicks a cell in the grid
+// wxGridEvent::GetRow() replaces wxListEvent::GetIndex()
+void MainFrame::on_animal_selected(wxGridEvent& event)
 {
-    long index = event.GetIndex(); //getIndex() returns clicked row
-    Animal* selected = animal_manager_->get_all_animals()[index];
-    detail_panel_->show_animal(selected);
-
-    selected_index_ = event.GetIndex();
-    edit_button_->Enable();
-    remove_button_->Enable();
+    selected_index_ = event.GetRow();
+    if (selected_index_ >= 0 && selected_index_ < (long)animal_manager_->get_all_animals().size())
+    {
+        Animal* selected = animal_manager_->get_all_animals()[selected_index_];
+        detail_panel_->show_animal(selected);
+        edit_button_->Enable();
+        remove_button_->Enable();
+    }
+    event.Skip(); // event.Skip() is required — without it wxGrid internal selection breaks
 }
 
-// called when user clicks empty space in the list — clears the detail panel
-void MainFrame::on_animal_deselected(wxListEvent& event)
-{
-    selected_index_ = -1;
-    edit_button_->Disable();
-    remove_button_->Disable();
-
-    detail_panel_->clear();
-}
 
 void MainFrame::on_remove_animal(wxCommandEvent& event) 
 {
