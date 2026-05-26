@@ -1,5 +1,5 @@
 #include "zoo_app.hpp"
-#include "main_frame.hpp"
+#include "../gui/main_frame.hpp"
 
 #include <wx/wx.h>
 
