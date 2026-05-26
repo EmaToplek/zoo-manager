@@ -15,7 +15,7 @@ void Animal::tickhealth(){
         return;
     }
     ticks_++; // => only ticks if sick or in treatment
-    if(health_status_ == HealthStatus::Sick && ticks_ >= sickt_to_treatment_tick){
+    if(health_status_ == HealthStatus::Sick && ticks_ >= sick_to_treatment_tick){
         health_status_ = HealthStatus::In_Treatment;
         ticks_ = 0;
     }
