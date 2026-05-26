@@ -1,12 +1,12 @@
 #ifndef ANIMAL_MANAGER_HPP
 #define ANIMAL_MANAGER_HPP
 
-#include "animal.hpp"
-#include "mammal.hpp"
-#include "bird.hpp"
-#include "fish.hpp"
-#include "reptile.hpp"
-#include "amphibian.hpp"
+#include "../animals/animal.hpp"
+#include "../animals/mammal.hpp"
+#include "../animals/bird.hpp"
+#include "../animals/fish.hpp"
+#include "../animals/reptile.hpp"
+#include "../animals/amphibian.hpp"
 #include <vector>
 #include <fstream>
 #include <string>

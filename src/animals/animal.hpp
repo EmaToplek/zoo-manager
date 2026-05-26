@@ -66,7 +66,7 @@ class Animal{
 
         std::string get_category_to_string();
         // healthy to sick its happening on the GUI
-        static constexpr uint64_t sickt_to_treatment_tick = 3;
+        static constexpr uint64_t sick_to_treatment_tick = 3;
         static constexpr uint64_t treatment_to_healthy_tick = 2;
         void tickhealth();  // wxTimer calls this.
 };
