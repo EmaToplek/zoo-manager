@@ -17,6 +17,16 @@ public:
 
     AddEditDialog(wxWindow* parent, Animal* animal = nullptr);
 
+     // Bird-specific getters
+     bool get_can_fly() const;
+     double get_wingspan() const;
+ 
+     // Reptile-specific getters
+     bool get_is_venomous() const;
+     double get_body_length() const;
+
+     std::map<std::string, std::string> get_special_info() const;
+
 
 private: 
     wxTextCtrl* name_input_;
@@ -27,11 +37,24 @@ private:
     wxChoice* enclosure_input_;
     wxChoice* health_input_;
 
+    // Bird-specific fields
+    wxCheckBox* can_fly_input_;
+    wxTextCtrl* wingspan_input_;
+
+    // Reptile-specific fields
+    wxCheckBox* is_venomous_input_;
+    wxTextCtrl* body_length_input_;
+
     void on_ok(wxCommandEvent& event); 
     void on_category_changed(wxCommandEvent& event);
+    void update_special_fields(const std::string& category);
 
     wxButton* ok_btn_;
     wxButton* cancel_btn_;
+
+    // groups for show/hide
+    std::vector<wxWindow*> bird_fields_;
+    std::vector<wxWindow*> reptile_fields_;
 };
 
 

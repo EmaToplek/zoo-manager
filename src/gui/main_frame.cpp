@@ -204,7 +204,8 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
     {
         uint64_t new_id = animal_manager_->get_all_animals().size() + 1;
         animal_manager_->add_animal(new_id, dialog.get_name().ToStdString(), dialog.get_species().ToStdString(), dialog.get_category().ToStdString(),
-                                    dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(), dialog.get_health().ToStdString()); 
+                                    dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(), dialog.get_health().ToStdString(),
+                                    -1, dialog.get_special_info()); 
         
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
@@ -224,19 +225,13 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
 
     if(dialog.ShowModal() == wxID_OK)
     {
-        std::string name  = dialog.get_name().ToStdString();
-        std::string species = dialog.get_species().ToStdString();
-        std::string cat = dialog.get_category().ToStdString();
-        int age = dialog.get_age();
-        double weight = dialog.get_weight();
-        std::string encl = dialog.get_enclosure().ToStdString();
-        std::string health = dialog.get_health().ToStdString();
-
-        // save the current index before removing so the edited animal
-        // can be reinserted at the same position after recreating with correct subclass
         size_t position = selected_index_;
         animal_manager_->remove_animal(id);
-        animal_manager_->add_animal(id, name, species, cat, age, weight, encl, health, position);
+
+        animal_manager_->add_animal(id, dialog.get_name().ToStdString(),
+            dialog.get_species().ToStdString(), dialog.get_category().ToStdString(),
+            dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(),
+            dialog.get_health().ToStdString(), position, dialog.get_special_info());
       
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
