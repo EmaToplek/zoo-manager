@@ -219,13 +219,11 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
 void MainFrame::on_edit_animal(wxCommandEvent& event) 
 {
     Animal* selected = animal_manager_->get_all_animals()[selected_index_];
+    uint64_t id = selected->get_id();
     AddEditDialog dialog(this, selected);
 
     if(dialog.ShowModal() == wxID_OK)
     {
-
-        uint64_t id = selected->get_id();
-
         std::string name  = dialog.get_name().ToStdString();
         std::string species = dialog.get_species().ToStdString();
         std::string cat = dialog.get_category().ToStdString();
@@ -234,8 +232,11 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
         std::string encl = dialog.get_enclosure().ToStdString();
         std::string health = dialog.get_health().ToStdString();
 
+        // save the current index before removing so the edited animal
+        // can be reinserted at the same position after recreating with correct subclass
+        size_t position = selected_index_;
         animal_manager_->remove_animal(id);
-        animal_manager_->add_animal(id, name, species, cat, age, weight, encl, health);
+        animal_manager_->add_animal(id, name, species, cat, age, weight, encl, health, position);
       
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());

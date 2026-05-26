@@ -1,32 +1,12 @@
 [
     {
-        "age": 8,
-        "category": "Fish",
-        "enclosure": "Ocean Tank",
-        "health": "Healthy",
-        "id": 15,
-        "name": "Jaws",
-        "species": "Shark",
-        "weight": 800.0
-    },
-    {
-        "age": 1,
-        "category": "Fish",
-        "enclosure": "Pond",
-        "health": "Sick",
-        "id": 16,
-        "name": "Goldie",
-        "species": "Goldfish",
-        "weight": 0.05
-    },
-    {
         "age": 2,
-        "category": "Amphibian",
+        "category": "Fish",
         "enclosure": "Rainforest",
         "health": "Healthy",
         "id": 17,
-        "name": "Hoppy",
-        "species": "Frog",
+        "name": "Speedy",
+        "species": "Clownfish",
         "weight": 0.3
     },
     {
@@ -78,5 +58,15 @@
         "name": "Max",
         "species": "Parrot",
         "weight": 220.0
+    },
+    {
+        "age": 1,
+        "category": "Fish",
+        "enclosure": "Pond",
+        "health": "Sick",
+        "id": 16,
+        "name": "Luna",
+        "species": "Goldfish",
+        "weight": 0.05
     }
 ]

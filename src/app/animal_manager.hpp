@@ -26,7 +26,7 @@ public:
     void load();
     void add_animal(uint64_t id, const std::string& name, const std::string& species, 
         std::string category, uint64_t age, double weight, const std::string& enclosure, 
-        std::string health_status);
+        std::string health_status, int position = -1);
     bool remove_animal(uint64_t id);
     const std::vector<Animal*>& get_all_animals() const;
     std::vector<Animal*> filter_by_category(AnimalCategory category) const;

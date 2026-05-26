@@ -59,7 +59,7 @@ void Animal_Manager::save()
 // on the heap are concrete subclasses (Mammal, Fish, Bird, Reptile, Amphibian)
 void Animal_Manager::add_animal(uint64_t id, const std::string& name, 
     const std::string& species, std::string category, uint64_t age, 
-    double weight, const std::string& enclosure, std::string health_status)
+    double weight, const std::string& enclosure, std::string health_status, int position)
 {
 
     HealthStatus own_health = HealthStatus::Healthy;
@@ -101,7 +101,15 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     
     if (a != nullptr) 
     {
-        animals_list_.push_back(a);
+        // if position is valid, insert at that index to preserve original order, otherwise push_back
+        if (position >= 0 && position < (int)animals_list_.size()) 
+        {
+            animals_list_.insert(animals_list_.begin() + position, a);
+        }
+        else 
+        {
+            animals_list_.push_back(a);
+        }    
     }
 }
 
