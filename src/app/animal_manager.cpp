@@ -2,6 +2,12 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
+Animal_Manager::Animal_Manager() 
+{ 
+    load_species(); 
+}
+
+
 // reads data.json and deserializes each entry into correct Animal subclass
 // called on startup to restore the previous session
 void Animal_Manager::load()
@@ -108,15 +114,15 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     }
     else if(category == "Mammal") 
     {
-        a = new Mammal(id, name, species, age, weight, enclosure, own_health);
+        a = new Mammal(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
     }
     else if(category == "Fish") 
     {
-        a = new Fish(id, name, species, age, weight, enclosure, own_health);
+        a = new Fish(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
     }
     else if(category == "Amphibian") 
     {
-        a = new Amphibian(id, name, species, age, weight, enclosure, own_health);
+        a = new Amphibian(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
     }
     
     if (a != nullptr) 
@@ -143,11 +149,11 @@ void Animal_Manager::category_count(uint64_t& mammal_count, uint64_t& fish_count
     for(Animal* animal : animals_list_){
         switch (animal->get_category())
         {
-        case AnimalCategory::Amphibian: amphibian_count++; break;
-        case AnimalCategory::Mammal: mammal_count++; break;
-        case AnimalCategory::Bird: bird_count++; break;
-        case AnimalCategory::Reptile: reptile_count++; break;
-        case AnimalCategory::Fish: fish_count++; break;
+            case AnimalCategory::Amphibian: amphibian_count++; break;
+            case AnimalCategory::Mammal: mammal_count++; break;
+            case AnimalCategory::Bird: bird_count++; break;
+            case AnimalCategory::Reptile: reptile_count++; break;
+            case AnimalCategory::Fish: fish_count++; break;
         }
     }
 }
@@ -171,4 +177,28 @@ bool Animal_Manager::remove_animal(uint64_t id)
         }
     }
     return false;
+}
+
+
+void Animal_Manager::load_species()
+{
+    std::ifstream file("../species.json");
+    if (!file.is_open()) return; // to prevent crashes 
+
+    nlohmann::json j;
+    file >> j;
+    for (auto& [category, species] : j.items()) 
+    {
+        for (auto& s : species) 
+        {
+            species_list_[category].push_back(s.get<std::string>());
+        }
+    }
+}
+
+std::vector<std::string> Animal_Manager::get_species_for_category(const std::string& category) const
+{
+    auto it = species_list_.find(category);
+    if (it != species_list_.end()) return it->second;
+    return {};
 }

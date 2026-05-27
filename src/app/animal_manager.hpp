@@ -20,8 +20,10 @@ class Animal_Manager
 private:
     std::vector<Animal*> animals_list_; //stores all animals currently in the zoo
 
+    std::map<std::string, std::vector<std::string>> species_list_;
+
 public:
-    Animal_Manager(){};
+    Animal_Manager();
     void save();
     void load();
     void add_animal(uint64_t id, const std::string& name, const std::string& species, 
@@ -33,6 +35,9 @@ public:
     std::vector<Animal*> filter_by_status(HealthStatus status) const;
     void category_count(uint64_t& mammal_count, uint64_t& fish_count, uint64_t& bird_count, uint64_t& reptile_count, uint64_t& amphibian_count);
     uint64_t total_count();
+
+    void load_species();
+    std::vector<std::string> get_species_for_category(const std::string& category) const;
 
 }; // class
 

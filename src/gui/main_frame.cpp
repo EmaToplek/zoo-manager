@@ -195,10 +195,10 @@ void MainFrame::on_remove_animal(wxCommandEvent& event)
 }
 
 // called when user clicks Add animal 
-// opens emty dialog and creates new animal on save
+// opens empty dialog and creates new animal on save
 void MainFrame::on_add_animal(wxCommandEvent& event) 
 { 
-    AddEditDialog dialog(this, nullptr); 
+    AddEditDialog dialog(this, animal_manager_, nullptr); 
 
     if(dialog.ShowModal() == wxID_OK) 
     {
@@ -221,7 +221,7 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
 {
     Animal* selected = animal_manager_->get_all_animals()[selected_index_];
     uint64_t id = selected->get_id();
-    AddEditDialog dialog(this, selected);
+    AddEditDialog dialog(this, animal_manager_, selected);
 
     if(dialog.ShowModal() == wxID_OK)
     {

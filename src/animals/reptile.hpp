@@ -22,12 +22,6 @@ public:
     std::string get_special_info() const override;
 
     std::map<std::string, std::string> get_special_info_map() const override;
-    
-    static std::vector<std::string> get_available_species() 
-    {
-        return {"Komodo Dragon", "Gecko", "Iguana", "Crocodile", "Boa Constrictor", "Chameleon", "Tortoise"};
-    }
-
 
 private:
     bool is_venomous_;

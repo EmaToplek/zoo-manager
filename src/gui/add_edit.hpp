@@ -3,6 +3,10 @@
 
 #include <wx/wx.h>
 #include "../animals/animal.hpp"
+#include "../app/animal_manager.hpp"
+#include <map>
+#include <string>
+#include <vector>
 
 class AddEditDialog : public wxDialog  
 {
@@ -15,7 +19,7 @@ public:
     wxString get_enclosure() const;
     wxString get_health() const;
 
-    AddEditDialog(wxWindow* parent, Animal* animal = nullptr);
+    AddEditDialog(wxWindow* parent, Animal_Manager* manager,  Animal* animal = nullptr);
 
      // Bird-specific getters
      bool get_can_fly() const;
@@ -29,6 +33,9 @@ public:
 
 
 private: 
+
+    Animal_Manager* manager_;
+
     wxTextCtrl* name_input_;
     wxChoice* species_input_;
     wxChoice* category_input_;

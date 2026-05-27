@@ -6,6 +6,10 @@
         "health": "Healthy",
         "id": 17,
         "name": "Lucky",
+        "special_info": {
+            "can_fly": "true",
+            "wingspan": "1.000000"
+        },
         "species": "Parrot",
         "weight": 0.3
     },
@@ -96,5 +100,25 @@
         },
         "species": "Parrot",
         "weight": 2.0
+    },
+    {
+        "age": 3,
+        "category": "Amphibian",
+        "enclosure": "Pond",
+        "health": "Healthy",
+        "id": 10,
+        "name": "Fogy",
+        "species": "Frog",
+        "weight": 0.2
+    },
+    {
+        "age": 1,
+        "category": "Fish",
+        "enclosure": "Aquarium",
+        "health": "In Treatment",
+        "id": 11,
+        "name": "Ogi",
+        "species": "Clownfish",
+        "weight": 0.1
     }
 ]

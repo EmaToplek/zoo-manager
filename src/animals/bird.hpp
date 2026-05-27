@@ -28,11 +28,6 @@ public:
     // returns special_info_ map for JSON save and GUI detail panel
     std::map<std::string, std::string> get_special_info_map() const override;
 
-    static std::vector<std::string> get_available_species() 
-    {
-        return {"Parrot", "Flamingo", "Eagle", "Penguin", "Toucan", "Peacock", "Owl", "Macaw"};
-    }
-
 private: 
     bool can_fly_;
     double wingspan_;
