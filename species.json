@@ -1,0 +1,7 @@
+{
+    "Bird": ["Parrot", "Flamingo", "Eagle", "Penguin", "Toucan", "Peacock", "Owl", "Macaw"],
+    "Reptile": ["Komodo Dragon", "Gecko", "Iguana", "Crocodile", "Boa Constrictor", "Chameleon", "Tortoise"],
+    "Mammal": ["Lion", "Tiger", "Elephant", "Zebra", "Gorilla", "Giraffe", "Hippo", "Cheetah", "Wolf", "Bear"],
+    "Fish": ["Clownfish", "Shark", "Blue Tang", "Goldfish", "Piranha", "Tuna", "Salmon", "Seahorse"],
+    "Amphibian":["Frog", "Salamander", "Axolotl", "Tree Frog", "Toad", "Newt"]
+}
