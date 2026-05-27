@@ -1,6 +1,7 @@
 #ifndef FISH_HPP
 #define FISH_HPP
 #include "animal.hpp"
+#include <vector>
 
 class Fish : public Animal {
 public:
