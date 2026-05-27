@@ -1,7 +1,7 @@
 #include "main_frame.hpp"
 #include "add_edit.hpp"
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
+MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(1200, 750)) 
 {
     //creates animal manager and loads animals from data.json on startup
     animal_manager_ = new Animal_Manager();
@@ -9,20 +9,15 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 
     //main panel that fills the entire window
     panel_ = new wxPanel(this);
+
     left_panel_ = new wxPanel(panel_);
     detail_panel_ = new DetailPanel(panel_);
 
-    //aranges left and right panels side by side 
-    wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        panel_->SetSizer(panel_sizer);
-    
     //search field for filtering animals 
-    wxTextCtrl* search_ = new wxTextCtrl(left_panel_, wxID_ANY);
-    search_->SetHint("Search by name or species...");  
+    search_ = new wxTextCtrl(left_panel_, wxID_ANY);
+    search_->SetHint("Search by name or species..."); 
 
-    //dropdown for categories
+   //dropdown for categories
     wxArrayString category_choices;
     category_choices.Add("All categories");
     category_choices.Add("Mammal");
@@ -31,7 +26,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     category_choices.Add("Reptile");
     category_choices.Add("Amphibian");
 
-    wxChoice* category_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxPoint(50, 50), wxSize(200, 30), category_choices);
+    category_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, category_choices);
     category_dropdown_->SetSelection(0);
 
     //dropdown for statuses
@@ -41,8 +36,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     status_choices.Add("In Treatment");
     status_choices.Add("Sick");
 
-    wxChoice* status_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxPoint(50, 50), wxSize(200, 30), status_choices);
-    status_dropdown_->SetSelection(0);
+    status_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, status_choices);
+    status_dropdown_->SetSelection(0); //aranges left and right panels side by side 
 
     //panel holding add, edit,remove btns in row
     wxPanel* button_panel_ = new wxPanel(left_panel_);
@@ -61,7 +56,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     button_panel_->SetSizer(button_panel_sizer);
 
     //table showing all animals with columns
-    table_ = new wxGrid(left_panel_,wxID_ANY, wxDefaultPosition, wxSize(700, 400));
+    table_ = new wxGrid(left_panel_,wxID_ANY);
     table_->CreateGrid(0, 7);
     table_->HideRowLabels();
     table_->SetColLabelValue(0, "Name");
@@ -75,8 +70,21 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
         table_->SetColSize(i, 100);
         
     }
+
+    //stacks all left animals from the manager and populates the table
+    wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
+        left_panel_sizer->Add(search_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(category_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(status_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(button_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(table_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_->SetSizer(left_panel_sizer);
     
-    
+    wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
+        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        panel_->SetSizer(panel_sizer);
+
     //fetches all animals from the manager and populates the table
     const std::vector<Animal*> animals = animal_manager_->get_all_animals();
     fill_table(animals);
@@ -88,15 +96,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
     edit_button_->Bind(wxEVT_BUTTON, &MainFrame::on_edit_animal, this); 
     add_button_->Bind(wxEVT_BUTTON, &MainFrame::on_add_animal, this); 
 
-    
-    //stacks all left animals from the manager and populates the table
-    wxBoxSizer* left_panel_sizer = new wxBoxSizer(wxVERTICAL);
-        left_panel_sizer->Add(search_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(category_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(status_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(button_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(table_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_->SetSizer(left_panel_sizer);
+    search_->Bind(wxEVT_TEXT, &MainFrame::on_search_changed, this);
     
     //status bar at the bottom of the window
     CreateStatusBar();
@@ -239,4 +239,18 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
         edit_button_->Disable();
         remove_button_->Disable();
     }
+}
+
+// called on every keystroke — rebuilds table from search results
+void MainFrame::on_search_changed(wxCommandEvent& event)
+{
+    std::string query = search_->GetValue().ToStdString();
+
+    std::vector<Animal*> result = query.empty() ? animal_manager_->get_all_animals() : animal_manager_->search(query);
+
+    fill_table(result);
+    selected_index_ = -1;
+    edit_button_->Disable();
+    remove_button_->Disable();
+    detail_panel_->clear();
 }
