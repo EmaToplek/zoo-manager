@@ -21,9 +21,41 @@ static void add_row(wxWindow* parent, wxBoxSizer* sizer, const wxString& label, 
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
+//
+std::map<std::string, std::string> AddEditDialog::get_special_info() const
+{
+    std::map<std::string, std::string> special_info;
+    std::string cat = category_input_->GetStringSelection().ToStdString();
+    if (cat == "Bird") 
+    {
+        special_info["can_fly"]  = can_fly_input_->IsChecked() ? "true" : "false";
+        special_info["wingspan"] = wingspan_input_->GetValue().ToStdString();
+    }
+    else if (cat == "Reptile")
+    {
+        special_info["is_venomous"] = is_venomous_input_->IsChecked() ? "true" : "false";
+        special_info["body_length"] = body_length_input_->GetValue().ToStdString();
+    }
+    return special_info;
+}
+
+// shows/hides Bird and Reptile specific fields based on selected category
+void AddEditDialog::update_special_fields(const std::string& category)
+{
+    for (auto* w : bird_fields_) 
+    {
+        w->Show(category == "Bird");
+    } 
+    for (auto* w : reptile_fields_) 
+    {
+        w->Show(category == "Reptile");
+    }
+    Layout();
+}
+
 // if animal is nullptr - Add mode (empty fields)
 //if animal provided - Edit mode (fields pre-filled with existing data)
-AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 460))
+AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 560))
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -68,6 +100,31 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
     {
         add_row(this, sizer, label, input);
     };
+
+     // Bird-specific fields
+     auto* wingspan_label = new wxStaticText(this, wxID_ANY, "Wingspan (m):");
+     wingspan_input_ = new wxTextCtrl(this, wxID_ANY, "1.0");
+     can_fly_input_  = new wxCheckBox(this, wxID_ANY, "Can fly");
+     can_fly_input_->SetValue(true);
+
+     sizer->Add(wingspan_label, 0, wxLEFT | wxTOP, 16);
+     sizer->Add(wingspan_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
+     sizer->Add(can_fly_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
+
+     bird_fields_ = {wingspan_label, wingspan_input_, can_fly_input_};
+
+    // Reptile-specific fields
+    auto* body_length_label = new wxStaticText(this, wxID_ANY, "Body length (m):");
+    body_length_input_      = new wxTextCtrl(this, wxID_ANY, "1.0");
+    is_venomous_input_      = new wxCheckBox(this, wxID_ANY, "Venomous");
+    is_venomous_input_->SetValue(false);
+ 
+    sizer->Add(body_length_label,  0, wxLEFT | wxTOP, 16);
+    sizer->Add(body_length_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
+    sizer->Add(is_venomous_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
+
+     
+    reptile_fields_ = {body_length_label, body_length_input_, is_venomous_input_}; 
 
     // Save/Cancel buttons
     wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -115,6 +172,7 @@ AddEditDialog::AddEditDialog(wxWindow* parent, Animal* animal) : wxDialog (paren
         };
     }
     SetSizer(sizer);
+    update_special_fields("Mammal");
         
 }
 
@@ -156,6 +214,30 @@ wxString AddEditDialog::get_enclosure() const
 wxString AddEditDialog::get_health() const 
 {
     return health_input_->GetStringSelection();
+}
+
+double AddEditDialog::get_wingspan() const 
+{
+    double val = 1.0;
+    wingspan_input_->GetValue().ToDouble(&val);
+    return val;
+}
+
+bool AddEditDialog::get_can_fly() const
+{ 
+    return can_fly_input_->IsChecked();
+}
+
+bool AddEditDialog::get_is_venomous() const
+{ 
+    return is_venomous_input_->IsChecked(); 
+}
+
+double AddEditDialog::get_body_length() const 
+{
+    double val = 1.0;
+    body_length_input_->GetValue().ToDouble(&val);
+    return val;
 }
 
 // called when user clicks Save - validates input and closes dialog with wxID_OK
@@ -216,4 +298,6 @@ void AddEditDialog::on_category_changed(wxCommandEvent& event)
     }
     
     species_input_->SetSelection(0);
+
+    update_special_fields(cat);
 }
