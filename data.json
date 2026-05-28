@@ -1,19 +1,5 @@
 [
     {
-        "age": 2,
-        "category": "Bird",
-        "enclosure": "Rainforest",
-        "health": "Healthy",
-        "id": 17,
-        "name": "Lucky",
-        "special_info": {
-            "can_fly": "true",
-            "wingspan": "1.000000"
-        },
-        "species": "Parrot",
-        "weight": 0.3
-    },
-    {
         "age": 3,
         "category": "Amphibian",
         "enclosure": "Wetlands",
@@ -113,12 +99,22 @@
     },
     {
         "age": 1,
-        "category": "Fish",
-        "enclosure": "Aquarium",
-        "health": "In Treatment",
+        "category": "Mammal",
+        "enclosure": "Jungle",
+        "health": "Healthy",
         "id": 11,
-        "name": "Ogi",
-        "species": "Clownfish",
-        "weight": 0.1
+        "name": "Lila",
+        "species": "Lion",
+        "weight": 32.0
+    },
+    {
+        "age": 1,
+        "category": "Mammal",
+        "enclosure": "Jungle",
+        "health": "Healthy",
+        "id": 11,
+        "name": "Lila",
+        "species": "Lion",
+        "weight": 42.0
     }
 ]

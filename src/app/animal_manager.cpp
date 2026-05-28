@@ -106,23 +106,23 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     
     if(category == "Bird") 
     {
-        a = Bird::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
+        a = new Bird(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Reptile") 
     {
-        a = Reptile::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
+        a = new Reptile(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Mammal") 
     {
-        a = new Mammal(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
+        a = new Mammal(id, name, species, age, weight, enclosure, own_health, special_info); 
     }
     else if(category == "Fish") 
     {
-        a = new Fish(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
+        a = new Fish(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Amphibian") 
     {
-        a = new Amphibian(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
+        a = new Amphibian(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     
     if (a != nullptr) 

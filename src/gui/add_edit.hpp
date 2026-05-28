@@ -2,7 +2,6 @@
 #define ADD_EDIT_HPP
 
 #include <wx/wx.h>
-#include "../animals/animal.hpp"
 #include "../app/animal_manager.hpp"
 #include <map>
 #include <string>
@@ -21,21 +20,13 @@ public:
 
     AddEditDialog(wxWindow* parent, Animal_Manager* manager,  Animal* animal = nullptr);
 
-     // Bird-specific getters
-     bool get_can_fly() const;
-     double get_wingspan() const;
- 
-     // Reptile-specific getters
-     bool get_is_venomous() const;
-     double get_body_length() const;
-
      std::map<std::string, std::string> get_special_info() const;
 
 
 private: 
 
     Animal_Manager* manager_;
-
+    Animal* animal_editing_;
     wxTextCtrl* name_input_;
     wxChoice* species_input_;
     wxChoice* category_input_;
@@ -44,24 +35,18 @@ private:
     wxChoice* enclosure_input_;
     wxChoice* health_input_;
 
-    // Bird-specific fields
-    wxCheckBox* can_fly_input_;
-    wxTextCtrl* wingspan_input_;
-
-    // Reptile-specific fields
-    wxCheckBox* is_venomous_input_;
-    wxTextCtrl* body_length_input_;
-
     void on_ok(wxCommandEvent& event); 
     void on_category_changed(wxCommandEvent& event);
-    void update_special_fields(const std::string& category);
 
     wxButton* ok_btn_;
     wxButton* cancel_btn_;
 
-    // groups for show/hide
-    std::vector<wxWindow*> bird_fields_;
-    std::vector<wxWindow*> reptile_fields_;
+    // --- DYNAMIC UI ELEMENTS ---
+    wxBoxSizer* dynamic_sizer_; // Sizer dedicated just to special info
+    std::map<std::string, wxTextCtrl*> dynamic_inputs_; // Maps the trait key to the UI text box
+
+    // Generates UI fields dynamically based on a map
+    void build_dynamic_fields(const std::map<std::string, std::string>& info);
 };
 
 

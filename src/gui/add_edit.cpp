@@ -2,15 +2,15 @@
 #include <wx/wx.h>
 
 // creates a wxChoice dropdown and defaults to the first option
-static wxChoice *make_choice(wxWindow *parent, const wxArrayString &options)
+static wxChoice* make_choice(wxWindow *parent, const wxArrayString &options)
 {
-    wxChoice *choice = new wxChoice(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, options);
+    wxChoice* choice = new wxChoice(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, options);
     choice->SetSelection(0);
     return choice;
 }
 
 // adds label and input pair to sizer
-static void add_row(wxWindow *parent, wxBoxSizer *sizer, const wxString &label, wxWindow *input)
+static void add_row(wxWindow* parent, wxBoxSizer *sizer, const wxString &label, wxWindow *input)
 {
     sizer->Add(new wxStaticText(parent, wxID_ANY, label), 0, wxLEFT | wxTOP, 16);
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
@@ -34,25 +34,11 @@ std::map<std::string, std::string> AddEditDialog::get_special_info() const
     return special_info;
 }
 
-// shows/hides Bird and Reptile specific fields based on selected category
-void AddEditDialog::update_special_fields(const std::string &category)
-{
-    for (auto *w : bird_fields_)
-    {
-        w->Show(category == "Bird");
-    }
-    for (auto *w : reptile_fields_)
-    {
-        w->Show(category == "Reptile");
-    }
-    Layout();
-}
-
 // if animal is nullptr - Add mode (empty fields)
 // if animal provided - Edit mode (fields pre-filled with existing data)
 AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *animal)
     : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 560)),
-      manager_(manager)
+      manager_(manager), animal_editing_(animal)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -97,6 +83,7 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     // species dropdown is populated from Animal_Manager on startup (defaults to Mammal)
     // manager reads species.json — subclasses have no knowledge of the species list
     // GUI never hardcodes species; it always queries the manager
+
     wxArrayString initial_species;
     for (const auto &s : manager_->get_species_for_category("Mammal"))
     {
@@ -125,29 +112,10 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
         add_row(this, sizer, label, input);
     };
 
-    // Bird-specific fields
-    auto *wingspan_label = new wxStaticText(this, wxID_ANY, "Wingspan (m):");
-    wingspan_input_ = new wxTextCtrl(this, wxID_ANY, "1.0");
-    can_fly_input_ = new wxCheckBox(this, wxID_ANY, "Can fly");
-    can_fly_input_->SetValue(true);
-
-    sizer->Add(wingspan_label, 0, wxLEFT | wxTOP, 16);
-    sizer->Add(wingspan_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
-    sizer->Add(can_fly_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
-
-    bird_fields_ = {wingspan_label, wingspan_input_, can_fly_input_};
-
-    // Reptile-specific fields
-    auto *body_length_label = new wxStaticText(this, wxID_ANY, "Body length (m):");
-    body_length_input_ = new wxTextCtrl(this, wxID_ANY, "1.0");
-    is_venomous_input_ = new wxCheckBox(this, wxID_ANY, "Venomous");
-    is_venomous_input_->SetValue(false);
-
-    sizer->Add(body_length_label, 0, wxLEFT | wxTOP, 16);
-    sizer->Add(body_length_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
-    sizer->Add(is_venomous_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
-
-    reptile_fields_ = {body_length_label, body_length_input_, is_venomous_input_};
+    // --- DYNAMIC SIZER SETUP ---
+    // This empty sizer will hold our dynamically generated map fields
+    dynamic_sizer_ = new wxBoxSizer(wxVERTICAL);
+    main_sizer->Add(dynamic_sizer_, 1, wxEXPAND | wxALL, 0);
 
     // Save/Cancel buttons
     wxBoxSizer *btn_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -162,38 +130,57 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
 
     // edit mode - pre fill fields with existing animal data
-    if (animal)
+    if (animal) 
     {
-        // fill text fields
-        std::vector<std::pair<wxTextCtrl *, wxString>> text_fields =
-            {
-                {name_input_, animal->get_name()},
-                {age_input_, std::to_string(animal->get_age())},
-                {weight_input_, wxString::Format("%.2f", animal->get_weight())}};
-        for (auto &[input, value] : text_fields)
-        {
-            input->SetValue(value);
-        };
-
-        // set cat first, then trigger on_category_changed so species dropdown is populated with correct subclass species list
-        //  before we try to select animals current species
+        name_input_->SetValue(animal->get_name());
+        age_input_->SetValue(std::to_string(animal->get_age()));
+        weight_input_->SetValue(wxString::Format("%.2f", animal->get_weight()));
+        
         category_input_->SetStringSelection(animal->get_category_to_string());
         wxCommandEvent fake_event;
-        on_category_changed(fake_event);
+        on_category_changed(fake_event); 
         species_input_->SetStringSelection(animal->get_species());
-
-        // fill remaining dropdowns
-        std::vector<std::pair<wxChoice *, wxString>> choice_fields =
-            {
-                {enclosure_input_, animal->get_enclosure()},
-                {health_input_, animal->get_health_status_to_string()}};
-        for (auto &[input, value] : choice_fields)
-        {
-            input->SetStringSelection(value);
-        };
+        
+        enclosure_input_->SetStringSelection(animal->get_enclosure());
+        health_input_->SetStringSelection(animal->get_health_status_to_string());
+        
+        // Build dynamic fields from the existing animal's map
+        build_dynamic_fields(animal->get_special_info_map());
+    } 
+    else 
+    {
+        // Build dynamic fields using default template for a new Mammal
+        build_dynamic_fields(get_default_traits("Mammal"));
     }
-    SetSizer(sizer);
-    update_special_fields("Mammal");
+
+    SetSizer(main_sizer);
+    Layout();
+}
+
+// --- DYNAMIC GUI LOGIC ---
+
+// Rebuilds the UI based entirely on the keys in the map
+void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string>& info)
+{
+    // Clear out any old fields from previous category selections
+    dynamic_sizer_->Clear(true);
+    dynamic_inputs_.clear();
+
+    // Iterate through the map and spawn a text box for every key
+    for (const auto& [key, value] : info) 
+    {
+        wxTextCtrl* input = new wxTextCtrl(this, wxID_ANY, value);
+        
+        // Format the key for display (e.g. "wingspan" -> "wingspan:")
+        add_row(this, dynamic_sizer_, key + ":", input);
+        
+        // Store pointer so we can read it later on Save
+        dynamic_inputs_[key] = input;
+    }
+    
+    // Force the window to resize and redraw with the new fields
+    Layout();
+    Fit(); 
 }
 
 // getters
@@ -283,6 +270,17 @@ void AddEditDialog::on_ok(wxCommandEvent &event)
     EndModal(wxID_OK);
 }
 
+// Iterate through the dynamic UI inputs and package them back into a map for saving
+std::map<std::string, std::string> AddEditDialog::get_special_info() const
+{
+    std::map<std::string, std::string> current_info;
+    for (const auto& [key, input_ctrl] : dynamic_inputs_) 
+    {
+        current_info[key] = input_ctrl->GetValue().ToStdString();
+    }
+    return current_info;
+}
+
 // rebuilds the species dropdown by querying Animal_Manager for the selected category
 void AddEditDialog::on_category_changed(wxCommandEvent &event)
 {
@@ -302,5 +300,9 @@ void AddEditDialog::on_category_changed(wxCommandEvent &event)
         species_input_->SetSelection(0);
     }
 
-    update_special_fields(cat);
+    // Update dynamic fields ONLY if we are adding a NEW animal.
+    // If editing, we keep the animal's existing map.
+    if (!animal_editing_) {
+        build_dynamic_fields(get_default_traits(cat));
+    }
 }
