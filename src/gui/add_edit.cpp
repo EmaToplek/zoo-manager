@@ -16,22 +16,53 @@ static void add_row(wxWindow* parent, wxBoxSizer *sizer, const wxString &label, 
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
-//
+// Gives us a baseline if the user is creating a completely new animal
+std::map<std::string, std::string> AddEditDialog::get_default_traits(const std::string& category)
+{
+    if (category == "Bird") 
+    {
+        return {{"can_fly", "true"}, {"wingspan", "1.0"}};
+    }
+    if (category == "Reptile") 
+    {
+        return {{"is_venomous", "false"}, {"body_length", "1.0"}};
+    } 
+    return {}; 
+}
+
+// Iterate through the dynamic UI inputs and package them back into a map for saving
 std::map<std::string, std::string> AddEditDialog::get_special_info() const
 {
-    std::map<std::string, std::string> special_info;
-    std::string cat = category_input_->GetStringSelection().ToStdString();
-    if (cat == "Bird")
+    std::map<std::string, std::string> current_info;
+    for (const auto& [key, input_ctrl] : dynamic_inputs_) 
     {
-        special_info["can_fly"] = can_fly_input_->IsChecked() ? "true" : "false";
-        special_info["wingspan"] = wingspan_input_->GetValue().ToStdString();
+        current_info[key] = input_ctrl->GetValue().ToStdString();
     }
-    else if (cat == "Reptile")
+    return current_info;
+}
+
+// Rebuilds the UI based entirely on the keys in the map
+void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string>& info)
+{
+    // Clear out any old fields from previous category selections
+    dynamic_sizer_->Clear(true);
+    dynamic_inputs_.clear();
+
+    // Iterate through the map and spawn a text box for every key
+    for (const auto& [key, value] : info) 
     {
-        special_info["is_venomous"] = is_venomous_input_->IsChecked() ? "true" : "false";
-        special_info["body_length"] = body_length_input_->GetValue().ToStdString();
+        wxTextCtrl* input = new wxTextCtrl(this, wxID_ANY, value);
+        
+        // Format the key for display
+        add_row(this, dynamic_sizer_, key + ":", input);
+        
+        // Store pointer so we can read it later on Save
+        dynamic_inputs_[key] = input;
     }
-    return special_info;
+    
+    // Force the window to resize and redraw with the new fields
+    Layout();
+    Fit(); 
 }
 
 // if animal is nullptr - Add mode (empty fields)
@@ -112,22 +143,20 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
         add_row(this, sizer, label, input);
     };
 
-    // --- DYNAMIC SIZER SETUP ---
-    // This empty sizer will hold our dynamically generated map fields
+    // This empty sizer will hold our dynamically generated map fields, cleared and rebuilt whenever category changes
     dynamic_sizer_ = new wxBoxSizer(wxVERTICAL);
-    main_sizer->Add(dynamic_sizer_, 1, wxEXPAND | wxALL, 0);
+    sizer->Add(dynamic_sizer_, 1, wxEXPAND | wxALL, 0);
 
-    // Save/Cancel buttons
-    wxBoxSizer *btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    wxButton *ok_btn = new wxButton(this, wxID_ANY, "Save");
-    wxButton *cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel");
+    // --- SAVE / CANCEL BUTTONS ---
+    wxButton* ok_btn = new wxButton(this, wxID_ANY, "Save");
+    wxButton* cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel");
+    ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
 
+    wxBoxSizer* btn_sizer = new wxBoxSizer(wxHORIZONTAL);
     btn_sizer->Add(cancel_btn, 0, wxRIGHT, 8);
     btn_sizer->Add(ok_btn, 0);
     sizer->AddSpacer(12);
     sizer->Add(btn_sizer, 0, wxALIGN_RIGHT | wxALL, 16);
-
-    ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
 
     // edit mode - pre fill fields with existing animal data
     if (animal) 
@@ -136,6 +165,7 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
         age_input_->SetValue(std::to_string(animal->get_age()));
         weight_input_->SetValue(wxString::Format("%.2f", animal->get_weight()));
         
+        // set category first, then rebuild species list for that category
         category_input_->SetStringSelection(animal->get_category_to_string());
         wxCommandEvent fake_event;
         on_category_changed(fake_event); 
@@ -153,34 +183,8 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
         build_dynamic_fields(get_default_traits("Mammal"));
     }
 
-    SetSizer(main_sizer);
+    SetSizer(sizer);
     Layout();
-}
-
-// --- DYNAMIC GUI LOGIC ---
-
-// Rebuilds the UI based entirely on the keys in the map
-void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string>& info)
-{
-    // Clear out any old fields from previous category selections
-    dynamic_sizer_->Clear(true);
-    dynamic_inputs_.clear();
-
-    // Iterate through the map and spawn a text box for every key
-    for (const auto& [key, value] : info) 
-    {
-        wxTextCtrl* input = new wxTextCtrl(this, wxID_ANY, value);
-        
-        // Format the key for display (e.g. "wingspan" -> "wingspan:")
-        add_row(this, dynamic_sizer_, key + ":", input);
-        
-        // Store pointer so we can read it later on Save
-        dynamic_inputs_[key] = input;
-    }
-    
-    // Force the window to resize and redraw with the new fields
-    Layout();
-    Fit(); 
 }
 
 // getters
@@ -223,29 +227,7 @@ wxString AddEditDialog::get_health() const
     return health_input_->GetStringSelection();
 }
 
-double AddEditDialog::get_wingspan() const
-{
-    double val = 1.0;
-    wingspan_input_->GetValue().ToDouble(&val);
-    return val;
-}
-
-bool AddEditDialog::get_can_fly() const
-{
-    return can_fly_input_->IsChecked();
-}
-
-bool AddEditDialog::get_is_venomous() const
-{
-    return is_venomous_input_->IsChecked();
-}
-
-double AddEditDialog::get_body_length() const
-{
-    double val = 1.0;
-    body_length_input_->GetValue().ToDouble(&val);
-    return val;
-}
+// VALIDATION 
 
 // called when user clicks Save - validates input and closes dialog with wxID_OK
 void AddEditDialog::on_ok(wxCommandEvent &event)
@@ -268,17 +250,6 @@ void AddEditDialog::on_ok(wxCommandEvent &event)
         return;
     }
     EndModal(wxID_OK);
-}
-
-// Iterate through the dynamic UI inputs and package them back into a map for saving
-std::map<std::string, std::string> AddEditDialog::get_special_info() const
-{
-    std::map<std::string, std::string> current_info;
-    for (const auto& [key, input_ctrl] : dynamic_inputs_) 
-    {
-        current_info[key] = input_ctrl->GetValue().ToStdString();
-    }
-    return current_info;
 }
 
 // rebuilds the species dropdown by querying Animal_Manager for the selected category

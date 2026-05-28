@@ -39,7 +39,7 @@ std::string Reptile::get_special_info() const
     return oss.str();
 }
 
-void Bird::update_special_info(const std::string& key, const std::string& value) 
+void Reptile::update_special_info(const std::string& key, const std::string& value) 
 {
     special_info_[key] = value;
 }

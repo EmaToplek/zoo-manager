@@ -114,8 +114,8 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     }
     else if(category == "Mammal") 
     {
-        a = new Mammal(id, name, species, age, weight, enclosure, own_health, special_info); 
-    }
+        a = new Mammal(id, name, species, age, weight, enclosure, own_health,special_info); 
+    }  
     else if(category == "Fish") 
     {
         a = new Fish(id, name, species, age, weight, enclosure, own_health, special_info);

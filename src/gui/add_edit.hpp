@@ -20,13 +20,14 @@ public:
 
     AddEditDialog(wxWindow* parent, Animal_Manager* manager,  Animal* animal = nullptr);
 
-     std::map<std::string, std::string> get_special_info() const;
+    std::map<std::string, std::string> get_special_info() const;
 
 
 private: 
 
     Animal_Manager* manager_;
     Animal* animal_editing_;
+
     wxTextCtrl* name_input_;
     wxChoice* species_input_;
     wxChoice* category_input_;
@@ -35,18 +36,18 @@ private:
     wxChoice* enclosure_input_;
     wxChoice* health_input_;
 
+    wxBoxSizer* dynamic_sizer_; // Sizer dedicated just to special info
+    std::  map<std::string, wxTextCtrl*> dynamic_inputs_; // Maps the trait key to the UI text box
+
     void on_ok(wxCommandEvent& event); 
     void on_category_changed(wxCommandEvent& event);
 
     wxButton* ok_btn_;
     wxButton* cancel_btn_;
 
-    // --- DYNAMIC UI ELEMENTS ---
-    wxBoxSizer* dynamic_sizer_; // Sizer dedicated just to special info
-    std::map<std::string, wxTextCtrl*> dynamic_inputs_; // Maps the trait key to the UI text box
-
     // Generates UI fields dynamically based on a map
     void build_dynamic_fields(const std::map<std::string, std::string>& info);
+    std::map<std::string, std::string> get_default_traits(const std::string& category);
 };
 
 
