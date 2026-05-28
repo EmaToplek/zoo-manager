@@ -1,6 +1,9 @@
 #include <wx/statline.h>
 #include "detail_panel.hpp"
 
+#include <sstream>
+#include <iomanip>
+
 // Sets the font size and weight on a given wxStaticText widget
 void DetailPanel::set_font(wxStaticText* widget, int size, bool bold) 
 {
@@ -94,20 +97,25 @@ void DetailPanel::show_animal(Animal* animal)
 {
     placeholder_->Hide();
 
-    //widget, value pair
+    std::ostringstream weight_oss;
+    weight_oss << std::fixed << std::setprecision(2) << animal->get_weight();
+
+    std::ostringstream enclosure_oss;
+    enclosure_oss << std::fixed << std::setprecision(1) << animal->get_min_enclosure_size();
+
     std::vector<std::pair<wxStaticText*, wxString>> values = 
     {
-        {name_val_, animal->get_name()},
-        {species_val_, animal->get_species()},
-        {category_val_, animal->get_category_to_string()},
-        {age_val_, std::to_string(animal->get_age()) + " years"},
-        {weight_val_, wxString::Format("%.2f kg", animal->get_weight())},
-        {enclosure_val_, animal->get_enclosure()},
-        {health_val_, animal->get_health_status_to_string()},
-        {feeding_val_, animal->get_feeding_type()},
-        {habitat_val_, animal->get_habitat()},
-        {enclosure_size_val_, wxString::Format("%.1f m²", animal->get_min_enclosure_size())},
-        {special_info_val_, animal->get_special_info()},
+        {name_val_,          animal->get_name()},
+        {species_val_,       animal->get_species()},
+        {category_val_,      animal->get_category_to_string()},
+        {age_val_,           std::to_string(animal->get_age()) + " years"},
+        {weight_val_,        wxString(weight_oss.str()) + " kg"},
+        {enclosure_val_,     animal->get_enclosure()},
+        {health_val_,        animal->get_health_status_to_string()},
+        {feeding_val_,       animal->get_feeding_type()},
+        {habitat_val_,       animal->get_habitat()},
+        {enclosure_size_val_, wxString(enclosure_oss.str()) + " m2"},
+        {special_info_val_,  animal->get_special_info()},
     };
 
     for (auto& [widget, value] : values) 
@@ -115,7 +123,6 @@ void DetailPanel::show_animal(Animal* animal)
         widget->SetLabel(value);
     }
    
-    // health colour
     if (animal->get_health_status() == HealthStatus::Healthy) 
     {
         health_val_->SetForegroundColour(wxColour(34, 139, 34));
@@ -128,7 +135,6 @@ void DetailPanel::show_animal(Animal* animal)
     {
         health_val_->SetForegroundColour(wxColour(200, 120, 0));
     }
-    
 
     health_val_->Refresh();
     Layout();
