@@ -53,6 +53,7 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); //creates new wxStaticText on heap and saves addr directly into name_val
         set_font(*val_ptr, 13, false);
+        (*val_ptr)->SetForegroundColour(wxColour(80, 60, 30));
         sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
@@ -83,6 +84,7 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); 
         set_font(*val_ptr, 13, false);
+        (*val_ptr)->SetForegroundColour(wxColour(80, 60, 30));  
         sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
@@ -105,17 +107,17 @@ void DetailPanel::show_animal(Animal* animal)
 
     std::vector<std::pair<wxStaticText*, wxString>> values = 
     {
-        {name_val_,          animal->get_name()},
-        {species_val_,       animal->get_species()},
-        {category_val_,      animal->get_category_to_string()},
-        {age_val_,           std::to_string(animal->get_age()) + " years"},
-        {weight_val_,        wxString(weight_oss.str()) + " kg"},
-        {enclosure_val_,     animal->get_enclosure()},
-        {health_val_,        animal->get_health_status_to_string()},
-        {feeding_val_,       animal->get_feeding_type()},
-        {habitat_val_,       animal->get_habitat()},
-        {enclosure_size_val_, wxString(enclosure_oss.str()) + " m2"},
-        {special_info_val_,  animal->get_special_info()},
+        {name_val_, animal->get_name()},
+        {species_val_, animal->get_species()},
+        {category_val_, animal->get_category_to_string()},
+        {age_val_, std::to_string(animal->get_age()) + " years"},
+        {weight_val_, wxString::Format("%.2f kg", animal->get_weight())},
+        {enclosure_val_, animal->get_enclosure()},
+        {health_val_, animal->get_health_status_to_string()},
+        {feeding_val_, animal->get_feeding_type()},
+        {habitat_val_, animal->get_habitat()},
+        {enclosure_size_val_, wxString::Format("%.1f m2", animal->get_min_enclosure_size())},
+        {special_info_val_, animal->get_special_info()},
     };
 
     for (auto& [widget, value] : values) 

@@ -16,43 +16,48 @@ static void add_row(wxWindow *parent, wxBoxSizer *sizer, const wxString &label, 
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
-//
+// Iterate through the dynamic UI inputs and package them back into a map for saving
 std::map<std::string, std::string> AddEditDialog::get_special_info() const
 {
-    std::map<std::string, std::string> special_info;
-    std::string cat = category_input_->GetStringSelection().ToStdString();
-    if (cat == "Bird")
+    std::map<std::string, std::string> current_info;
+    for (const auto &[key, input_ctrl] : dynamic_inputs_)
     {
-        special_info["can_fly"] = can_fly_input_->IsChecked() ? "true" : "false";
-        special_info["wingspan"] = wingspan_input_->GetValue().ToStdString();
+        current_info[key] = input_ctrl->GetValue().ToStdString();
     }
-    else if (cat == "Reptile")
-    {
-        special_info["is_venomous"] = is_venomous_input_->IsChecked() ? "true" : "false";
-        special_info["body_length"] = body_length_input_->GetValue().ToStdString();
-    }
-    return special_info;
+    return current_info;
 }
 
-// shows/hides Bird and Reptile specific fields based on selected category
-void AddEditDialog::update_special_fields(const std::string &category)
+// formats map key for display in dialog labels
+static std::string format_key(const std::string& key)
 {
-    for (auto *w : bird_fields_)
+    std::string result = key;
+    std::replace(result.begin(), result.end(), '_', ' ');
+    result[0] = std::toupper(result[0]);
+    return result;
+}
+
+// Rebuilds the UI based entirely on the keys in the map
+void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string> &info)
+{
+    dynamic_sizer_->Clear(true);
+    dynamic_inputs_.clear();
+
+    for (const auto &[key, value] : info)
     {
-        w->Show(category == "Bird");
+        wxTextCtrl *input = new wxTextCtrl(this, wxID_ANY, value);
+
+        add_row(this, dynamic_sizer_, format_key(key) + ":", input);
+        dynamic_inputs_[key] = input;
     }
-    for (auto *w : reptile_fields_)
-    {
-        w->Show(category == "Reptile");
-    }
+
     Layout();
 }
 
 // if animal is nullptr - Add mode (empty fields)
 // if animal provided - Edit mode (fields pre-filled with existing data)
 AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *animal)
-    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 560)),
-      manager_(manager)
+    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(420, 750)),
+      manager_(manager), animal_editing_(animal)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -63,36 +68,41 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     weight_input_ = new wxTextCtrl(this, wxID_ANY);
 
     // dropdowns
-    category_input_ = make_choice(this, {"Mammal", "Bird", "Reptile", "Fish", "Amphibian"});
-    enclosure_input_ = make_choice(this, {"Savanna", "Jungle", "Aquarium", "Ocean Tank", "Pond", "Rainforest", "Wetlands", "Aviary", "Terrarium"});
-    health_input_  = make_choice(this, {"Healthy", "Sick", "In Treatment"});
+    #if defined(__APPLE__) && defined(__MACH__)
+        category_input_ = make_choice(this, {"Mammal", "Bird", "Reptile", "Fish", "Amphibian"});
+        enclosure_input_ = make_choice(this, {"Savanna", "Jungle", "Aquarium", "Ocean Tank", "Pond", "Rainforest", "Wetlands", "Aviary", "Terrarium"});
+        health_input_ = make_choice(this, {"Healthy", "Sick", "In Treatment"});
+    #else
+        wxArrayString categories, enclosures, health_states;
+        categories.Add("Mammal");
+        categories.Add("Bird");
+        categories.Add("Reptile");
+        categories.Add("Fish");
+        categories.Add("Amphibian");
+
+        enclosures.Add("Savanna");
+        enclosures.Add("Jungle");
+        enclosures.Add("Aquarium");
+        enclosures.Add("Ocean Tank");
+        enclosures.Add("Pond");
+        enclosures.Add("Rainforest");
+        enclosures.Add("Wetlands");
+        enclosures.Add("Aviary");
+        enclosures.Add("Terrarium");
+
+        health_states.Add("Healthy");
+        health_states.Add("Sick");
+        health_states.Add("In Treatment");
+
+        category_input_ = make_choice(this, categories);
+        enclosure_input_ = make_choice(this, enclosures);
+        health_input_ = make_choice(this, health_states);
+        
+    #endif
+
     
 
-    /*wxArrayString categories, enclosures, health_states;
-
-    categories.Add("Mammal");
-    categories.Add("Bird");
-    categories.Add("Reptile");
-    categories.Add("Fish");
-    categories.Add("Amphibian");
-
-    enclosures.Add("Savanna");
-    enclosures.Add("Jungle");
-    enclosures.Add("Aquarium");
-    enclosures.Add("Ocean Tank");
-    enclosures.Add("Pond");
-    enclosures.Add("Rainforest");
-    enclosures.Add("Wetlands");
-    enclosures.Add("Aviary");
-    enclosures.Add("Terrarium");
-
-    health_states.Add("Healthy");
-    health_states.Add("Sick");
-    health_states.Add("In Treatment");
-
-    category_input_ = make_choice(this, categories);
-    enclosure_input_ = make_choice(this, enclosures);
-    health_input_ = make_choice(this, health_states);*/
+   
 
     // species dropdown is populated from Animal_Manager on startup (defaults to Mammal)
     // manager reads species.json — subclasses have no knowledge of the species list
@@ -125,75 +135,48 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
         add_row(this, sizer, label, input);
     };
 
-    // Bird-specific fields
-    auto *wingspan_label = new wxStaticText(this, wxID_ANY, "Wingspan (m):");
-    wingspan_input_ = new wxTextCtrl(this, wxID_ANY, "1.0");
-    can_fly_input_ = new wxCheckBox(this, wxID_ANY, "Can fly");
-    can_fly_input_->SetValue(true);
+    // This empty sizer will hold our dynamically generated map fields, cleared and rebuilt whenever category changes
+    dynamic_sizer_ = new wxBoxSizer(wxVERTICAL);
+    sizer->Add(dynamic_sizer_, 1, wxEXPAND | wxALL, 0);
 
-    sizer->Add(wingspan_label, 0, wxLEFT | wxTOP, 16);
-    sizer->Add(wingspan_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
-    sizer->Add(can_fly_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
-
-    bird_fields_ = {wingspan_label, wingspan_input_, can_fly_input_};
-
-    // Reptile-specific fields
-    auto *body_length_label = new wxStaticText(this, wxID_ANY, "Body length (m):");
-    body_length_input_ = new wxTextCtrl(this, wxID_ANY, "1.0");
-    is_venomous_input_ = new wxCheckBox(this, wxID_ANY, "Venomous");
-    is_venomous_input_->SetValue(false);
-
-    sizer->Add(body_length_label, 0, wxLEFT | wxTOP, 16);
-    sizer->Add(body_length_input_, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
-    sizer->Add(is_venomous_input_, 0, wxLEFT | wxTOP | wxRIGHT, 16);
-
-    reptile_fields_ = {body_length_label, body_length_input_, is_venomous_input_};
-
-    // Save/Cancel buttons
-    wxBoxSizer *btn_sizer = new wxBoxSizer(wxHORIZONTAL);
+    // save/cancle btns
     wxButton *ok_btn = new wxButton(this, wxID_ANY, "Save");
     wxButton *cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel");
+    ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
 
+    wxBoxSizer *btn_sizer = new wxBoxSizer(wxHORIZONTAL);
     btn_sizer->Add(cancel_btn, 0, wxRIGHT, 8);
     btn_sizer->Add(ok_btn, 0);
     sizer->AddSpacer(12);
     sizer->Add(btn_sizer, 0, wxALIGN_RIGHT | wxALL, 16);
 
-    ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
-
     // edit mode - pre fill fields with existing animal data
     if (animal)
     {
-        // fill text fields
-        std::vector<std::pair<wxTextCtrl *, wxString>> text_fields =
-            {
-                {name_input_, animal->get_name()},
-                {age_input_, std::to_string(animal->get_age())},
-                {weight_input_, wxString::Format("%.2f", animal->get_weight())}};
-        for (auto &[input, value] : text_fields)
-        {
-            input->SetValue(value);
-        };
+        name_input_->SetValue(animal->get_name());
+        age_input_->SetValue(std::to_string(animal->get_age()));
+        weight_input_->SetValue(wxString::Format("%.2f", animal->get_weight()));
 
-        // set cat first, then trigger on_category_changed so species dropdown is populated with correct subclass species list
-        //  before we try to select animals current species
+        // set category first, then rebuild species list for that category
         category_input_->SetStringSelection(animal->get_category_to_string());
         wxCommandEvent fake_event;
         on_category_changed(fake_event);
         species_input_->SetStringSelection(animal->get_species());
 
-        // fill remaining dropdowns
-        std::vector<std::pair<wxChoice *, wxString>> choice_fields =
-            {
-                {enclosure_input_, animal->get_enclosure()},
-                {health_input_, animal->get_health_status_to_string()}};
-        for (auto &[input, value] : choice_fields)
-        {
-            input->SetStringSelection(value);
-        };
+        enclosure_input_->SetStringSelection(animal->get_enclosure());
+        health_input_->SetStringSelection(animal->get_health_status_to_string());
+
+        // Build dynamic fields from the existing animal's map
+        build_dynamic_fields(animal->get_special_info_map());
     }
+    else
+    {
+        // Build dynamic fields using default template for a new Mammal
+        build_dynamic_fields(manager_->get_default_traits("Mammal"));
+    }
+
     SetSizer(sizer);
-    update_special_fields("Mammal");
+    Layout();
 }
 
 // getters
@@ -236,29 +219,7 @@ wxString AddEditDialog::get_health() const
     return health_input_->GetStringSelection();
 }
 
-double AddEditDialog::get_wingspan() const
-{
-    double val = 1.0;
-    wingspan_input_->GetValue().ToDouble(&val);
-    return val;
-}
-
-bool AddEditDialog::get_can_fly() const
-{
-    return can_fly_input_->IsChecked();
-}
-
-bool AddEditDialog::get_is_venomous() const
-{
-    return is_venomous_input_->IsChecked();
-}
-
-double AddEditDialog::get_body_length() const
-{
-    double val = 1.0;
-    body_length_input_->GetValue().ToDouble(&val);
-    return val;
-}
+// VALIDATION
 
 // called when user clicks Save - validates input and closes dialog with wxID_OK
 void AddEditDialog::on_ok(wxCommandEvent &event)
@@ -280,6 +241,30 @@ void AddEditDialog::on_ok(wxCommandEvent &event)
         wxMessageBox("Weight must be positive number.", "Validation Error", wxICON_WARNING);
         return;
     }
+     // validate numeric special_info fields — a field is numeric if its default value in species.json is a number
+    std::string cat = category_input_->GetStringSelection().ToStdString();
+    auto defaults = manager_->get_default_traits(cat);
+    for (const auto& [key, input] : dynamic_inputs_)
+    {
+        if (!defaults.count(key)) 
+        {  
+           continue; 
+        }
+
+        double test;
+        bool default_is_numeric = wxString(defaults.at(key)).ToDouble(&test);
+        if (!default_is_numeric) 
+        { 
+            continue;
+        } 
+
+        double entered;
+        if (!input->GetValue().ToDouble(&entered))
+        {
+            wxMessageBox(key + " must be a number.", "Validation Error", wxICON_WARNING);
+            return;
+        }
+    }
     EndModal(wxID_OK);
 }
 
@@ -291,16 +276,21 @@ void AddEditDialog::on_category_changed(wxCommandEvent &event)
 
     std::vector<std::string> species = manager_->get_species_for_category(cat);
 
-    for (const auto &s : species)
+    for (const auto &s : manager_->get_species_for_category(cat))
     {
         species_input_->Append(s);
     }
 
     // Safety check: only select 0 if the list isn't empty
-    if (!species.empty())
+    if (!manager_->get_species_for_category(cat).empty())
     {
         species_input_->SetSelection(0);
     }
 
-    update_special_fields(cat);
+    // Update dynamic fields ONLY if we are adding a NEW animal.
+    // If editing, we keep the animal's existing map.
+    if (!animal_editing_)
+    {
+        build_dynamic_fields(manager_->get_default_traits(cat));
+    }
 }

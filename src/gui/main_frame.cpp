@@ -120,10 +120,9 @@ void MainFrame::update_status_text(){
 //reads from animal_manager and draw table
 void MainFrame::fill_table(const std::vector<Animal*> animals)
 {
-    if(table_->GetNumberRows() > 0){
+    if (table_->GetNumberRows() > 0)
         table_->DeleteRows(0, table_->GetNumberRows());
-    }
-
+        
     int row_id = 0;
     for(Animal* animal : animals){
         table_->AppendRows(1);

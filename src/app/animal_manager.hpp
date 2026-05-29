@@ -22,6 +22,8 @@ private:
 
     std::map<std::string, std::vector<std::string>> species_list_;
 
+    std::map<std::string, std::map<std::string, std::string>> default_traits_;
+
 public:
     Animal_Manager();
     void save();
@@ -37,7 +39,9 @@ public:
     uint64_t total_count();
 
     void load_species();
+    
     std::vector<std::string> get_species_for_category(const std::string& category) const;
+    std::map<std::string, std::string> get_default_traits(const std::string& category) const;
 
 }; // class
 

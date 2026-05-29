@@ -1,59 +1,5 @@
 [
     {
-        "age": 2,
-        "category": "Bird",
-        "enclosure": "Rainforest",
-        "health": "Healthy",
-        "id": 17,
-        "name": "Lucky",
-        "special_info": {
-            "can_fly": "true",
-            "wingspan": "1.000000"
-        },
-        "species": "Parrot",
-        "weight": 0.3
-    },
-    {
-        "age": 3,
-        "category": "Amphibian",
-        "enclosure": "Wetlands",
-        "health": "Healthy",
-        "id": 18,
-        "name": "Sala",
-        "species": "Salamander",
-        "weight": 0.2
-    },
-    {
-        "age": 4,
-        "category": "Amphibian",
-        "enclosure": "Pond",
-        "health": "Sick",
-        "id": 19,
-        "name": "Toad",
-        "species": "Toad",
-        "weight": 0.4
-    },
-    {
-        "age": 1,
-        "category": "Amphibian",
-        "enclosure": "Aquarium",
-        "health": "Healthy",
-        "id": 20,
-        "name": "Axel",
-        "species": "Axolotl",
-        "weight": 0.15
-    },
-    {
-        "age": 12,
-        "category": "Fish",
-        "enclosure": "Aquarium",
-        "health": "In Treatment",
-        "id": 2,
-        "name": "Nora",
-        "species": "Clownfish",
-        "weight": 30.0
-    },
-    {
         "age": 7,
         "category": "Bird",
         "enclosure": "Jungle",
@@ -88,20 +34,6 @@
         "weight": 100.0
     },
     {
-        "age": 1,
-        "category": "Bird",
-        "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 9,
-        "name": "kk",
-        "special_info": {
-            "can_fly": "true",
-            "wingspan": "1.000000"
-        },
-        "species": "Parrot",
-        "weight": 2.0
-    },
-    {
         "age": 3,
         "category": "Amphibian",
         "enclosure": "Pond",
@@ -112,13 +44,87 @@
         "weight": 0.2
     },
     {
+        "age": 10,
+        "category": "Mammal",
+        "enclosure": "Jungle",
+        "health": "Sick",
+        "id": 7,
+        "name": "Vuky",
+        "special_info": {
+            "fur_color": "12312ankafn,s",
+            "is_carnivore": "true"
+        },
+        "species": "Gorilla",
+        "weight": 300.0
+    },
+    {
         "age": 1,
         "category": "Fish",
         "enclosure": "Aquarium",
-        "health": "In Treatment",
-        "id": 11,
-        "name": "Ogi",
+        "health": "Healthy",
+        "id": 8,
+        "name": "Nemo",
+        "special_info": {
+            "fin_count": "2321432142453415431342541243513`",
+            "water_type": "freshwater"
+        },
         "species": "Clownfish",
         "weight": 0.1
+    },
+    {
+        "age": 2,
+        "category": "Fish",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 9,
+        "name": "Luna",
+        "special_info": {
+            "fin_count": "6",
+            "water_type": "freshwater"
+        },
+        "species": "Clownfish",
+        "weight": 2.0
+    },
+    {
+        "age": 3,
+        "category": "Fish",
+        "enclosure": "Aquarium",
+        "health": "Healthy",
+        "id": 9,
+        "name": "Levin",
+        "special_info": {
+            "fin_count": "3",
+            "water_type": "freshwater"
+        },
+        "species": "Tuna",
+        "weight": 12.0
+    },
+    {
+        "age": 2,
+        "category": "Mammal",
+        "enclosure": "Rainforest",
+        "health": "In Treatment",
+        "id": 9,
+        "name": "Roko",
+        "special_info": {
+            "fur_color": "black",
+            "is_carnivore": "true"
+        },
+        "species": "Wolf",
+        "weight": 50.0
+    },
+    {
+        "age": 2,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 10,
+        "name": "rita",
+        "special_info": {
+            "fur_color": "brown",
+            "is_carnivore": "false"
+        },
+        "species": "Lion",
+        "weight": 2.0
     }
 ]

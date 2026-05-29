@@ -106,23 +106,23 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     
     if(category == "Bird") 
     {
-        a = Bird::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
+        a = new Bird(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Reptile") 
     {
-        a = Reptile::create_from_map(id, name, species, age, weight, enclosure, own_health, special_info);
+        a = new Reptile(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Mammal") 
     {
-        a = new Mammal(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
-    }
+        a = new Mammal(id, name, species, age, weight, enclosure, own_health,special_info); 
+    }  
     else if(category == "Fish") 
     {
-        a = new Fish(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
+        a = new Fish(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     else if(category == "Amphibian") 
     {
-        a = new Amphibian(id, name, species, age, weight, enclosure, own_health); // FIXME VIKTOR
+        a = new Amphibian(id, name, species, age, weight, enclosure, own_health, special_info);
     }
     
     if (a != nullptr) 
@@ -179,7 +179,8 @@ bool Animal_Manager::remove_animal(uint64_t id)
     return false;
 }
 
-
+// loads species lists and default traits from species.json
+// species.json is the single source of truth for both
 void Animal_Manager::load_species()
 {
     std::ifstream file("../species.json");
@@ -187,18 +188,53 @@ void Animal_Manager::load_species()
 
     nlohmann::json j;
     file >> j;
+    
+    //species list
     for (auto& [category, species] : j.items()) 
     {
-        for (auto& s : species) 
+        if (category != "default_traits") 
         {
-            species_list_[category].push_back(s.get<std::string>());
+            for (auto& s : species) 
+            {
+                species_list_[category].push_back(s.get<std::string>());
+            }
         }
     }
+
+    // default traits
+    if (j.contains("default_traits")) 
+    {
+        for (auto& [cat, traits] : j["default_traits"].items()) 
+        {
+            for (auto& [key, val] : traits.items())
+            {
+                default_traits_[cat][key] = val.get<std::string>();  
+            }
+        }
+    }        
+                    
 }
 
+// returns the default special_info map for a given category
+// if the category has no defaults defined, returns an empty map
+std::map<std::string, std::string> Animal_Manager::get_default_traits(const std::string& category) const
+{
+    auto it = default_traits_.find(category);
+    if (it != default_traits_.end()) 
+    {
+        return it->second;
+    }
+    return {};
+}
+
+// returns the species list for a given category
+// used by AddEditDialog to populate the species dropdown
 std::vector<std::string> Animal_Manager::get_species_for_category(const std::string& category) const
 {
     auto it = species_list_.find(category);
-    if (it != species_list_.end()) return it->second;
+    if (it != species_list_.end()) 
+    {
+        return it->second;
+    }
     return {};
 }
