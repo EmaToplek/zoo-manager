@@ -10,6 +10,7 @@ if(wxWidgets_USE_FILE)
 endif()
 # sudo apt install nlohmann-json3-dev
 find_package(nlohmann_json REQUIRED)
+enable_testing()
 
 set(SOURCES
     src/app/zoo_app.cpp
@@ -37,3 +38,32 @@ target_link_libraries(ZooManager PRIVATE
     ${wxWidgets_LIBRARIES}
     nlohmann_json::nlohmann_json
 )
+
+
+add_executable(zoo_test
+    src/test/zoo_test.cpp
+    src/test/catch_amalgamated.cpp
+
+    src/animals/animal.cpp
+    src/animals/bird.cpp
+    src/animals/fish.cpp
+    src/animals/mammal.cpp
+    src/animals/reptile.cpp
+    src/animals/amphibian.cpp
+    src/app/animal_manager.cpp
+)
+
+target_include_directories(zoo_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/animals
+    ${CMAKE_SOURCE_DIR}/src/app
+)
+
+target_link_libraries(zoo_test PRIVATE
+    pthread
+)
+
+add_test(NAME ZooTests COMMAND zoo_test)
+
+
+
