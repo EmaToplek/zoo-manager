@@ -97,6 +97,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     add_button_->Bind(wxEVT_BUTTON, &MainFrame::on_add_animal, this); 
 
     search_->Bind(wxEVT_TEXT, &MainFrame::on_search_changed, this);
+    category_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
+    status_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
     
     //status bar at the bottom of the window
     CreateStatusBar();
@@ -241,16 +243,40 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
     }
 }
 
-// called on every keystroke — rebuilds table from search results
-void MainFrame::on_search_changed(wxCommandEvent& event)
+// applies all active filters (search, category, status) and refreshes the table
+// filters are cumulative — each one narrows down the previous result
+void MainFrame::on_filter_changed(wxCommandEvent& event)
 {
     std::string query = search_->GetValue().ToStdString();
+    std::string category = category_dropdown_->GetStringSelection().ToStdString();
+    std::string status = status_dropdown_->GetStringSelection().ToStdString();
 
-    std::vector<Animal*> result = query.empty() ? animal_manager_->get_all_animals() : animal_manager_->search(query);
+    std::vector<Animal*> result = animal_manager_->get_all_animals();
+
+    if (!query.empty())
+    {
+        result = animal_manager_->search(query);
+    }
+
+    if (category != "All categories")
+    {
+        std::erase_if(result, [&](Animal* a) { return a->get_category_to_string() != category; });
+    }
+
+    if (status != "All statuses")
+    {
+        std::erase_if(result, [&](Animal* a) { return a->get_health_status_to_string() != status; });
+    }
 
     fill_table(result);
     selected_index_ = -1;
     edit_button_->Disable();
     remove_button_->Disable();
     detail_panel_->clear();
+}
+
+// called on every keystroke — rebuilds table from search results
+void MainFrame::on_search_changed(wxCommandEvent& event)
+{
+    on_filter_changed(event);
 }

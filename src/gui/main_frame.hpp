@@ -29,7 +29,8 @@ private:
     void on_edit_animal(wxCommandEvent& event); 
     void update_status_text();
     void on_search_changed(wxCommandEvent& event);
-
+    void on_filter_changed(wxCommandEvent& event);
+    
 public:
     MainFrame(const wxString& title); 
     
