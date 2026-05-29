@@ -53,6 +53,10 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     animals_list_.push_back(a);
 }
 
+void Animal_Manager::add_animal(Animal* animal){
+    animals_list_.push_back(animal);
+}
+
 // returns a reference to the internal list without copying
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
