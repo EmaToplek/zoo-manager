@@ -6,6 +6,7 @@ Animal_Manager::Animal_Manager()
 { 
     load_species(); 
 }
+#include <filesystem>
 
 
 // reads data.json and deserializes each entry into correct Animal subclass
@@ -14,32 +15,29 @@ void Animal_Manager::load()
 {
     //opens data.json and parses its contents
     std::ifstream file("../data.json");
-    nlohmann::json j;
-    file >> j;
-    
-    //for each entry in json array, extracts fields and calls add_animal()
-    for(auto& animal : j) {
-        uint64_t id = animal["id"];
-        std::string name = animal["name"];
-        std::string species = animal["species"];
-        std::string category = animal["category"];
-        uint64_t age = animal["age"];
-        double weight = animal["weight"];
-        std::string enclosure = animal["enclosure"];
-        std::string health = animal["health"];
-
-        // read special_info block from JSON into map if it exists
-        std::map<std::string, std::string> special_info;
-        if (animal.contains("special_info")) 
-        {
-            for (auto& [key, val] : animal["special_info"].items()) 
-            {
-                special_info[key] = val.get<std::string>();
-            }
+    if(!file) {
+        std::cerr << "File doesn't exists!Adding demo animals!" << std::endl;
+        add_animal(1, "Leo", "Lion", "Mammal", 4, 192.0, "Savannah", "In Treatment");
+        add_animal(19, "Toad", "Amphibian", "Amphibian", 4, 0.4, "Pond", "Sick");
+    } else{
+        nlohmann::json j;
+        file >> j;
+        
+        //for each entry in json array, extracts fields and calls add_animal()
+        for(auto& animal : j) {
+            uint64_t id = animal["id"];
+            std::string name = animal["name"];
+            std::string species = animal["species"];
+            std::string category = animal["category"];
+            uint64_t age = animal["age"];
+            double weight = animal["weight"];
+            std::string enclosure = animal["enclosure"];
+            std::string health = animal["health"];
+        
+            add_animal(id, name, species, category, age, weight, enclosure, health);
         }
-
-        add_animal(id, name, species, category, age, weight, enclosure, health, -1, special_info);
     }
+    
 }
 
 // serializes all animals from memory to data.json
@@ -137,6 +135,10 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
             animals_list_.push_back(a);
         }    
     }
+}
+
+void Animal_Manager::add_animal(Animal* animal){
+    animals_list_.push_back(animal);
 }
 
 // returns a reference to the internal list without copying

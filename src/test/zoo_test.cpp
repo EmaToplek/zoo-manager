@@ -122,3 +122,54 @@ TEST_CASE("Load animal", "[Animal manager][load_animal]") {
 }
 */
 
+TEST_CASE("Animal total count", "[Animal manager][total count]"){
+    Animal_Manager manager;
+    Mammal* mammal = new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::In_Treatment);
+    REQUIRE(manager.total_count() == 0);
+    manager.add_animal(mammal);
+    REQUIRE(manager.total_count() == 1);
+}
+
+TEST_CASE("Category count", "[Animal manager][category count]") {
+    Animal_Manager manager;
+    Mammal* mammal = new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::In_Treatment);
+    Amphibian* amphibian = new Amphibian(19, "Toad", "Amphibian", 4, 0.4, "Pond", HealthStatus::Sick);
+    manager.add_animal(mammal);
+    manager.add_animal(amphibian);
+    uint64_t mammal_count = 0;
+    uint64_t fish_count = 0;
+    uint64_t amphibian_count = 0;
+    uint64_t bird_count = 0;
+    uint64_t reptile_count = 0;
+    manager.category_count(mammal_count, fish_count, bird_count, reptile_count, amphibian_count);
+    REQUIRE(mammal_count == 1);
+    REQUIRE(fish_count == 0);
+    REQUIRE(amphibian_count == 1);
+    REQUIRE(reptile_count == 0);
+    REQUIRE(bird_count == 0);
+}
+/*
+TEST_CASE("Save animal", "[Animal manager][save_animal]") {
+    Animal_Manager manager;
+    Mammal* mammal = new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::In_Treatment);
+    Amphibian* amphibian = new Amphibian(19, "Toad", "Amphibian", 4, 0.4, "Pond", HealthStatus::Sick);
+    manager.add_animal(mammal);
+    manager.add_animal(amphibian);
+    manager.save();
+    //Count animals in data.json
+    
+    std::ifstream file("../data.json");
+    nlohmann::json j;
+    file >> j;
+    std::size_t count = j.size();
+    REQUIRE(count == 2 );    
+}
+*/
+TEST_CASE("Demo animal", "[Animal manager][load demo animals]") {
+    Animal_Manager manager;
+    std::filesystem::rename("../data.json", "data2.json");
+    manager.load();
+    CHECK(manager.total_count() == 2);
+    std::filesystem::rename("data2.json", "../data.json");
+}
+
