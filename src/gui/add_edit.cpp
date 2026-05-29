@@ -16,20 +16,6 @@ static void add_row(wxWindow* parent, wxBoxSizer *sizer, const wxString &label, 
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
-// Gives us a baseline if the user is creating a completely new animal
-std::map<std::string, std::string> AddEditDialog::get_default_traits(const std::string& category)
-{
-    if (category == "Bird") 
-    {
-        return {{"can_fly", "true"}, {"wingspan", "1.0"}};
-    }
-    if (category == "Reptile") 
-    {
-        return {{"is_venomous", "false"}, {"body_length", "1.0"}};
-    } 
-    return {}; 
-}
-
 // Iterate through the dynamic UI inputs and package them back into a map for saving
 std::map<std::string, std::string> AddEditDialog::get_special_info() const
 {
@@ -44,31 +30,24 @@ std::map<std::string, std::string> AddEditDialog::get_special_info() const
 // Rebuilds the UI based entirely on the keys in the map
 void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string>& info)
 {
-    // Clear out any old fields from previous category selections
     dynamic_sizer_->Clear(true);
     dynamic_inputs_.clear();
 
-    // Iterate through the map and spawn a text box for every key
     for (const auto& [key, value] : info) 
     {
         wxTextCtrl* input = new wxTextCtrl(this, wxID_ANY, value);
         
-        // Format the key for display
         add_row(this, dynamic_sizer_, key + ":", input);
-        
-        // Store pointer so we can read it later on Save
         dynamic_inputs_[key] = input;
     }
-    
-    // Force the window to resize and redraw with the new fields
+
     Layout();
-    Fit(); 
-}
+   }
 
 // if animal is nullptr - Add mode (empty fields)
 // if animal provided - Edit mode (fields pre-filled with existing data)
 AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *animal)
-    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(400, 560)),
+    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(420, 650)),
       manager_(manager), animal_editing_(animal)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
@@ -109,12 +88,14 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
 
     category_input_ = make_choice(this, categories);
     enclosure_input_ = make_choice(this, enclosures);
-    health_input_ = make_choice(this, health_states);*/
+    health_input_ = make_choice(this, health_states);
+    
+    */
+
 
     // species dropdown is populated from Animal_Manager on startup (defaults to Mammal)
     // manager reads species.json — subclasses have no knowledge of the species list
     // GUI never hardcodes species; it always queries the manager
-
     wxArrayString initial_species;
     for (const auto &s : manager_->get_species_for_category("Mammal"))
     {
@@ -147,7 +128,7 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     dynamic_sizer_ = new wxBoxSizer(wxVERTICAL);
     sizer->Add(dynamic_sizer_, 1, wxEXPAND | wxALL, 0);
 
-    // --- SAVE / CANCEL BUTTONS ---
+    // save/cancle btns
     wxButton* ok_btn = new wxButton(this, wxID_ANY, "Save");
     wxButton* cancel_btn = new wxButton(this, wxID_CANCEL, "Cancel");
     ok_btn->Bind(wxEVT_BUTTON, &AddEditDialog::on_ok, this);
@@ -180,7 +161,7 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     else 
     {
         // Build dynamic fields using default template for a new Mammal
-        build_dynamic_fields(get_default_traits("Mammal"));
+        build_dynamic_fields(manager_->get_default_traits("Mammal"));
     }
 
     SetSizer(sizer);
@@ -260,20 +241,21 @@ void AddEditDialog::on_category_changed(wxCommandEvent &event)
 
     std::vector<std::string> species = manager_->get_species_for_category(cat);
 
-    for (const auto &s : species)
+    for (const auto &s : manager_->get_species_for_category(cat))
     {
         species_input_->Append(s);
     }
 
     // Safety check: only select 0 if the list isn't empty
-    if (!species.empty())
+    if (!manager_->get_species_for_category(cat).empty())
     {
         species_input_->SetSelection(0);
     }
 
     // Update dynamic fields ONLY if we are adding a NEW animal.
     // If editing, we keep the animal's existing map.
-    if (!animal_editing_) {
-        build_dynamic_fields(get_default_traits(cat));
+    if (!animal_editing_) 
+    {
+        build_dynamic_fields(manager_->get_default_traits(cat));
     }
 }

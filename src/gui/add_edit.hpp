@@ -47,7 +47,6 @@ private:
 
     // Generates UI fields dynamically based on a map
     void build_dynamic_fields(const std::map<std::string, std::string>& info);
-    std::map<std::string, std::string> get_default_traits(const std::string& category);
 };
 
 

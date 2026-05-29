@@ -3,5 +3,12 @@
     "Reptile": ["Komodo Dragon", "Gecko", "Iguana", "Crocodile", "Boa Constrictor", "Chameleon", "Tortoise"],
     "Mammal": ["Lion", "Tiger", "Elephant", "Zebra", "Gorilla", "Giraffe", "Hippo", "Cheetah", "Wolf", "Bear"],
     "Fish": ["Clownfish", "Shark", "Blue Tang", "Goldfish", "Piranha", "Tuna", "Salmon", "Seahorse"],
-    "Amphibian":["Frog", "Salamander", "Axolotl", "Tree Frog", "Toad", "Newt"]
+    "Amphibian": ["Frog", "Salamander", "Axolotl", "Tree Frog", "Toad", "Newt"],
+    "default_traits": {
+        "Bird": {"can_fly": "true", "wingspan": "1.0"},
+        "Reptile": {"is_venomous": "false", "body_length": "1.0"},
+        "Mammal": {"fur_color": "brown", "is_carnivore": "true"},
+        "Fish": {"water_type": "freshwater", "fin_count": "7"},
+        "Amphibian": {"is_poisonous": "false", "skin_type": "moist"}
+    }
 }

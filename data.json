@@ -1,25 +1,5 @@
 [
     {
-        "age": 4,
-        "category": "Amphibian",
-        "enclosure": "Pond",
-        "health": "Sick",
-        "id": 19,
-        "name": "Toad",
-        "species": "Toad",
-        "weight": 0.4
-    },
-    {
-        "age": 1,
-        "category": "Amphibian",
-        "enclosure": "Aquarium",
-        "health": "Healthy",
-        "id": 20,
-        "name": "Axel",
-        "species": "Axolotl",
-        "weight": 0.15
-    },
-    {
         "age": 12,
         "category": "Fish",
         "enclosure": "Aquarium",
@@ -62,20 +42,6 @@
         "name": "Birdy",
         "species": "Lion",
         "weight": 100.0
-    },
-    {
-        "age": 1,
-        "category": "Bird",
-        "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 9,
-        "name": "kk",
-        "special_info": {
-            "can_fly": "true",
-            "wingspan": "1.000000"
-        },
-        "species": "Parrot",
-        "weight": 2.0
     },
     {
         "age": 3,
