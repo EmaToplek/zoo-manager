@@ -19,11 +19,7 @@ public:
     std::string get_habitat() const override;
     double get_min_enclosure_size() const override;
 
-    std::string get_special_info() const override;
-
     std::map<std::string, std::string> get_special_info_map() const override;
-
-    void update_special_info(const std::string& key, const std::string& value);
 
 private:
     std::map<std::string, std::string> special_info_;

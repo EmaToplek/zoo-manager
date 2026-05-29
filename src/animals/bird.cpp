@@ -13,18 +13,17 @@ Bird::Bird (uint64_t id, const std::string& name, const std::string& species,
 // Static Factory Method — called when loading from JSON
 // extracts and converts string values from map, then calls the constructor above
 // Bird class owns this logic
-Bird* Bird::create_from_map(uint64_t id, const std::string& name, const std::string& species,
+/*Bird* Bird::create_from_map(uint64_t id, const std::string& name, const std::string& species,
     uint64_t age, double weight, const std::string& enclosure, 
     HealthStatus health_status, const std::map<std::string, std::string>& special_info)
 {
     return new Bird(id, name, species, age, weight, enclosure, health_status, special_info);
 }
-
+*/
 
 
 AnimalCategory Bird::get_category() const { return AnimalCategory::Bird; }
 
-// bird always live in aviary, not possible to make bird with habitat desert
 std::string Bird::get_feeding_type() const { return "Seeds/Insects"; }
 std::string Bird::get_habitat() const { return "Aviary"; }
 double Bird::get_min_enclosure_size() const { return 50.0; }
@@ -35,22 +34,6 @@ double Bird::get_min_enclosure_size() const { return 50.0; }
 std::map<std::string, std::string> Bird::get_special_info_map() const 
 {
     return special_info_;     
-}
-
-// returns human-readable string for GUI detail panel
-std::string Bird::get_special_info() const
-{
-    std::ostringstream oss;
-    for (const auto& [key, val] : special_info_) 
-    {
-        oss << key << ": " << val << "\n";
-    }
-    return oss.str();
-}
-
-void Bird::update_special_info(const std::string& key, const std::string& value) 
-{
-    special_info_[key] = value;
 }
 
 

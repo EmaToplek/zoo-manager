@@ -27,6 +27,15 @@ std::map<std::string, std::string> AddEditDialog::get_special_info() const
     return current_info;
 }
 
+// formats map key for display in dialog labels
+static std::string format_key(const std::string& key)
+{
+    std::string result = key;
+    std::replace(result.begin(), result.end(), '_', ' ');
+    result[0] = std::toupper(result[0]);
+    return result;
+}
+
 // Rebuilds the UI based entirely on the keys in the map
 void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string> &info)
 {
@@ -37,7 +46,7 @@ void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string
     {
         wxTextCtrl *input = new wxTextCtrl(this, wxID_ANY, value);
 
-        add_row(this, dynamic_sizer_, key + ":", input);
+        add_row(this, dynamic_sizer_, format_key(key) + ":", input);
         dynamic_inputs_[key] = input;
     }
 
@@ -47,7 +56,7 @@ void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string
 // if animal is nullptr - Add mode (empty fields)
 // if animal provided - Edit mode (fields pre-filled with existing data)
 AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *animal)
-    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(420, 650)),
+    : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(420, 750)),
       manager_(manager), animal_editing_(animal)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);

@@ -8,14 +8,14 @@ Reptile::Reptile(uint64_t id, const std::string& name, const std::string& specie
     : Animal (id, name, species, age, weight, enclosure, health_status),
     special_info_(special_info)
 {}
-
+/*
 Reptile* Reptile::create_from_map(uint64_t id, const std::string& name, const std::string& species,
     uint64_t age, double weight, const std::string& enclosure, 
     HealthStatus health_status, const std::map<std::string, std::string>& special_info)
 {
     return new Reptile(id, name, species, age, weight, enclosure, health_status, special_info);
 }
-
+*/
 
 AnimalCategory Reptile::get_category() const { return AnimalCategory::Reptile; }
 
@@ -29,20 +29,6 @@ std::map<std::string, std::string> Reptile::get_special_info_map() const
      
 }
 
-std::string Reptile::get_special_info() const 
-{
-    std::ostringstream oss;
-    for (const auto& [key, val] : special_info_) 
-    {
-        oss << key << ": " << val << "\n";
-    }
-    return oss.str();
-}
-
-void Reptile::update_special_info(const std::string& key, const std::string& value) 
-{
-    special_info_[key] = value;
-}
 
 
 
