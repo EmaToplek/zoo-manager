@@ -138,10 +138,6 @@ void Animal_Manager::add_animal(uint64_t id, const std::string& name,
     }
 }
 
-void Animal_Manager::add_animal(Animal* animal){
-    animals_list_.push_back(animal);
-}
-
 // returns a reference to the internal list without copying
 const std::vector<Animal*>& Animal_Manager::get_all_animals() const{
     return animals_list_;
@@ -163,6 +159,30 @@ void Animal_Manager::category_count(uint64_t& mammal_count, uint64_t& fish_count
 
 uint64_t Animal_Manager::total_count(){
     return animals_list_.size();
+}
+
+// counts animals per health status
+void Animal_Manager::health_count(uint64_t& healthy, uint64_t& sick, uint64_t& in_treatment) const
+{
+    healthy = 0;
+    sick = 0;
+    in_treatment = 0;
+
+    for (Animal* animal : animals_list_)
+    {
+        switch (animal->get_health_status())
+        {
+            case HealthStatus::Healthy: 
+                healthy++; 
+                break;
+            case HealthStatus::Sick: 
+                sick++; 
+                break;
+            case HealthStatus::In_Treatment: 
+                in_treatment++; 
+                break;
+        }
+    }
 }
 
 
@@ -263,4 +283,9 @@ std::vector<Animal*> Animal_Manager::search(const std::string& query) const
     }
     
     return result;
+}
+
+void Animal_Manager::add_animal(Animal* animal)
+{
+    animals_list_.push_back(animal);
 }

@@ -37,6 +37,7 @@ public:
     std::vector<Animal*> filter_by_status(HealthStatus status) const;
     void category_count(uint64_t& mammal_count, uint64_t& fish_count, uint64_t& bird_count, uint64_t& reptile_count, uint64_t& amphibian_count);
     uint64_t total_count();
+    void health_count(uint64_t& healthy, uint64_t& sick, uint64_t& in_treatment) const;
 
     void load_species();
     
@@ -44,6 +45,8 @@ public:
     std::map<std::string, std::string> get_default_traits(const std::string& category) const;
 
     std::vector<Animal*> search(const std::string& query) const;
+
+    void add_animal(Animal* animal); // used by tests 
 
 }; // class
 
