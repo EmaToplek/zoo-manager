@@ -50,6 +50,7 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); //creates new wxStaticText on heap and saves addr directly into name_val
         set_font(*val_ptr, 13, false);
+        (*val_ptr)->SetForegroundColour(wxColour(80, 60, 30));
         sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
@@ -80,6 +81,7 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
 
         *val_ptr = new wxStaticText(this, wxID_ANY, ""); 
         set_font(*val_ptr, 13, false);
+        (*val_ptr)->SetForegroundColour(wxColour(80, 60, 30));  
         sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
@@ -106,7 +108,7 @@ void DetailPanel::show_animal(Animal* animal)
         {health_val_, animal->get_health_status_to_string()},
         {feeding_val_, animal->get_feeding_type()},
         {habitat_val_, animal->get_habitat()},
-        {enclosure_size_val_, wxString::Format("%.1f m²", animal->get_min_enclosure_size())},
+        {enclosure_size_val_, wxString::Format("%.1f m2", animal->get_min_enclosure_size())},
         {special_info_val_, animal->get_special_info()},
     };
 

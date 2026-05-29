@@ -120,13 +120,9 @@ void MainFrame::update_status_text(){
 //reads from animal_manager and draw table
 void MainFrame::fill_table(const std::vector<Animal*> animals)
 {
-   wxLogDebug("fill_table called, %zu animals", animals.size());
-    wxLogDebug("table_ ptr=%p", (void*)table_);
-    wxLogDebug("rows before delete=%d", table_->GetNumberRows());
-    if(table_->GetNumberRows() > 0){
+    if (table_->GetNumberRows() > 0)
         table_->DeleteRows(0, table_->GetNumberRows());
-    }
-
+        
     int row_id = 0;
     for(Animal* animal : animals){
         table_->AppendRows(1);
@@ -164,10 +160,6 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
 // wxGridEvent::GetRow() replaces wxListEvent::GetIndex()
 void MainFrame::on_animal_selected(wxGridEvent& event)
 {
-    int row = event.GetRow();
-    wxLogDebug("on_animal_selected fired, row=%d, total animals=%zu", 
-               row, animal_manager_->get_all_animals().size());
-
     selected_index_ = event.GetRow();
     if (selected_index_ >= 0 && selected_index_ < (long)animal_manager_->get_all_animals().size())
     {

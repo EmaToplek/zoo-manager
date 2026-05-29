@@ -1,15 +1,5 @@
 [
     {
-        "age": 3,
-        "category": "Amphibian",
-        "enclosure": "Wetlands",
-        "health": "Healthy",
-        "id": 18,
-        "name": "Sala",
-        "species": "Salamander",
-        "weight": 0.2
-    },
-    {
         "age": 4,
         "category": "Amphibian",
         "enclosure": "Pond",
@@ -96,16 +86,6 @@
         "name": "Fogy",
         "species": "Frog",
         "weight": 0.2
-    },
-    {
-        "age": 1,
-        "category": "Mammal",
-        "enclosure": "Jungle",
-        "health": "Healthy",
-        "id": 11,
-        "name": "Lila",
-        "species": "Lion",
-        "weight": 32.0
     },
     {
         "age": 1,
