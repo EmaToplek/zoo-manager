@@ -165,5 +165,11 @@ TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     REQUIRE(count == 2 );    
 }
 */
-
+TEST_CASE("Demo animal", "[Animal manager][load demo animals]") {
+    Animal_Manager manager;
+    std::filesystem::rename("../data.json", "data2.json");
+    manager.load();
+    CHECK(manager.total_count() == 2);
+    std::filesystem::rename("data2.json", "../data.json");
+}
 
