@@ -1,6 +1,7 @@
 #include "animal_manager.hpp"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <algorithm>
 
 Animal_Manager::Animal_Manager() 
 { 
@@ -239,4 +240,27 @@ std::vector<std::string> Animal_Manager::get_species_for_category(const std::str
         return it->second;
     }
     return {};
+}
+
+// returns all animals whose name or species contains the query string (case-insensitive)
+std::vector<Animal*> Animal_Manager::search(const std::string& query) const
+{
+    std::vector<Animal*> result;
+    std::string lower_query = query;
+    std::transform(lower_query.begin(), lower_query.end(), lower_query.begin(), ::tolower);
+
+    for (Animal* animal : animals_list_)
+    {
+        std::string name = animal->get_name();
+        std::string species = animal->get_species();
+        std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+        std::transform(species.begin(), species.end(), species.begin(), ::tolower);
+
+        if (name.find(lower_query) != std::string::npos || species.find(lower_query) != std::string::npos)
+        {
+            result.push_back(animal);
+        }
+    }
+    
+    return result;
 }

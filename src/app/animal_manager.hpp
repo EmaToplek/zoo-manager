@@ -43,6 +43,8 @@ public:
     std::vector<std::string> get_species_for_category(const std::string& category) const;
     std::map<std::string, std::string> get_default_traits(const std::string& category) const;
 
+    std::vector<Animal*> search(const std::string& query) const;
+
 }; // class
 
 
