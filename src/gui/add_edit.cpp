@@ -232,6 +232,30 @@ void AddEditDialog::on_ok(wxCommandEvent &event)
         wxMessageBox("Weight must be positive number.", "Validation Error", wxICON_WARNING);
         return;
     }
+     // validate numeric special_info fields — a field is numeric if its default value in species.json is a number
+    std::string cat = category_input_->GetStringSelection().ToStdString();
+    auto defaults = manager_->get_default_traits(cat);
+    for (const auto& [key, input] : dynamic_inputs_)
+    {
+        if (!defaults.count(key)) 
+        {  
+           continue; 
+        }
+
+        double test;
+        bool default_is_numeric = wxString(defaults.at(key)).ToDouble(&test);
+        if (!default_is_numeric) 
+        { 
+            continue;
+        } 
+
+        double entered;
+        if (!input->GetValue().ToDouble(&entered))
+        {
+            wxMessageBox(key + " must be a number.", "Validation Error", wxICON_WARNING);
+            return;
+        }
+    }
     EndModal(wxID_OK);
 }
 
