@@ -10,18 +10,6 @@ Bird::Bird (uint64_t id, const std::string& name, const std::string& species,
     special_info_(special_info)
 {}
 
-// Static Factory Method — called when loading from JSON
-// extracts and converts string values from map, then calls the constructor above
-// Bird class owns this logic
-/*Bird* Bird::create_from_map(uint64_t id, const std::string& name, const std::string& species,
-    uint64_t age, double weight, const std::string& enclosure, 
-    HealthStatus health_status, const std::map<std::string, std::string>& special_info)
-{
-    return new Bird(id, name, species, age, weight, enclosure, health_status, special_info);
-}
-*/
-
-
 AnimalCategory Bird::get_category() const { return AnimalCategory::Bird; }
 
 std::string Bird::get_feeding_type() const { return "Seeds/Insects"; }

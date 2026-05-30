@@ -10,12 +10,7 @@ public:
     Bird(uint64_t id, const std::string& name, const std::string& species,
         uint64_t age, double weight, const std::string& enclosure, 
         HealthStatus health_status, const std::map<std::string, std::string>& special_info);
-    
-    // The Static Factory Method for JSON loading
-    static Bird* create_from_map(uint64_t id, const std::string& name, const std::string& species,
-        uint64_t age, double weight, const std::string& enclosure, 
-        HealthStatus health_status, const std::map<std::string, std::string>& special_info);
-    
+        
     //override pure virtuals from animals, so compiler throws an error if one is forgotten
     AnimalCategory get_category() const override; 
     std::string get_feeding_type() const override;

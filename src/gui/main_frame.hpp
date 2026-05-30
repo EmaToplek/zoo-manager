@@ -30,6 +30,8 @@ private:
     void update_status_text();
     void on_search_changed(wxCommandEvent& event);
     void on_filter_changed(wxCommandEvent& event);
+
+     void refresh_stats(const std::vector<Animal*>& animals);
     
 public:
     MainFrame(const wxString& title); 

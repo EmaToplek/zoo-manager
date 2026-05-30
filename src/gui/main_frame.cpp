@@ -85,9 +85,10 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
         panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         panel_->SetSizer(panel_sizer);
 
-    //fetches all animals from the manager and populates the table
-    const std::vector<Animal*> animals = animal_manager_->get_all_animals();
-    fill_table(animals);
+   // populate table and overview stats on startup
+    fill_table(animal_manager_->get_all_animals());
+    refresh_stats(animal_manager_->get_all_animals());
+ 
 
     // bind grid cell selection to detail panel update
     table_->Bind(wxEVT_GRID_SELECT_CELL, &MainFrame::on_animal_selected, this);
@@ -106,6 +107,29 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     
         
 }
+
+// counts health statuses in given list and pushes numbers to the overview boxes
+void MainFrame::refresh_stats(const std::vector<Animal*>& animals)
+{
+    uint64_t healthy = 0, sick = 0, in_treatment = 0;
+    for (Animal* a : animals)
+    {
+        switch (a->get_health_status())
+        {
+            case HealthStatus::Healthy: 
+                healthy++; 
+                break;
+            case HealthStatus::Sick:     
+                sick++; 
+                break;
+            case HealthStatus::In_Treatment: 
+                in_treatment++; 
+                break;
+        }
+    }
+    detail_panel_->update_stats(animals.size(), healthy, sick, in_treatment);
+}
+ 
 
 void MainFrame::update_status_text(){
     uint64_t mammal_count, fish_count, bird_count, reptile_count, amphibian_count;
@@ -135,6 +159,7 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
         table_->SetCellValue(row_id, 4, std::to_string(animal->get_weight()));
         table_->SetCellValue(row_id, 5, animal->get_enclosure());
         table_->SetCellValue(row_id, 6, animal->get_health_status_to_string());
+
         switch (animal->get_health_status())
         {
         case HealthStatus::Healthy:
@@ -189,8 +214,11 @@ void MainFrame::on_remove_animal(wxCommandEvent& event)
         animal_manager_->remove_animal(selected->get_id());
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
+        refresh_stats(animal_manager_->get_all_animals());
+        update_status_text();
         detail_panel_->clear();
         remove_button_->Disable();
+        edit_button_->Disable();
         selected_index_ = -1;
     }
 }
@@ -204,12 +232,20 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
     if(dialog.ShowModal() == wxID_OK) 
     {
         uint64_t new_id = animal_manager_->get_all_animals().size() + 1;
-        animal_manager_->add_animal(new_id, dialog.get_name().ToStdString(), dialog.get_species().ToStdString(), dialog.get_category().ToStdString(),
-                                    dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(), dialog.get_health().ToStdString(),
-                                    -1, dialog.get_special_info()); 
+        animal_manager_->add_animal(new_id, 
+            dialog.get_name().ToStdString(), 
+            dialog.get_species().ToStdString(), 
+            dialog.get_category().ToStdString(),
+            dialog.get_age(), 
+            dialog.get_weight(),
+            dialog.get_enclosure().ToStdString(), 
+            dialog.get_health().ToStdString(),
+            -1, dialog.get_special_info()); 
         
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
+        refresh_stats(animal_manager_->get_all_animals());
+        update_status_text();
     }
 }
 
@@ -229,13 +265,19 @@ void MainFrame::on_edit_animal(wxCommandEvent& event)
         size_t position = selected_index_;
         animal_manager_->remove_animal(id);
 
-        animal_manager_->add_animal(id, dialog.get_name().ToStdString(),
-            dialog.get_species().ToStdString(), dialog.get_category().ToStdString(),
-            dialog.get_age(), dialog.get_weight(), dialog.get_enclosure().ToStdString(),
-            dialog.get_health().ToStdString(), position, dialog.get_special_info());
+        animal_manager_->add_animal(id, 
+            dialog.get_name().ToStdString(),
+            dialog.get_species().ToStdString(), 
+            dialog.get_category().ToStdString(),
+            dialog.get_age(), dialog.get_weight(), 
+            dialog.get_enclosure().ToStdString(),
+            dialog.get_health().ToStdString(),
+            position, dialog.get_special_info());
       
         animal_manager_->save();
         fill_table(animal_manager_->get_all_animals());
+        refresh_stats(animal_manager_->get_all_animals());
+        update_status_text();
         detail_panel_->clear();
         selected_index_ = -1;
         edit_button_->Disable();
@@ -269,6 +311,7 @@ void MainFrame::on_filter_changed(wxCommandEvent& event)
     }
 
     fill_table(result);
+    refresh_stats(result);
     selected_index_ = -1;
     edit_button_->Disable();
     remove_button_->Disable();

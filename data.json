@@ -6,10 +6,6 @@
         "health": "Sick",
         "id": 3,
         "name": "Max",
-        "special_info": {
-            "can_fly": "true",
-            "wingspan": "1.200000"
-        },
         "species": "Parrot",
         "weight": 220.0
     },
@@ -34,26 +30,12 @@
         "weight": 100.0
     },
     {
-        "age": 3,
-        "category": "Amphibian",
-        "enclosure": "Pond",
-        "health": "Healthy",
-        "id": 10,
-        "name": "Fogy",
-        "species": "Frog",
-        "weight": 0.2
-    },
-    {
         "age": 10,
         "category": "Mammal",
         "enclosure": "Jungle",
         "health": "Sick",
         "id": 7,
         "name": "Vuky",
-        "special_info": {
-            "fur_color": "12312ankafn,s",
-            "is_carnivore": "true"
-        },
         "species": "Gorilla",
         "weight": 300.0
     },
@@ -64,10 +46,6 @@
         "health": "Healthy",
         "id": 8,
         "name": "Nemo",
-        "special_info": {
-            "fin_count": "2321432142453415431342541243513`",
-            "water_type": "freshwater"
-        },
         "species": "Clownfish",
         "weight": 0.1
     },
@@ -78,10 +56,6 @@
         "health": "Healthy",
         "id": 9,
         "name": "Luna",
-        "special_info": {
-            "fin_count": "6",
-            "water_type": "freshwater"
-        },
         "species": "Clownfish",
         "weight": 2.0
     },
@@ -92,10 +66,6 @@
         "health": "Healthy",
         "id": 9,
         "name": "Levin",
-        "special_info": {
-            "fin_count": "3",
-            "water_type": "freshwater"
-        },
         "species": "Tuna",
         "weight": 12.0
     },
@@ -106,25 +76,31 @@
         "health": "In Treatment",
         "id": 9,
         "name": "Roko",
-        "special_info": {
-            "fur_color": "black",
-            "is_carnivore": "true"
-        },
         "species": "Wolf",
         "weight": 50.0
     },
     {
-        "age": 2,
+        "age": 1,
         "category": "Mammal",
         "enclosure": "Savanna",
         "health": "Healthy",
         "id": 10,
-        "name": "rita",
+        "name": "akad",
+        "species": "Lion",
+        "weight": 1.0
+    },
+    {
+        "age": 1,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 10,
+        "name": "a",
         "special_info": {
             "fur_color": "brown",
-            "is_carnivore": "false"
+            "is_carnivore": "true"
         },
         "species": "Lion",
-        "weight": 2.0
+        "weight": 1.0
     }
 ]
