@@ -13,9 +13,34 @@ void DetailPanel::set_font(wxStaticText* widget, int size, bool bold)
     widget->SetFont(font);
 }
 
-DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent) 
+// builds a coloured stat box: label on top, big number below
+wxPanel* DetailPanel::make_stat_box(const wxString& label, wxStaticText** out_val, const wxColour& bg, const wxColour& fg)
+{
+    wxPanel* box = new wxPanel(this);
+    box->SetBackgroundColour(bg);
+ 
+    wxStaticText* lbl = new wxStaticText(box, wxID_ANY, label, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
+    set_font(lbl, 9, false);
+    lbl->SetForegroundColour(fg);
+ 
+    *out_val = new wxStaticText(box, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
+    set_font(*out_val, 20, true);
+    (*out_val)->SetForegroundColour(fg);
+ 
+    wxBoxSizer* s = new wxBoxSizer(wxVERTICAL);
+    s->AddStretchSpacer(1);
+    s->Add(lbl, 0, wxEXPAND | wxLEFT | wxRIGHT, 4);
+    s->Add(*out_val, 0, wxEXPAND | wxLEFT | wxRIGHT, 4);
+    s->AddStretchSpacer(1);
+    box->SetSizer(s);
+    box->SetMinSize(wxSize(70, 64));
+    return box;
+}
+
+DetailPanel::DetailPanel(wxWindow* parent) : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL)
 {
     SetBackgroundColour(wxColour(240, 230, 210));
+    SetScrollRate(0, 12);
 
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -88,7 +113,25 @@ DetailPanel::DetailPanel(wxPanel* parent) : wxPanel(parent)
         sizer->Add(*val_ptr, 0, wxLEFT | wxBOTTOM, 16);
     }
 
+    // overview section 
+    sizer->AddSpacer(12);
+    sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
+    sizer->AddSpacer(6);
 
+    wxStaticText* overview_title = new wxStaticText(this, wxID_ANY, "Overview");
+    set_font(overview_title, 15, true);
+    overview_title->SetForegroundColour(wxColour(60, 100, 50));
+    sizer->Add(overview_title, 0, wxALL, 12);
+ 
+    // 2x2 grid of stat boxes
+    wxGridSizer* grid = new wxGridSizer(2, 2, 8, 8);
+    grid->Add(make_stat_box("Total", &stat_total_val_, wxColour(200, 190, 170), wxColour(60, 40, 20)), 0, wxEXPAND);
+    grid->Add(make_stat_box("Healthy", &stat_healthy_val_, wxColour(173, 247, 180), wxColour(8, 45, 12)), 0, wxEXPAND);
+    grid->Add(make_stat_box("Sick", &stat_sick_val_, wxColour(239, 93, 132), wxColour(63,  13,  26)), 0, wxEXPAND);
+    grid->Add(make_stat_box("In Treatment", &stat_treatment_val_, wxColour(237, 221, 45), wxColour(63, 59, 12)), 0, wxEXPAND);
+ 
+    sizer->Add(grid, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 16);
+  
     SetSizer(sizer);
     clear();
 }
@@ -139,8 +182,21 @@ void DetailPanel::show_animal(Animal* animal)
     }
 
     health_val_->Refresh();
+
+    FitInside();
     Layout();
 }
+
+void DetailPanel::update_stats(uint64_t total, uint64_t healthy, uint64_t sick, uint64_t in_treatment)
+{
+    stat_total_val_->SetLabel(std::to_string(total));
+    stat_healthy_val_->SetLabel(std::to_string(healthy));
+    stat_sick_val_->SetLabel(std::to_string(sick));
+    stat_treatment_val_->SetLabel(std::to_string(in_treatment));
+    Layout();
+}
+
+
 
 void DetailPanel::clear()
 {
@@ -154,7 +210,10 @@ void DetailPanel::clear()
     };
 
     for (auto* val : all_vals)
+    {
         val->SetLabel("");
+    }
 
+    FitInside();
     Layout();
 }
