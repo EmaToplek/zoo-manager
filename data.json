@@ -85,20 +85,58 @@
         "enclosure": "Savanna",
         "health": "Healthy",
         "id": 10,
-        "name": "akad",
+        "name": "a",
         "species": "Lion",
         "weight": 1.0
     },
     {
         "age": 1,
         "category": "Mammal",
-        "enclosure": "Savanna",
+        "enclosure": "Jungle",
         "health": "Healthy",
         "id": 10,
         "name": "a",
+        "species": "Lion",
+        "weight": 1.0
+    },
+    {
+        "age": 1,
+        "category": "Fish",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 11,
+        "name": "a",
+        "special_info": {
+            "fin_count": "7",
+            "water_type": "freshwater"
+        },
+        "species": "Clownfish",
+        "weight": 1.0
+    },
+    {
+        "age": 2,
+        "category": "Reptile",
+        "enclosure": "Wetlands",
+        "health": "Healthy",
+        "id": 12,
+        "name": "Dila",
+        "special_info": {
+            "body_length": "2.0",
+            "is_venomous": "false"
+        },
+        "species": "Crocodile",
+        "weight": 80.0
+    },
+    {
+        "age": 1,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "Healthy",
+        "id": 13,
+        "name": "dada",
         "special_info": {
             "fur_color": "brown",
-            "is_carnivore": "true"
+            "is_carnivore": "dadfadfa"
         },
         "species": "Lion",
         "weight": 1.0

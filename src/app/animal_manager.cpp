@@ -35,7 +35,17 @@ void Animal_Manager::load()
             std::string enclosure = animal["enclosure"];
             std::string health = animal["health"];
         
-            add_animal(id, name, species, category, age, weight, enclosure, health);
+            std::map<std::string, std::string> special_info;
+            if (animal.contains("special_info")) 
+            {
+                for (auto& [key, val] : animal["special_info"].items()) 
+                {
+                    special_info[key] = val.get<std::string>();
+                }
+            }
+
+            add_animal(id, name, species, category, age, weight, enclosure, health, -1, special_info);
+
         }
     }
     
