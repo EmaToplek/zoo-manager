@@ -16,6 +16,7 @@ set(SOURCES
     src/app/zoo_app.cpp
     src/gui/main_frame.cpp
     src/gui/detail_panel.cpp
+    src/gui/add_edit.cpp
     src/animals/animal.cpp
     src/app/animal_manager.cpp
     src/animals/bird.cpp
@@ -61,6 +62,7 @@ target_include_directories(zoo_test PRIVATE
 
 target_link_libraries(zoo_test PRIVATE
     pthread
+    nlohmann_json::nlohmann_json
 )
 
 add_test(NAME ZooTests COMMAND zoo_test)

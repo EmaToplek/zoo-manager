@@ -1,32 +1,27 @@
 #include "reptile.hpp"
 #include <sstream>
-#include <iomanip>
 
 
 Reptile::Reptile(uint64_t id, const std::string& name, const std::string& species,
             uint64_t age, double weight, const std::string& enclosure, 
-            HealthStatus health_status, bool is_venomous, double body_length) 
+            HealthStatus health_status, const std::map<std::string, std::string>& special_info) 
     : Animal (id, name, species, age, weight, enclosure, health_status),
-    is_venomous_(is_venomous),
-    body_length_(body_length)
+    special_info_(special_info)
 {}
 
 AnimalCategory Reptile::get_category() const { return AnimalCategory::Reptile; }
 
 std::string Reptile::get_feeding_type() const { return "Insects/Small animals"; }
-std::string Reptile::get_habitat() const      { return "Jungle Terrarium"; }
+std::string Reptile::get_habitat() const  { return "Jungle Terrarium"; }
 double Reptile::get_min_enclosure_size() const { return 30.0; }
 
-bool Reptile::get_is_venomous() const { return is_venomous_; }
-
-std::string Reptile::get_special_info() const {
-    std::ostringstream oss;
-    oss << "Body length: " << std::fixed << std::setprecision(1) << body_length_ << "m\n"
-        << "Venomous: " << (is_venomous_ ? "Yes" : "No");
-    return oss.str();
+std::map<std::string, std::string> Reptile::get_special_info_map() const 
+{
+    return special_info_; 
+     
 }
 
-double Reptile::get_body_length() const { return body_length_; }
+
 
 
 

@@ -1,7 +1,9 @@
+#include <wx/wx.h>
+
 #include "zoo_app.hpp"
 #include "../gui/main_frame.hpp"
 
-#include <wx/wx.h>
+
 
 bool ZooApp::OnInit() 
 {
@@ -14,4 +16,4 @@ bool ZooApp::OnInit()
 
 }; 
 
-wxIMPLEMENT_APP(ZooApp); 
+wxIMPLEMENT_APP(ZooApp);

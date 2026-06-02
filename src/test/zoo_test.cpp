@@ -148,7 +148,7 @@ TEST_CASE("Category count", "[Animal manager][category count]") {
     REQUIRE(reptile_count == 0);
     REQUIRE(bird_count == 0);
 }
-/*
+
 TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     Animal_Manager manager;
     Mammal* mammal = new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::In_Treatment);
@@ -164,7 +164,7 @@ TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     std::size_t count = j.size();
     REQUIRE(count == 2 );    
 }
-*/
+
 TEST_CASE("Demo animal", "[Animal manager][load demo animals]") {
     Animal_Manager manager;
     std::filesystem::rename("../data.json", "data2.json");
