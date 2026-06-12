@@ -39,124 +39,179 @@ TEST_CASE("Reptile getters and special_info_map", "[Reptile]") {
 }
 
 TEST_CASE("Category count - Bird, Fish, Reptile", "[Animal manager][category count]") {
-  Animal_Manager manager;
+    Animal_Manager manager;
 
-  manager.add_animal(new Bird(1, "Tweety", "Canary", 1, 0.05, "Aviary", HealthStatus::Healthy));
-  manager.add_animal(new Fish(2, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
-  manager.add_animal(new Reptile(3, "Rex", "Iguana", 2, 3.0, "Terrarium", HealthStatus::Sick));
+    manager.add_animal(new Bird(1, "Tweety", "Canary", 1, 0.05, "Aviary", HealthStatus::Healthy));
+    manager.add_animal(new Fish(2, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
+    manager.add_animal(new Reptile(3, "Rex", "Iguana", 2, 3.0, "Terrarium", HealthStatus::Sick));
 
-  uint64_t mammal_count, fish_count, bird_count, reptile_count, amphibian_count;
-  manager.category_count(mammal_count, fish_count, bird_count, reptile_count, amphibian_count);
+    uint64_t mammal_count, fish_count, bird_count, reptile_count, amphibian_count;
+    manager.category_count(mammal_count, fish_count, bird_count, reptile_count, amphibian_count);
 
-  REQUIRE(mammal_count == 0);
-  REQUIRE(fish_count == 1);
-  REQUIRE(bird_count == 1);
-  REQUIRE(reptile_count == 1);
-  REQUIRE(amphibian_count == 0);
+    REQUIRE(mammal_count == 0);
+    REQUIRE(fish_count == 1);
+    REQUIRE(bird_count == 1);
+    REQUIRE(reptile_count == 1);
+    REQUIRE(amphibian_count == 0);
 }
 
 TEST_CASE("Health count - all three statuses", "[Animal manager][health count]") {
-  Animal_Manager manager;
+    Animal_Manager manager;
 
-  manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
-  manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Sick));
-  manager.add_animal(new Mammal(3, "Bobo", "Bear", 5, 200.0, "Forest", HealthStatus::In_Treatment));
-  manager.add_animal(new Mammal(4, "Lala", "Wolf", 2, 40.0, "Forest", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Sick));
+    manager.add_animal(new Mammal(3, "Bobo", "Bear", 5, 200.0, "Forest", HealthStatus::In_Treatment));
+    manager.add_animal(new Mammal(4, "Lala", "Wolf", 2, 40.0, "Forest", HealthStatus::Healthy));
 
-  uint64_t healthy, sick, in_treatment;
-  manager.health_count(healthy, sick, in_treatment);
+    uint64_t healthy, sick, in_treatment;
+    manager.health_count(healthy, sick, in_treatment);
 
-  REQUIRE(healthy == 2);
-  REQUIRE(sick == 1);
-  REQUIRE(in_treatment == 1);
+    REQUIRE(healthy == 2);
+    REQUIRE(sick == 1);
+    REQUIRE(in_treatment == 1);
 }
 
 TEST_CASE("Remove animal - existing and non-existing id", "[Animal manager][remove_animal]") {
-  Animal_Manager manager;
-  manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
-  manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Healthy));
+    Animal_Manager manager;
+    manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Healthy));
 
-  REQUIRE(manager.total_count() == 2);
+    REQUIRE(manager.total_count() == 2);
 
-  // removing an existing id
-  bool removed = manager.remove_animal(1);
-  REQUIRE(removed == true);
-  REQUIRE(manager.total_count() == 1);
-  REQUIRE(manager.get_all_animals().front()->get_id() == 2);
+    // removing an existing id
+    bool removed = manager.remove_animal(1);
+    REQUIRE(removed == true);
+    REQUIRE(manager.total_count() == 1);
+    REQUIRE(manager.get_all_animals().front()->get_id() == 2);
 
-  // removing a non-existing id should not change anything
-  bool removed_again = manager.remove_animal(999);
-  REQUIRE(removed_again == false);
-  REQUIRE(manager.total_count() == 1);
+    // removing a non-existing id should not change anything
+    bool removed_again = manager.remove_animal(999);
+    REQUIRE(removed_again == false);
+    REQUIRE(manager.total_count() == 1);
 }
 
 TEST_CASE("Search - by name and species, case-insensitive", "[Animal manager][search]") {
-  Animal_Manager manager;
-  manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
-  manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Healthy));
-  manager.add_animal(new Fish(3, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
+    Animal_Manager manager;
+    manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Fish(3, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
 
-  // search by name (case-insensitive)
-  auto by_name = manager.search("leo");
-  REQUIRE(by_name.size() == 1);
-  REQUIRE(by_name.front()->get_name() == "Leo");
+    // search by name (case-insensitive)
+    auto by_name = manager.search("leo");
+    REQUIRE(by_name.size() == 1);
+    REQUIRE(by_name.front()->get_name() == "Leo");
 
-  // search by species (case-insensitive, partial match)
-  auto by_species = manager.search("CLOWN");
-  REQUIRE(by_species.size() == 1);
-  REQUIRE(by_species.front()->get_species() == "Clownfish");
+    // search by species (case-insensitive, partial match)
+    auto by_species = manager.search("CLOWN");
+    REQUIRE(by_species.size() == 1);
+    REQUIRE(by_species.front()->get_species() == "Clownfish");
 
-  // search with no matching results
-  auto no_match = manager.search("zebra");
-  REQUIRE(no_match.empty());
+    // search with no matching results
+    auto no_match = manager.search("zebra");
+    REQUIRE(no_match.empty());
+}
+
+TEST_CASE("Search - exact name match and empty query returns all", "[Animal manager][search]") {
+    Animal_Manager manager;
+    manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Fish(3, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
+
+    // exact name match
+    auto exact = manager.search("Leo");
+    REQUIRE(exact.size() == 1);
+    REQUIRE(exact.front()->get_name() == "Leo");
+
+    // empty query returns all animals
+    auto all = manager.search("");
+    REQUIRE(all.size() == manager.total_count());
+}
+
+TEST_CASE("Filter - by category, status, combined and empty input", "[Animal manager][filter]") {
+    Animal_Manager manager;
+    manager.add_animal(new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::Healthy));
+    manager.add_animal(new Mammal(2, "Mia", "Tiger", 3, 150.0, "Savannah", HealthStatus::Sick));
+    manager.add_animal(new Fish(3, "Nemo", "Clownfish", 1, 0.5, "Aquarium", HealthStatus::Healthy));
+
+    auto all = manager.get_all_animals();
+
+    // filter by category only
+    auto only_mammals = manager.filter(all, "Mammal", "All statuses");
+    REQUIRE(only_mammals.size() == 2);
+    for (Animal* a : only_mammals)
+    {
+        REQUIRE(a->get_category_to_string() == "Mammal");
+    }
+
+    // filter by status only
+    auto only_healthy = manager.filter(all, "All categories", "Healthy");
+    REQUIRE(only_healthy.size() == 2);
+    for (Animal* a : only_healthy)
+    {
+        REQUIRE(a->get_health_status_to_string() == "Healthy");
+    }
+
+    // combined filter - category AND status
+    auto healthy_mammals = manager.filter(all, "Mammal", "Healthy");
+    REQUIRE(healthy_mammals.size() == 1);
+    REQUIRE(healthy_mammals.front()->get_name() == "Leo");
+
+    // "All categories" / "All statuses" returns the input unchanged
+    auto unfiltered = manager.filter(all, "All categories", "All statuses");
+    REQUIRE(unfiltered.size() == all.size());
+
+    // filtering an empty vector returns an empty vector
+    std::vector<Animal*> empty_input;
+    auto filtered_empty = manager.filter(empty_input, "Mammal", "Healthy");
+    REQUIRE(filtered_empty.empty());
 }
 
 TEST_CASE("Species list and default traits - known and unknown category", "[Animal manager][species.json]") {
-  Animal_Manager manager;
+    Animal_Manager manager;
 
-  // known category must return a non-empty species list
-  auto mammal_species = manager.get_species_for_category("Mammal");
-  REQUIRE_FALSE(mammal_species.empty());
+    // known category must return a non-empty species list
+    auto mammal_species = manager.get_species_for_category("Mammal");
+    REQUIRE_FALSE(mammal_species.empty());
 
-  // unknown category returns an empty vector
-  auto unknown_species = manager.get_species_for_category("Dinosaur");
-  REQUIRE(unknown_species.empty());
+    // unknown category returns an empty vector
+    auto unknown_species = manager.get_species_for_category("Dinosaur");
+    REQUIRE(unknown_species.empty());
 
-  // unknown category returns an empty default_traits map
-  auto unknown_defaults = manager.get_default_traits("Dinosaur");
-  REQUIRE(unknown_defaults.empty());
+    // unknown category returns an empty default_traits map
+    auto unknown_defaults = manager.get_default_traits("Dinosaur");
+    REQUIRE(unknown_defaults.empty());
 }
 
 TEST_CASE("Add animal with position parameter inserts at correct index", "[Animal manager][add_animal][position]") {
-  Animal_Manager manager;
-  manager.add_animal(1, "Leo", "Lion", "Mammal", 4, 192.0, "Savannah", "Healthy");
-  manager.add_animal(2, "Mia", "Tiger", "Mammal", 3, 150.0, "Savannah", "Healthy");
+    Animal_Manager manager;
+    manager.add_animal(1, "Leo", "Lion", "Mammal", 4, 192.0, "Savannah", "Healthy");
+    manager.add_animal(2, "Mia", "Tiger", "Mammal", 3, 150.0, "Savannah", "Healthy");
 
-  // insert at position 1 (between Leo and Mia)
-  manager.add_animal(3, "Bobo", "Bear", "Mammal", 5, 200.0, "Forest", "Sick", 1);
+    // insert at position 1 (between Leo and Mia)
+    manager.add_animal(3, "Bobo", "Bear", "Mammal", 5, 200.0, "Forest", "Sick", 1);
 
-  REQUIRE(manager.total_count() == 3);
-  REQUIRE(manager.get_all_animals()[0]->get_id() == 1);
-  REQUIRE(manager.get_all_animals()[1]->get_id() == 3);
-  REQUIRE(manager.get_all_animals()[2]->get_id() == 2);
+    REQUIRE(manager.total_count() == 3);
+    REQUIRE(manager.get_all_animals()[0]->get_id() == 1);
+    REQUIRE(manager.get_all_animals()[1]->get_id() == 3);
+    REQUIRE(manager.get_all_animals()[2]->get_id() == 2);
 }
 
 TEST_CASE("Add animal with unknown category adds nothing", "[Animal manager][add_animal][invalid category]") {
-  Animal_Manager manager;
-  manager.add_animal(1, "Spike", "Unicorn", "Unicorn", 1, 50.0, "Meadow", "Healthy");
+    Animal_Manager manager;
+    manager.add_animal(1, "Spike", "Unicorn", "Unicorn", 1, 50.0, "Meadow", "Healthy");
 
-  REQUIRE(manager.total_count() == 0);
-  REQUIRE(manager.get_all_animals().empty());
+    REQUIRE(manager.total_count() == 0);
+    REQUIRE(manager.get_all_animals().empty());
 }
 
 TEST_CASE("Add animal (Bird) via string overload preserves special_info", "[Animal manager][add_animal][special_info]") {
-  Animal_Manager manager;
-  std::map<std::string, std::string> info = {{"can_fly", "Yes"}, {"wingspan", "0.8"}};
+    Animal_Manager manager;
+    std::map<std::string, std::string> info = {{"can_fly", "Yes"}, {"wingspan", "0.8"}};
 
-  manager.add_animal(5, "Tweety", "Canary", "Bird", 2, 0.05, "Aviary", "Healthy", -1, info);
+    manager.add_animal(5, "Tweety", "Canary", "Bird", 2, 0.05, "Aviary", "Healthy", -1, info);
 
-  REQUIRE(manager.total_count() == 1);
-  Animal* a = manager.get_all_animals().front();
-  REQUIRE(a->get_category() == AnimalCategory::Bird);
-  REQUIRE(a->get_special_info_map() == info);
+    REQUIRE(manager.total_count() == 1);
+    Animal* a = manager.get_all_animals().front();
+    REQUIRE(a->get_category() == AnimalCategory::Bird);
+    REQUIRE(a->get_special_info_map() == info);
 }
