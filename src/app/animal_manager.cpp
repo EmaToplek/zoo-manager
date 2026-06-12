@@ -295,6 +295,25 @@ std::vector<Animal*> Animal_Manager::search(const std::string& query) const
     return result;
 }
 
+// filters a given list of animals by category and health status
+std::vector<Animal*> Animal_Manager::filter(const std::vector<Animal*>& animals, 
+    const std::string& category, const std::string& status) const
+{
+    std::vector<Animal*> result = animals;
+
+    if (category != "All categories")
+    {
+        std::erase_if(result, [&](Animal* a) { return a->get_category_to_string() != category; });
+    }
+
+    if (status != "All statuses")
+    {
+        std::erase_if(result, [&](Animal* a) { return a->get_health_status_to_string() != status; });
+    }
+
+    return result;
+}
+
 void Animal_Manager::add_animal(Animal* animal)
 {
     animals_list_.push_back(animal);

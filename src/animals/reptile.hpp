@@ -8,7 +8,7 @@ class Reptile : public Animal
 public: 
     Reptile(uint64_t id, const std::string& name, const std::string& species,
         uint64_t age, double weight, const std::string& enclosure, 
-        HealthStatus health_status, const std::map<std::string, std::string>& special_info);
+        HealthStatus health_status, const std::map<std::string, std::string>& special_info = {});
     
     AnimalCategory get_category() const override; 
     std::string get_feeding_type() const override;

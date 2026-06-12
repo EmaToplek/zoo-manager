@@ -43,6 +43,7 @@ target_link_libraries(ZooManager PRIVATE
 
 add_executable(zoo_test
     src/test/zoo_test.cpp
+    src/test/tests_extra.cpp
     src/test/catch_amalgamated.cpp
 
     src/animals/animal.cpp

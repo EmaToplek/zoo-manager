@@ -9,7 +9,7 @@ public:
     // standard constructor — called directly when we already have typed values
     Bird(uint64_t id, const std::string& name, const std::string& species,
         uint64_t age, double weight, const std::string& enclosure, 
-        HealthStatus health_status, const std::map<std::string, std::string>& special_info);
+        HealthStatus health_status, const std::map<std::string, std::string>& special_info = {});
         
     //override pure virtuals from animals, so compiler throws an error if one is forgotten
     AnimalCategory get_category() const override; 
