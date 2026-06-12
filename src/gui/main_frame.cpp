@@ -57,6 +57,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     //table showing all animals with columns
     table_ = new wxGrid(left_panel_,wxID_ANY);
+    table_->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
     table_->CreateGrid(0, 7);
     table_->HideRowLabels();
     table_->SetColLabelValue(0, "Name");
@@ -67,7 +68,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     table_->SetColLabelValue(5, "Enclosure");
     table_->SetColLabelValue(6, "Health");
     for(int i = 0; i < table_->GetNumberCols(); i++){
-        table_->SetColSize(i, 100);
+        table_->SetColSize(i, 120);
         
     }
 
@@ -77,12 +78,12 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
         left_panel_sizer->Add(category_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         left_panel_sizer->Add(status_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         left_panel_sizer->Add(button_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(table_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(table_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
         left_panel_->SetSizer(left_panel_sizer);
     
     wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
+        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
         panel_->SetSizer(panel_sizer);
 
    // populate table and overview stats on startup
@@ -156,7 +157,9 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
         table_->SetCellValue(row_id, 1, animal->get_species());
         table_->SetCellValue(row_id, 2, animal->get_category_to_string());
         table_->SetCellValue(row_id, 3, std::to_string(animal->get_age()));
-        table_->SetCellValue(row_id, 4, std::to_string(animal->get_weight()));
+        std::ostringstream oss;
+        oss << std::fixed << std::setprecision(2) << animal->get_weight();
+        table_->SetCellValue(row_id, 4, oss.str());
         table_->SetCellValue(row_id, 5, animal->get_enclosure());
         table_->SetCellValue(row_id, 6, animal->get_health_status_to_string());
 

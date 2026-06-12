@@ -4,6 +4,7 @@
 #include <wx/grid.h>
 #include "../app/animal_manager.hpp"
 #include "detail_panel.hpp"
+#include <iomanip>
 
 class MainFrame : public wxFrame
 {
