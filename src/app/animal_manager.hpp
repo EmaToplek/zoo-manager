@@ -45,8 +45,12 @@ public:
     std::map<std::string, std::string> get_default_traits(const std::string& category) const;
 
     std::vector<Animal*> search(const std::string& query) const;
-
+    std::vector<Animal*> filter(const std::vector<Animal*>& animals, 
+            const std::string& category, const std::string& status) const;
+            
     void add_animal(Animal* animal); // used by tests 
+
+   
 
 }; // class
 

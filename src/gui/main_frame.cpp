@@ -293,22 +293,17 @@ void MainFrame::on_filter_changed(wxCommandEvent& event)
     std::string category = category_dropdown_->GetStringSelection().ToStdString();
     std::string status = status_dropdown_->GetStringSelection().ToStdString();
 
-    std::vector<Animal*> result = animal_manager_->get_all_animals();
-
-    if (!query.empty())
+    std::vector<Animal*> result;
+    if (query.empty())
+    {
+        result = animal_manager_->get_all_animals();
+    }
+    else
     {
         result = animal_manager_->search(query);
     }
-
-    if (category != "All categories")
-    {
-        std::erase_if(result, [&](Animal* a) { return a->get_category_to_string() != category; });
-    }
-
-    if (status != "All statuses")
-    {
-        std::erase_if(result, [&](Animal* a) { return a->get_health_status_to_string() != status; });
-    }
+    
+    result = animal_manager_->filter(result, category, status);
 
     fill_table(result);
     refresh_stats(result);
