@@ -26,7 +26,7 @@ private:
 
 public:
     Animal_Manager();
-    void save();
+    void save(std::string file_name="../data.json");
     void load();
     void add_animal(uint64_t id, const std::string& name, const std::string& species, 
         std::string category, uint64_t age, double weight, const std::string& enclosure, 

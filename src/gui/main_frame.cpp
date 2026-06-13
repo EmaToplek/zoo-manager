@@ -49,10 +49,13 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     remove_button_ = new wxButton(button_panel_, wxID_ANY, "Remove", wxDefaultPosition, wxDefaultSize);
     remove_button_->Disable();
 
+    tick_button_ = new wxButton(button_panel_, wxID_ANY, "Tick time", wxDefaultPosition, wxDefaultSize);
+
     wxBoxSizer* button_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
     button_panel_sizer->Add(add_button_, 0,wxLEFT, 10);
     button_panel_sizer->Add(edit_button_, 0,wxLEFT, 10);
     button_panel_sizer->Add(remove_button_, 0,wxLEFT, 10);
+    button_panel_sizer->Add(tick_button_, 0, wxLEFT, 10);
     button_panel_->SetSizer(button_panel_sizer);
 
     //table showing all animals with columns
@@ -97,6 +100,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     remove_button_->Bind(wxEVT_BUTTON, &MainFrame::on_remove_animal, this);
     edit_button_->Bind(wxEVT_BUTTON, &MainFrame::on_edit_animal, this); 
     add_button_->Bind(wxEVT_BUTTON, &MainFrame::on_add_animal, this); 
+    tick_button_->Bind(wxEVT_BUTTON, &MainFrame::on_tick_button, this);
 
     search_->Bind(wxEVT_TEXT, &MainFrame::on_search_changed, this);
     category_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
@@ -250,6 +254,18 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
         refresh_stats(animal_manager_->get_all_animals());
         update_status_text();
     }
+}
+
+void MainFrame::on_tick_button(wxCommandEvent& event)
+{   
+    for(Animal* animal : animal_manager_->get_all_animals())
+    {
+        animal->tickhealth();  // thicking the healthclock of the animal
+        
+    }
+    fill_table(animal_manager_->get_all_animals());
+    refresh_stats(animal_manager_->get_all_animals());
+    update_status_text();    
 }
 
 // called when user clicks edit
