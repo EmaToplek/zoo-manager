@@ -9,13 +9,18 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     //main panel that fills the entire window
     panel_ = new wxPanel(this);
+    panel_->SetBackgroundColour(wxColour(220, 208, 184));
+
 
     left_panel_ = new wxPanel(panel_);
+    left_panel_->SetBackgroundColour(wxColour(220, 208, 184));
+
     detail_panel_ = new DetailPanel(panel_);
 
     //search field for filtering animals 
     search_ = new wxTextCtrl(left_panel_, wxID_ANY);
     search_->SetHint("Search by name or species..."); 
+    search_->SetBackgroundColour(wxColour(250, 245, 235));
 
    //dropdown for categories
     wxArrayString category_choices;
@@ -28,6 +33,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     category_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, category_choices);
     category_dropdown_->SetSelection(0);
+    category_dropdown_->SetBackgroundColour(wxColour(250, 245, 235));
 
     //dropdown for statuses
     wxArrayString status_choices;
@@ -38,9 +44,11 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     status_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, status_choices);
     status_dropdown_->SetSelection(0); //aranges left and right panels side by side 
+    status_dropdown_->SetBackgroundColour(wxColour(250, 245, 235));
 
     //panel holding add, edit,remove btns in row
     wxPanel* button_panel_ = new wxPanel(left_panel_);
+    button_panel_->SetBackgroundColour(wxColour(220, 208, 184));
     
     add_button_ = new wxButton(button_panel_, wxID_ANY, "+Add animal", wxDefaultPosition, wxDefaultSize);
     edit_button_ = new wxButton(button_panel_, wxID_ANY, "Edit",  wxDefaultPosition, wxDefaultSize);
@@ -57,6 +65,11 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     //table showing all animals with columns
     table_ = new wxGrid(left_panel_,wxID_ANY);
+    table_->SetDefaultCellBackgroundColour(wxColour(250, 245, 235)); 
+    table_->SetLabelBackgroundColour(wxColour(220, 208, 184));      
+    table_->SetLabelTextColour(wxColour(80, 60, 30));
+    table_->SetSelectionBackground(wxColour(200, 180, 150));
+
     table_->CreateGrid(0, 7);
     table_->HideRowLabels();
     table_->SetColLabelValue(0, "Name");
@@ -102,7 +115,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     status_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
     
     //status bar at the bottom of the window
-    CreateStatusBar();
+    wxStatusBar* status_bar = CreateStatusBar();
+    status_bar->SetBackgroundColour(wxColour(220, 208, 184));
     update_status_text();
     
         
