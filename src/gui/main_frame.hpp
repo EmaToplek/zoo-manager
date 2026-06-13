@@ -20,6 +20,7 @@ private:
     wxButton* remove_button_;
     wxButton* add_button_;
     wxButton* edit_button_;
+    wxButton* tick_button_;
     wxTextCtrl* search_;
     wxChoice* category_dropdown_;
     wxChoice* status_dropdown_;
@@ -31,6 +32,7 @@ private:
     void update_status_text();
     void on_search_changed(wxCommandEvent& event);
     void on_filter_changed(wxCommandEvent& event);
+    void on_tick_button(wxCommandEvent& event);
 
      void refresh_stats(const std::vector<Animal*>& animals);
     
