@@ -53,7 +53,7 @@ void Animal_Manager::load()
 
 // serializes all animals from memory to data.json
 // called after every modification (add, edit, remove) to persist changes
-void Animal_Manager::save() 
+void Animal_Manager::save(std::string file_name) 
 {
     //create empty json array to hold all animals
     nlohmann::json j = nlohmann::json::array();
@@ -83,7 +83,7 @@ void Animal_Manager::save()
     }
 
     //write JSON arrray to data.json with 4 space indentation
-    std::ofstream file("../data.json");
+    std::ofstream file(file_name);
     file << j.dump(4);
 }
 
