@@ -1,6 +1,9 @@
 #include "reptile.hpp"
 #include <sstream>
 
+constexpr const char* kFeedingType = "Insects/Small animals";
+constexpr const char* kHabitat = "Jungle Terrarium";
+constexpr double kMinEnclosureSize = 30.0;
 
 Reptile::Reptile(uint64_t id, const std::string& name, const std::string& species,
             uint64_t age, double weight, const std::string& enclosure, 
@@ -11,9 +14,9 @@ Reptile::Reptile(uint64_t id, const std::string& name, const std::string& specie
 
 AnimalCategory Reptile::get_category() const { return AnimalCategory::Reptile; }
 
-std::string Reptile::get_feeding_type() const { return "Insects/Small animals"; }
-std::string Reptile::get_habitat() const  { return "Jungle Terrarium"; }
-double Reptile::get_min_enclosure_size() const { return 30.0; }
+std::string Reptile::get_feeding_type() const { return kFeedingType; }
+std::string Reptile::get_habitat() const  { return kHabitat; }
+double Reptile::get_min_enclosure_size() const { return kMinEnclosureSize; }
 
 std::map<std::string, std::string> Reptile::get_special_info_map() const 
 {

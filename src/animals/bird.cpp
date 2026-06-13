@@ -1,6 +1,11 @@
 #include "bird.hpp"
 #include <sstream>
 
+constexpr const char* kFeedingType = "Seeds/Insects";
+constexpr const char* kHabitat = "Aviary";
+constexpr double kMinEnclosureSize = 50.0;
+
+
 // standard constructor — initializes base class Animal via initializer list
 // then sets Bird-specific private members directly (type safe)
 Bird::Bird (uint64_t id, const std::string& name, const std::string& species,
@@ -12,9 +17,9 @@ Bird::Bird (uint64_t id, const std::string& name, const std::string& species,
 
 AnimalCategory Bird::get_category() const { return AnimalCategory::Bird; }
 
-std::string Bird::get_feeding_type() const { return "Seeds/Insects"; }
-std::string Bird::get_habitat() const { return "Aviary"; }
-double Bird::get_min_enclosure_size() const { return 50.0; }
+std::string Bird::get_feeding_type() const { return kFeedingType; }
+std::string Bird::get_habitat() const { return kHabitat; }
+double Bird::get_min_enclosure_size() const { return kMinEnclosureSize; }
 
 // builds a map from private members for JSON serialization in save()
 // returns the map as-is — Animal_Manager::save() iterates it generically,
