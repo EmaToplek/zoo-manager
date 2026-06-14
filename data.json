@@ -1,202 +1,178 @@
 [
-  {
-    "id": 1,
-    "name": "Leo Maxi",
-    "species": "Lion",
-    "category": "Mammal",
-    "age": 5,
-    "weight": 190,
-    "enclosure": "Savanna",
-    "health": "Healthy"
-  },
-  {
-    "id": 2,
-    "name": "Bella",
-    "species": "Elephant",
-    "category": "Mammal",
-    "age": 12,
-    "weight": 4500,
-    "enclosure": "Savanna",
-    "health": "In Treatment"
-  },
-  {
-    "id": 3,
-    "name": "Max",
-    "species": "Tiger",
-    "category": "Mammal",
-    "age": 7,
-    "weight": 220,
-    "enclosure": "Jungle",
-    "health": "Sick"
-  },
-  {
-    "id": 4,
-    "name": "Luna",
-    "species": "Zebra",
-    "category": "Mammal",
-    "age": 4,
-    "weight": 350,
-    "enclosure": "Savanna",
-    "health": "Healthy"
-  },
-  {
-    "id": 5,
-    "name": "Sky",
-    "species": "Eagle",
-    "category": "Bird",
-    "age": 3,
-    "weight": 6,
-    "enclosure": "Aviary",
-    "health": "In Treatment"
-  },
-  {
-    "id": 6,
-    "name": "Rio",
-    "species": "Parrot",
-    "category": "Bird",
-    "age": 8,
-    "weight": 1,
-    "enclosure": "Tropical",
-    "health": "Healthy"
-  },
-  {
-    "id": 7,
-    "name": "Pingu",
-    "species": "Penguin",
-    "category": "Bird",
-    "age": 2,
-    "weight": 25,
-    "enclosure": "Arctic",
-    "health": "Sick"
-  },
-  {
-    "id": 8,
-    "name": "Tweety",
-    "species": "Flamingo",
-    "category": "Bird",
-    "age": 6,
-    "weight": 3,
-    "enclosure": "Wetlands",
-    "health": "In Treatment"
-  },
-  {
-    "id": 9,
-    "name": "Slither",
-    "species": "Python",
-    "category": "Reptile",
-    "age": 10,
-    "weight": 45,
-    "enclosure": "Terrarium",
-    "health": "Healthy"
-  },
-  {
-    "id": 10,
-    "name": "Snap",
-    "species": "Crocodile",
-    "category": "Reptile",
-    "age": 15,
-    "weight": 400,
-    "enclosure": "Swamp",
-    "health": "Healthy"
-  },
-  {
-    "id": 11,
-    "name": "Shelly",
-    "species": "Turtle",
-    "category": "Reptile",
-    "age": 30,
-    "weight": 80,
-    "enclosure": "Pond",
-    "health": "In Treatment"
-  },
-  {
-    "id": 12,
-    "name": "Spike",
-    "species": "Iguana",
-    "category": "Reptile",
-    "age": 5,
-    "weight": 7,
-    "enclosure": "Terrarium",
-    "health": "Sick"
-  },
-  {
-    "id": 13,
-    "name": "Nemo",
-    "species": "Clownfish",
-    "category": "Fish",
-    "age": 1,
-    "weight": 0.1,
-    "enclosure": "Aquarium",
-    "health": "Healthy"
-  },
-  {
-    "id": 14,
-    "name": "Dory",
-    "species": "Blue Tang",
-    "category": "Fish",
-    "age": 2,
-    "weight": 0.2,
-    "enclosure": "Aquarium",
-    "health": "Healthy"
-  },
-  {
-    "id": 15,
-    "name": "Jaws",
-    "species": "Shark",
-    "category": "Fish",
-    "age": 8,
-    "weight": 800,
-    "enclosure": "Ocean Tank",
-    "health": "Healthy"
-  },
-  {
-    "id": 16,
-    "name": "Goldie",
-    "species": "Goldfish",
-    "category": "Fish",
-    "age": 1,
-    "weight": 0.05,
-    "enclosure": "Pond",
-    "health": "Sick"
-  },
-  {
-    "id": 17,
-    "name": "Hoppy",
-    "species": "Frog",
-    "category": "Amphibian",
-    "age": 2,
-    "weight": 0.3,
-    "enclosure": "Rainforest",
-    "health": "Healthy"
-  },
-  {
-    "id": 18,
-    "name": "Sala",
-    "species": "Salamander",
-    "category": "Amphibian",
-    "age": 3,
-    "weight": 0.2,
-    "enclosure": "Wetlands",
-    "health": "Healthy"
-  },
-  {
-    "id": 19,
-    "name": "Toad",
-    "species": "Toad",
-    "category": "Amphibian",
-    "age": 4,
-    "weight": 0.4,
-    "enclosure": "Pond",
-    "health": "Sick"
-  },
-  {
-    "id": 20,
-    "name": "Axel",
-    "species": "Axolotl",
-    "category": "Amphibian",
-    "age": 1,
-    "weight": 0.15,
-    "enclosure": "Aquarium",
-    "health": "Healthy"
-  }
+    {
+        "age": 7,
+        "category": "Bird",
+        "enclosure": "Jungle",
+        "health": "Healthy",
+        "id": 3,
+        "name": "Max",
+        "species": "Parrot",
+        "weight": 220.0
+    },
+    {
+        "age": 1,
+        "category": "Fish",
+        "enclosure": "Pond",
+        "health": "Sick",
+        "id": 16,
+        "name": "Luna",
+        "species": "Goldfish",
+        "weight": 0.05
+    },
+    {
+        "age": 10,
+        "category": "Mammal",
+        "enclosure": "Jungle",
+        "health": "Healthy",
+        "id": 7,
+        "name": "Vuky",
+        "species": "Gorilla",
+        "weight": 300.0
+    },
+    {
+        "age": 1,
+        "category": "Fish",
+        "enclosure": "Aquarium",
+        "health": "Healthy",
+        "id": 8,
+        "name": "Nemo",
+        "species": "Clownfish",
+        "weight": 0.1
+    },
+    {
+        "age": 2,
+        "category": "Mammal",
+        "enclosure": "Rainforest",
+        "health": "Healthy",
+        "id": 9,
+        "name": "Roko",
+        "species": "Wolf",
+        "weight": 50.0
+    },
+    {
+        "age": 5,
+        "category": "Bird",
+        "enclosure": "Aviary",
+        "health": "Healthy",
+        "id": 100,
+        "name": "Sky",
+        "special_info": {
+            "can_fly": "Yes",
+            "wingspan": "2.1"
+        },
+        "species": "Eagle",
+        "weight": 4.5
+    },
+    {
+        "age": 8,
+        "category": "Reptile",
+        "enclosure": "Terrarium",
+        "health": "Sick",
+        "id": 101,
+        "name": "Komo",
+        "special_info": {
+            "body_length": "2.5",
+            "is_venomous": "No"
+        },
+        "species": "Komodo Dragon",
+        "weight": 70.0
+    },
+    {
+        "age": 6,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "In Treatment",
+        "id": 102,
+        "name": "Shera",
+        "special_info": {
+            "fur_color": "orange",
+            "is_carnivore": "Yes"
+        },
+        "species": "Tiger",
+        "weight": 180.0
+    },
+    {
+        "age": 10,
+        "category": "Fish",
+        "enclosure": "Ocean Tank",
+        "health": "Healthy",
+        "id": 103,
+        "name": "Finn",
+        "special_info": {
+            "fin_count": "8",
+            "water_type": "saltwater"
+        },
+        "species": "Shark",
+        "weight": 90.0
+    },
+    {
+        "age": 2,
+        "category": "Amphibian",
+        "enclosure": "Pond",
+        "health": "Healthy",
+        "id": 104,
+        "name": "Axo",
+        "special_info": {
+            "is_poisonous": "No",
+            "skin_type": "moist"
+        },
+        "species": "Axolotl",
+        "weight": 0.2
+    },
+    {
+        "age": 4,
+        "category": "Bird",
+        "enclosure": "Wetlands",
+        "health": "Healthy",
+        "id": 105,
+        "name": "Pinky",
+        "special_info": {
+            "can_fly": "Yes",
+            "wingspan": "1.5"
+        },
+        "species": "Flamingo",
+        "weight": 3.0
+    },
+    {
+        "age": 7,
+        "category": "Mammal",
+        "enclosure": "Rainforest",
+        "health": "Sick",
+        "id": 106,
+        "name": "Bruno",
+        "special_info": {
+            "fur_color": "brown",
+            "is_carnivore": "Yes"
+        },
+        "species": "Bear",
+        "weight": 250.0
+    },
+    {
+        "age": 1,
+        "category": "Reptile",
+        "enclosure": "Terrarium",
+        "health": "Healthy",
+        "id": 107,
+        "name": "Rio",
+        "special_info": {
+            "body_length": "0.3",
+            "is_venomous": "No"
+        },
+        "species": "Chameleon",
+        "weight": 0.15
+    },
+    {
+        "age": 2,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "In Treatment",
+        "id": 14,
+        "name": "Milan",
+        "special_info": {
+            "fur_color": "brown",
+            "is_carnivore": "Yes"
+        },
+        "species": "Lion",
+        "weight": 60.0
+    }
 ]

@@ -1,0 +1,22 @@
+[
+    {
+        "age": 4,
+        "category": "Mammal",
+        "enclosure": "Savannah",
+        "health": "In Treatment",
+        "id": 1,
+        "name": "Leo",
+        "species": "Lion",
+        "weight": 192.0
+    },
+    {
+        "age": 4,
+        "category": "Amphibian",
+        "enclosure": "Pond",
+        "health": "Sick",
+        "id": 19,
+        "name": "Toad",
+        "species": "Amphibian",
+        "weight": 0.4
+    }
+]

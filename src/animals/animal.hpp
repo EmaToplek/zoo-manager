@@ -1,9 +1,12 @@
 #ifndef ANIMAL_HPP
 #define ANIMAL_HPP
+
 #include<iostream>
 #include<string>
 #include <cstdint>
-// Animal base class + Mammal, Fish subclasses
+#include <map>
+#include <vector>
+
 
 enum class HealthStatus{
     Healthy,
@@ -62,11 +65,17 @@ class Animal{
         virtual std::string get_feeding_type() const = 0; 
         virtual std::string get_habitat() const = 0; 
         virtual double get_min_enclosure_size() const = 0; 
-        virtual std::string get_special_info() const = 0;
+      
+        // returns subclass-specific key-value pairs for JSON save/load and GUI display
+        // base returns empty map — Bird and Reptile override with their own fields
+        // designed to be extensible: add new keys in subclass constructor without touching base class
+        virtual std::map<std::string, std::string> get_special_info_map() const { return {}; }
 
-        std::string get_category_to_string();
+        std::string get_special_info() const; 
+        
+        std::string get_category_to_string() const;
         // healthy to sick its happening on the GUI
-        static constexpr uint64_t sickt_to_treatment_tick = 3;
+        static constexpr uint64_t sick_to_treatment_tick = 3;
         static constexpr uint64_t treatment_to_healthy_tick = 2;
         void tickhealth();  // wxTimer calls this.
 };

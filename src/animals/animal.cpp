@@ -1,4 +1,6 @@
 #include "animal.hpp"
+#include <sstream>
+#include <algorithm>
 
 Animal::Animal(uint64_t id, const std::string& name, const std::string& species, uint64_t age, double weight, 
                const std::string& enclosure, HealthStatus health_status)
@@ -6,13 +8,12 @@ Animal::Animal(uint64_t id, const std::string& name, const std::string& species,
     enclosure_(enclosure), health_status_(health_status), ticks_(0)
 {}
 
-
 void Animal::tickhealth(){
     if(health_status_ == HealthStatus::Healthy){
         return;
     }
     ticks_++; // => only ticks if sick or in treatment
-    if(health_status_ == HealthStatus::Sick && ticks_ >= sickt_to_treatment_tick){
+    if(health_status_ == HealthStatus::Sick && ticks_ >= sick_to_treatment_tick){
         health_status_ = HealthStatus::In_Treatment;
         ticks_ = 0;
     }
@@ -42,7 +43,8 @@ std::string Animal::get_health_status_to_string() const{
 }
 
 // SINCE GET_CATEGORY IS PURE VIRTUAL, C++ AUTOMATICALLY CALLS NEEDED SUBCLASS -> switch case instead if else !!
-std::string Animal::get_category_to_string(){
+std::string Animal::get_category_to_string() const 
+{
     if(get_category() == AnimalCategory::Mammal){
         return "Mammal";
     }
@@ -60,3 +62,23 @@ std::string Animal::get_category_to_string(){
     }
     return "Unknown";
 };
+
+// formats a map key for display — replaces underscores with spaces and capitalizes the first letter
+static std::string format_key(const std::string& key)
+{
+    std::string result = key;
+    std::replace(result.begin(), result.end(), '_', ' ');
+    result[0] = std::toupper(result[0]);
+    return result;
+}
+
+// builds a human-readable string from the special_info map for display in the detail panel
+std::string Animal::get_special_info() const
+{
+    std::ostringstream oss;
+    for (const auto& [key, val] : get_special_info_map()) 
+    {
+        oss << format_key(key) << ": " << val << "\n";
+    }
+    return oss.str();
+}
