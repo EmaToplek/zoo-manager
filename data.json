@@ -33,16 +33,6 @@
         "age": 1,
         "category": "Fish",
         "enclosure": "Aquarium",
-        "health": "Sick",
-        "id": 8,
-        "name": "Nemo",
-        "species": "Clownfish",
-        "weight": 0.1
-    },
-    {
-        "age": 1,
-        "category": "Fish",
-        "enclosure": "Aquarium",
         "health": "Healthy",
         "id": 8,
         "name": "Nemo",
@@ -60,85 +50,129 @@
         "weight": 50.0
     },
     {
-        "age": 2,
-        "category": "Mammal",
-        "enclosure": "Rainforest",
+        "age": 5,
+        "category": "Bird",
+        "enclosure": "Aviary",
         "health": "Healthy",
-        "id": 9,
-        "name": "Roko",
-        "species": "Wolf",
-        "weight": 50.0
-    },
-    {
-        "age": 2,
-        "category": "Mammal",
-        "enclosure": "Rainforest",
-        "health": "Healthy",
-        "id": 9,
-        "name": "Roko",
-        "species": "Wolf",
-        "weight": 50.0
-    },
-    {
-        "age": 1,
-        "category": "Mammal",
-        "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 10,
-        "name": "a",
-        "species": "Lion",
-        "weight": 1.0
-    },
-    {
-        "age": 1,
-        "category": "Mammal",
-        "enclosure": "Jungle",
-        "health": "Healthy",
-        "id": 10,
-        "name": "a",
-        "species": "Lion",
-        "weight": 1.0
-    },
-    {
-        "age": 1,
-        "category": "Fish",
-        "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 11,
-        "name": "a",
+        "id": 100,
+        "name": "Sky",
         "special_info": {
-            "fin_count": "7",
-            "water_type": "freshwater"
+            "can_fly": "Yes",
+            "wingspan": "2.1"
         },
-        "species": "Clownfish",
-        "weight": 1.0
+        "species": "Eagle",
+        "weight": 4.5
+    },
+    {
+        "age": 8,
+        "category": "Reptile",
+        "enclosure": "Terrarium",
+        "health": "Sick",
+        "id": 101,
+        "name": "Komo",
+        "special_info": {
+            "body_length": "2.5",
+            "is_venomous": "No"
+        },
+        "species": "Komodo Dragon",
+        "weight": 70.0
+    },
+    {
+        "age": 6,
+        "category": "Mammal",
+        "enclosure": "Savanna",
+        "health": "In Treatment",
+        "id": 102,
+        "name": "Shera",
+        "special_info": {
+            "fur_color": "orange",
+            "is_carnivore": "Yes"
+        },
+        "species": "Tiger",
+        "weight": 180.0
+    },
+    {
+        "age": 10,
+        "category": "Fish",
+        "enclosure": "Ocean Tank",
+        "health": "Healthy",
+        "id": 103,
+        "name": "Finn",
+        "special_info": {
+            "fin_count": "8",
+            "water_type": "saltwater"
+        },
+        "species": "Shark",
+        "weight": 90.0
     },
     {
         "age": 2,
-        "category": "Reptile",
+        "category": "Amphibian",
+        "enclosure": "Pond",
+        "health": "Healthy",
+        "id": 104,
+        "name": "Axo",
+        "special_info": {
+            "is_poisonous": "No",
+            "skin_type": "moist"
+        },
+        "species": "Axolotl",
+        "weight": 0.2
+    },
+    {
+        "age": 4,
+        "category": "Bird",
         "enclosure": "Wetlands",
         "health": "Healthy",
-        "id": 12,
-        "name": "Dila",
+        "id": 105,
+        "name": "Pinky",
         "special_info": {
-            "body_length": "2.0",
-            "is_venomous": "false"
+            "can_fly": "Yes",
+            "wingspan": "1.5"
         },
-        "species": "Crocodile",
-        "weight": 80.0
+        "species": "Flamingo",
+        "weight": 3.0
+    },
+    {
+        "age": 7,
+        "category": "Mammal",
+        "enclosure": "Rainforest",
+        "health": "Sick",
+        "id": 106,
+        "name": "Bruno",
+        "special_info": {
+            "fur_color": "brown",
+            "is_carnivore": "Yes"
+        },
+        "species": "Bear",
+        "weight": 250.0
     },
     {
         "age": 1,
+        "category": "Reptile",
+        "enclosure": "Terrarium",
+        "health": "Healthy",
+        "id": 107,
+        "name": "Rio",
+        "special_info": {
+            "body_length": "0.3",
+            "is_venomous": "No"
+        },
+        "species": "Chameleon",
+        "weight": 0.15
+    },
+    {
+        "age": 2,
         "category": "Mammal",
         "enclosure": "Savanna",
-        "health": "Healthy",
-        "id": 13,
-        "name": "dada",
+        "health": "In Treatment",
+        "id": 14,
+        "name": "Milan",
         "special_info": {
             "fur_color": "brown",
-            "is_carnivore": "dadfadfa"
+            "is_carnivore": "Yes"
         },
         "species": "Lion",
-        "weight": 1.0
+        "weight": 60.0
     }
 ]

@@ -154,20 +154,69 @@ From the `build` directory:
 
 The application looks for `data.json` and `species.json` in the parent directory of the build folder (`../data.json`, `../species.json`). If `data.json` does not exist, a set of demo animals is loaded automatically and a new file is created on the first save.
 
-## User manual
+## User Manual
 
-1. **Browsing animals** – On startup, all saved animals are listed in the table on the left. Health status is color-coded (green = Healthy, red = Sick, yellow = In Treatment).
-2. **Viewing details** – Click any row to open its details in the panel on the right, including feeding type, habitat, minimum enclosure size, and species-specific info. The bottom of the panel shows live statistics (total, healthy, sick, in treatment).
-3. **Adding an animal** – Click **+Add animal**, fill in the form (name, category, species, age, weight, enclosure, health status, and any special info fields), and click **Save**. Fields are validated before the animal is added.
-4. **Editing an animal** – Select a row, click **Edit**, change the desired fields, and click **Save**. If the category is changed, the animal is recreated as the new subclass.
-5. **Removing an animal** – Select a row, click **Remove**, and confirm the deletion in the dialog that appears.
-6. **Searching** – Type into the search box to filter the table in real time by name or species.
-7. **Filtering** – Use the category and health status dropdowns to narrow down the list. Filters can be combined with the search box.
+### 1. Launching the Application
+
+After building the project (see **Build Instructions**), run the executable.
+The application loads data from `data.json` on startup (if the file doesn't exist, it generates a few demo entries).
+
+### 2. Main Window
+
+The main window is split into two sections:
+- **Left panel** – search bar, filters, action buttons (Add/Edit/Remove, Tick time), and a table listing all animals
+- **Right panel** – details of the selected animal and an overview with statistics (Total / Healthy / Sick / In Treatment)
+
+<img src="docs/images/mainWindow.jpg" alt="Main window" width="600">
+
+The status bar at the bottom shows the total number of animals and a breakdown by category.
+
+### 3. Search and Filtering
+
+Type a name or species into the **Search** field – the table updates in real time.
+The **Category** and **Status** dropdowns further narrow down the results (filters are combined with the search).
+
+<img src="docs/images/search.jpg" alt="search " width="600">
+
+### 4. Adding a New Animal
+
+Click **+Add animal** to open the input dialog. Fields include:
+- Name, Category, Species, Age, Weight, Enclosure, Health
+- Dynamic **Special info** fields that change depending on the selected category (e.g. Bird, Reptile, Mammal...)
+
+<img src="docs/images/add.jpg" alt="Add Dialog" width="300">
+
+
+After clicking **Save**, the new animal is added to the table and saved to `data.json`.
+
+### 5. Editing an Animal
+
+Select a row in the table (click any cell), then click **Edit**.
+The dialog opens pre-filled with the animal's existing data, including its special info fields.
+
+<img src="docs/images/edit.jpg" alt="Edit Dialog" width="300">
+
+
+### 6. Removing an Animal
+
+Select a row, click **Remove**, and confirm in the dialog that appears.
+
+<img src="docs/images/remove.jpg" alt="Remove Confirmation" width="400">
+
+
+### 7. Viewing Details and Statistics
+
+Clicking a row in the table updates the right-hand panel with:
+- Basic info (Name, Species, Category, Age, Weight, Enclosure, Health)
+- Species-specific info (Feeding type, Habitat, Min enclosure size, Special info)
+- Overview boxes showing the total number of animals per health status (updated after every add/edit/remove/filter action)
+
+<img src="docs/images/ov.jpg" alt="Overview Stats" width="300">
 
 ## Authors
 
-- Viktor Borosnyai – *(role / contributions)*
-- Ema Toplek – *(role / contributions)*
+- Viktor Borosnyai  
+- Ema Toplek 
 
 ## Division of Work
 

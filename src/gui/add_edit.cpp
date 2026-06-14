@@ -1,6 +1,10 @@
 #include "add_edit.hpp"
 #include <wx/wx.h>
 
+static const wxColour kDialogBg(240, 230, 210);   
+static const wxColour kInputBg(250, 245, 235);    
+static const wxColour kLabelColor(120, 85, 45);
+
 // creates a wxChoice dropdown and defaults to the first option
 static wxChoice *make_choice(wxWindow *parent, const wxArrayString &options)
 {
@@ -9,10 +13,22 @@ static wxChoice *make_choice(wxWindow *parent, const wxArrayString &options)
     return choice;
 }
 
+// styles a wxTextCtrl input field with theme colors
+static void style_input(wxTextCtrl *input)
+{
+    input->SetBackgroundColour(kInputBg);
+}
+
 // adds label and input pair to sizer
 static void add_row(wxWindow *parent, wxBoxSizer *sizer, const wxString &label, wxWindow *input)
 {
-    sizer->Add(new wxStaticText(parent, wxID_ANY, label), 0, wxLEFT | wxTOP, 16);
+    wxStaticText *lbl = new wxStaticText(parent, wxID_ANY, label);
+    wxFont font = lbl->GetFont();
+    font.SetWeight(wxFONTWEIGHT_BOLD);
+    lbl->SetFont(font);
+    lbl->SetForegroundColour(kLabelColor);
+
+    sizer->Add(lbl, 0, wxLEFT | wxTOP, 16);
     sizer->Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT, 16);
 }
 
@@ -45,6 +61,7 @@ void AddEditDialog::build_dynamic_fields(const std::map<std::string, std::string
     for (const auto &[key, value] : info)
     {
         wxTextCtrl *input = new wxTextCtrl(this, wxID_ANY, value);
+        style_input(input);
 
         add_row(this, dynamic_sizer_, format_key(key) + ":", input);
         dynamic_inputs_[key] = input;
@@ -59,6 +76,8 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     : wxDialog(parent, wxID_ANY, animal ? "Edit Animal" : "Add Animal", wxDefaultPosition, wxSize(420, 750)),
       manager_(manager), animal_editing_(animal)
 {
+    SetBackgroundColour(kDialogBg);
+
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
     // CREATE ALL INPUT WIDGETS
@@ -66,6 +85,10 @@ AddEditDialog::AddEditDialog(wxWindow *parent, Animal_Manager *manager, Animal *
     name_input_ = new wxTextCtrl(this, wxID_ANY);
     age_input_ = new wxTextCtrl(this, wxID_ANY);
     weight_input_ = new wxTextCtrl(this, wxID_ANY);
+
+    style_input(name_input_);
+    style_input(age_input_);
+    style_input(weight_input_);
 
     // dropdowns
     #if defined(__APPLE__) && defined(__MACH__)
