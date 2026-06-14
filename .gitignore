@@ -4,3 +4,4 @@ build/
 .kdev4/
 *.kdev4
 ZooManager
+data_test.json

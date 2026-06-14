@@ -9,18 +9,13 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     //main panel that fills the entire window
     panel_ = new wxPanel(this);
-    panel_->SetBackgroundColour(wxColour(220, 208, 184));
-
 
     left_panel_ = new wxPanel(panel_);
-    left_panel_->SetBackgroundColour(wxColour(220, 208, 184));
-
     detail_panel_ = new DetailPanel(panel_);
 
     //search field for filtering animals 
     search_ = new wxTextCtrl(left_panel_, wxID_ANY);
     search_->SetHint("Search by name or species..."); 
-    search_->SetBackgroundColour(wxColour(250, 245, 235));
 
    //dropdown for categories
     wxArrayString category_choices;
@@ -33,7 +28,6 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     category_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, category_choices);
     category_dropdown_->SetSelection(0);
-    category_dropdown_->SetBackgroundColour(wxColour(250, 245, 235));
 
     //dropdown for statuses
     wxArrayString status_choices;
@@ -44,11 +38,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
 
     status_dropdown_ = new wxChoice(left_panel_, wxID_ANY, wxDefaultPosition, wxDefaultSize, status_choices);
     status_dropdown_->SetSelection(0); //aranges left and right panels side by side 
-    status_dropdown_->SetBackgroundColour(wxColour(250, 245, 235));
 
     //panel holding add, edit,remove btns in row
     wxPanel* button_panel_ = new wxPanel(left_panel_);
-    button_panel_->SetBackgroundColour(wxColour(220, 208, 184));
     
     add_button_ = new wxButton(button_panel_, wxID_ANY, "+Add animal", wxDefaultPosition, wxDefaultSize);
     edit_button_ = new wxButton(button_panel_, wxID_ANY, "Edit",  wxDefaultPosition, wxDefaultSize);
@@ -57,19 +49,18 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     remove_button_ = new wxButton(button_panel_, wxID_ANY, "Remove", wxDefaultPosition, wxDefaultSize);
     remove_button_->Disable();
 
+    tick_button_ = new wxButton(button_panel_, wxID_ANY, "Tick time", wxDefaultPosition, wxDefaultSize);
+
     wxBoxSizer* button_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
     button_panel_sizer->Add(add_button_, 0,wxLEFT, 10);
     button_panel_sizer->Add(edit_button_, 0,wxLEFT, 10);
     button_panel_sizer->Add(remove_button_, 0,wxLEFT, 10);
+    button_panel_sizer->Add(tick_button_, 0, wxLEFT, 10);
     button_panel_->SetSizer(button_panel_sizer);
 
     //table showing all animals with columns
     table_ = new wxGrid(left_panel_,wxID_ANY);
-    table_->SetDefaultCellBackgroundColour(wxColour(250, 245, 235)); 
-    table_->SetLabelBackgroundColour(wxColour(220, 208, 184));      
-    table_->SetLabelTextColour(wxColour(80, 60, 30));
-    table_->SetSelectionBackground(wxColour(200, 180, 150));
-
+    table_->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
     table_->CreateGrid(0, 7);
     table_->HideRowLabels();
     table_->SetColLabelValue(0, "Name");
@@ -80,7 +71,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     table_->SetColLabelValue(5, "Enclosure");
     table_->SetColLabelValue(6, "Health");
     for(int i = 0; i < table_->GetNumberCols(); i++){
-        table_->SetColSize(i, 100);
+        table_->SetColSize(i, 120);
         
     }
 
@@ -90,12 +81,12 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
         left_panel_sizer->Add(category_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         left_panel_sizer->Add(status_dropdown_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
         left_panel_sizer->Add(button_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        left_panel_sizer->Add(table_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        left_panel_sizer->Add(table_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
         left_panel_->SetSizer(left_panel_sizer);
     
     wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
-        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
+        panel_sizer->Add(left_panel_, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
+        panel_sizer->Add(detail_panel_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 0);
         panel_->SetSizer(panel_sizer);
 
    // populate table and overview stats on startup
@@ -109,14 +100,14 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, 
     remove_button_->Bind(wxEVT_BUTTON, &MainFrame::on_remove_animal, this);
     edit_button_->Bind(wxEVT_BUTTON, &MainFrame::on_edit_animal, this); 
     add_button_->Bind(wxEVT_BUTTON, &MainFrame::on_add_animal, this); 
+    tick_button_->Bind(wxEVT_BUTTON, &MainFrame::on_tick_button, this);
 
     search_->Bind(wxEVT_TEXT, &MainFrame::on_search_changed, this);
     category_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
     status_dropdown_->Bind(wxEVT_CHOICE, &MainFrame::on_filter_changed, this);
     
     //status bar at the bottom of the window
-    wxStatusBar* status_bar = CreateStatusBar();
-    status_bar->SetBackgroundColour(wxColour(220, 208, 184));
+    CreateStatusBar();
     update_status_text();
     
         
@@ -170,7 +161,9 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
         table_->SetCellValue(row_id, 1, animal->get_species());
         table_->SetCellValue(row_id, 2, animal->get_category_to_string());
         table_->SetCellValue(row_id, 3, std::to_string(animal->get_age()));
-        table_->SetCellValue(row_id, 4, std::to_string(animal->get_weight()));
+        std::ostringstream oss;
+        oss << std::fixed << std::setprecision(2) << animal->get_weight();
+        table_->SetCellValue(row_id, 4, oss.str());
         table_->SetCellValue(row_id, 5, animal->get_enclosure());
         table_->SetCellValue(row_id, 6, animal->get_health_status_to_string());
 
@@ -261,6 +254,18 @@ void MainFrame::on_add_animal(wxCommandEvent& event)
         refresh_stats(animal_manager_->get_all_animals());
         update_status_text();
     }
+}
+
+void MainFrame::on_tick_button(wxCommandEvent& event)
+{   
+    for(Animal* animal : animal_manager_->get_all_animals())
+    {
+        animal->tickhealth();  // thicking the healthclock of the animal
+        
+    }
+    fill_table(animal_manager_->get_all_animals());
+    refresh_stats(animal_manager_->get_all_animals());
+    update_status_text();    
 }
 
 // called when user clicks edit

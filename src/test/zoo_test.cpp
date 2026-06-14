@@ -155,10 +155,10 @@ TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     Amphibian* amphibian = new Amphibian(19, "Toad", "Amphibian", 4, 0.4, "Pond", HealthStatus::Sick);
     manager.add_animal(mammal);
     manager.add_animal(amphibian);
-    manager.save();
+    manager.save("../data_test.json"); // write it into data json
     //Count animals in data.json
     
-    std::ifstream file("../data.json");
+    std::ifstream file("../data_test.json");
     nlohmann::json j;
     file >> j;
     std::size_t count = j.size();
