@@ -109,7 +109,7 @@ TEST_CASE("Animal manager add one animal", "[Animal manager][add_animal]") {
     REQUIRE(manager.get_all_animals().front()->get_id() == 1);
     REQUIRE(manager.get_all_animals().front()->get_category() == AnimalCategory::Mammal);
 }
-/*
+
 TEST_CASE("Load animal", "[Animal manager][load_animal]") {
     //Count animals in data.json
     std::ifstream file("../data.json");
@@ -120,7 +120,7 @@ TEST_CASE("Load animal", "[Animal manager][load_animal]") {
     manager.load();
     REQUIRE(manager.get_all_animals().size() == count);
 }
-*/
+
 
 TEST_CASE("Animal total count", "[Animal manager][total count]"){
     Animal_Manager manager;
@@ -148,7 +148,7 @@ TEST_CASE("Category count", "[Animal manager][category count]") {
     REQUIRE(reptile_count == 0);
     REQUIRE(bird_count == 0);
 }
-/*
+
 TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     Animal_Manager manager;
     Mammal* mammal = new Mammal(1, "Leo", "Lion", 4, 192.0, "Savannah", HealthStatus::In_Treatment);
@@ -164,7 +164,7 @@ TEST_CASE("Save animal", "[Animal manager][save_animal]") {
     std::size_t count = j.size();
     REQUIRE(count == 2 );    
 }
-*/
+
 TEST_CASE("Demo animal", "[Animal manager][load demo animals]") {
     Animal_Manager manager;
     std::filesystem::rename("../data.json", "data2.json");
