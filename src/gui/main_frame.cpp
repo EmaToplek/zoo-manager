@@ -186,7 +186,7 @@ void MainFrame::fill_table(const std::vector<Animal*> animals)
         }
         row_id++;    
     }
-    table_->Refresh();
+    table_->ForceRefresh();
      
 }
 
